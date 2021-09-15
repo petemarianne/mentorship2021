@@ -1,0 +1,28 @@
+body {
+  .MuiButtonBase-root {
+    &.MuiButton-containedPrimary {
+      background-color: #d27a3d;
+      color: #fff;
+      box-shadow: none;
+
+      &:hover {
+        background-color: rgba(#d27a3d, 0.8);
+      }
+    }
+
+    &.MuiButton-outlinedPrimary {
+      border-color: #d27a3d;
+      color: #d27a3d;
+      box-shadow: none;
+
+      &:hover {
+        border-color: #d27a3d;
+        background-color: rgba(#fff, 0.1);
+      }
+    }
+  }
+}
+
+.MuiButton-label {
+  padding-top: 2px;
+}
