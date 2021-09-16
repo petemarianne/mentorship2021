@@ -1,16 +1,19 @@
 import React, { useState } from 'react';
 import './Header.scss';
-import { AppBar, Button, InputBase, Toolbar, useMediaQuery, Avatar } from '@material-ui/core';
+import {AppBar, Button, InputBase, Toolbar, useMediaQuery, Avatar, IconButton, Drawer} from '@material-ui/core';
+import MenuIcon from '@material-ui/icons/Menu';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import logo from '../../assets/images/logo.svg';
 import avatar from '../../assets/images/dog-owner.jpg';
 import AccountDropdown from './AccountDropdown/AccountDropdown';
+import DrawerMenu from "./DrawerMenu/DrawerMenu";
 
 const Header = () => {
     const screenSize = useMediaQuery('(min-width: 769px)');
     const [states, setStates] = useState(
         {
             isDropdownOpen: null,
+            isDrawerOpen: false,
         }
     );
 
@@ -23,6 +26,12 @@ const Header = () => {
     const handleDropdownClose = () => {
         setStates({
             isDropdownOpen: null,
+        });
+    }
+
+    const handleDrawer = (value) => {
+        setStates({
+            isDrawerOpen: value,
         });
     }
 
@@ -44,9 +53,35 @@ const Header = () => {
                                 <Button color='primary' variant='contained' className={'submit-an-ad-button'}>Submit an ad</Button>
                             </div>
                             <Button onClick={handleDropdownOpen}>
-                                <Avatar className='avatarHeader border-secondary' src={avatar}/>
+                                <Avatar className='avatar-header' src={avatar}/>
                                 <ArrowDropDownIcon className='icons-triangle icons-color' />
                             </Button>
+                        </div>
+                    </>
+                )}
+                {!screenSize && (
+                    <>
+                        <div className={'toolbar-left-side mobile'}>
+                            <IconButton
+                                edge='start'
+                                aria-haspopup='true'
+                                className={'menu-button'}
+                                onClick={() => handleDrawer(true)}
+                            >
+                                <MenuIcon fontSize='large' className='menu-icon' />
+                            </IconButton>
+                            <Drawer
+                                elevation={2}
+                                anchor={'left'}
+                                open={states.isDrawerOpen}
+                                onClose={() => handleDrawer(false)}
+                            >
+                                <DrawerMenu avatar={avatar} handleDrawer={() => handleDrawer(false)}/>
+                            </Drawer>
+                            <div className={'logo'}><img src={logo} alt={'logo'}/></div>
+                        </div>
+                        <div className={'search mobile'}>
+                            <InputBase placeholder='Search…' fullWidth/>
                         </div>
                     </>
                 )}

@@ -1,0 +1,18 @@
+.drawer-wrapper {
+  .drawer-icons {
+    height: 70px;
+    display: flex;
+    justify-content: space-between;
+
+    .avatar-drawer {
+      border: 1px solid rgba(0, 0, 0, 0.51);
+      height: 45px;
+      width: 45px;
+      margin: 12px 20px 0 0;
+    }
+  }
+
+  .drawer-divider {
+    margin: 0 30px;
+  }
+}

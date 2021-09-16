@@ -2,13 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Menu, MenuItem } from '@material-ui/core';
 
-const AccountDropdown = ({isOpen, handleDropdown, handleLogout}) => {
+const AccountDropdown = (props) => {
     return (
         <Menu
             elevation={2}
-            anchorEl={isOpen}
-            open={Boolean(isOpen)}
-            onClose={handleDropdown}
+            anchorEl={props.isOpen}
+            open={Boolean(props.isOpen)}
+            onClose={props.handleDropdown}
             keepMounted
             getContentAnchorEl={null}
             anchorOrigin={{
@@ -19,8 +19,8 @@ const AccountDropdown = ({isOpen, handleDropdown, handleLogout}) => {
                 vertical: 'top',
                 horizontal: 'center'
             }}>
-            <MenuItem onClick={handleDropdown}>My profile</MenuItem>
-            <MenuItem onClick={handleLogout}>Logout</MenuItem>
+            <MenuItem onClick={props.handleDropdown}>My profile</MenuItem>
+            <MenuItem onClick={props.handleLogout}>Logout</MenuItem>
         </Menu>
     );
 };

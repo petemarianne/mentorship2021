@@ -81,6 +81,53 @@
                     }
                 }
             }
+
+            .avatar-header {
+                border: 1px solid rgba(0, 0, 0, 0.51);
+                height: 45px;
+                width: 45px;
+            }
+        }
+
+        .toolbar-left-side.mobile {
+            width: 35%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            .menu-button {
+                margin-left: 17px;
+
+                .menu-icon {
+                    color: black;
+                }
+            }
+
+            @media only screen and (max-width: 375px) {
+                .menu-button {
+                    margin-left: 9px;
+                }
+            }
+
+            .logo {
+                margin-top: 5px;
+                margin-right: 7vw;
+
+                img {
+                    width: 55px;
+                    height: 55px;
+                }
+            }
+        }
+
+        .search.mobile {
+            width: 65.5%;
+            border: 1px solid rgba(0, 0, 0, 0.51);
+            border-radius: 5px;
+            display: flex;
+            justify-content: center;
+            margin: 0 29px;
+            padding: 0 10px;
         }
     }
 }
