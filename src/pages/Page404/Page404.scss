@@ -52,6 +52,12 @@
     text-align: center;
     font-size: 36px;
     width: 670px;
+
+    .page-name {
+        color: #d27a3d;
+        text-decoration: underline;
+        word-break: break-all;
+    }
 }
 
 @media only screen and (max-width: 720px) {
