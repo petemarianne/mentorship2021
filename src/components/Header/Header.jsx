@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './Header.scss';
-import {AppBar, Button, InputBase, Toolbar, useMediaQuery, Avatar, IconButton, Drawer} from '@material-ui/core';
+import { AppBar, Button, InputBase, Toolbar, useMediaQuery, Avatar, IconButton, Drawer } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import logo from '../../assets/images/logo.svg';
