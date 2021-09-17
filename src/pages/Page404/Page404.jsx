@@ -15,7 +15,7 @@ const Page404 = () => {
             </div>
             <div className='message-wrapper'>
                 <div>Oops, this page</div>
-                <div className={'page-name'}>http://localhost:3000{useLocation().pathname}</div>
+                <div className={'page-name'}>{useLocation().pathname}</div>
                 <div> was not found!</div>
                 <div>Either something went wrong or the page doesn't exist anymore.</div>
             </div>
