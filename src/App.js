@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import Main from './pages/Main/Main';
 import Page404 from './pages/Page404/Page404';
-import './App.css';
+import './App.scss';
 import './styles/buttons.scss';
 
 const App = () => {
