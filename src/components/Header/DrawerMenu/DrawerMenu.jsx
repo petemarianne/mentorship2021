@@ -1,7 +1,7 @@
 import React from 'react';
 //import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import {Divider, Button, Avatar, IconButton, InputBase} from '@material-ui/core';
+import { Divider, Button, Avatar, InputBase } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import './DrawerMenu.scss';
 
@@ -41,6 +41,16 @@ const DrawerMenu = (props) => {
             <Divider style={{backgroundColor: 'transparent'}} />
             <div className='filter-name'>Sort by</div>
             <Divider style={{backgroundColor: 'transparent'}} />
+            <select className='filter-select'>
+                <option>Date ↓</option>
+                <option>Date ↑</option>
+                <option>Price ↓</option>
+                <option>Price ↑</option>
+            </select>
+            <Divider style={{backgroundColor: 'transparent'}} />
+            <div className='drawer-button-wrapper'>
+                <Button className='submit-button' variant='contained' color='primary'>Show result</Button>
+            </div>
         </div>
     );
 };
