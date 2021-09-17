@@ -14,6 +14,8 @@ body {
       background-color: transparent;
       color: black;
       box-shadow: none;
+
+      &:hover {}
     }
 
     &.MuiButton-outlinedPrimary {

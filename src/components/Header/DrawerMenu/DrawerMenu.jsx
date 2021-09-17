@@ -1,7 +1,7 @@
 import React from 'react';
 //import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { Divider, Button, Avatar, IconButton } from '@material-ui/core';
+import {Divider, Button, Avatar, IconButton, InputBase} from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import './DrawerMenu.scss';
 
@@ -16,11 +16,31 @@ const DrawerMenu = (props) => {
                 <Avatar className='avatar-drawer' src={props.avatar} alt='avatar'/>
             </div>
             <Divider/>
-            <div className='drawerSplit'>
-                <Button variant='contained' color='secondary'>My account</Button>
-                <Button variant='contained' color='secondary' onClick={props.handleLogoutModal}>Logout</Button>
+            <div className='drawer-button-wrapper'>
+                <Button className='submit-button' variant='contained' color='primary'>Submit an ad</Button>
             </div>
             <Divider className='drawer-divider'/>
+            <Button className='my-account-button' variant='contained' color='secondary'>My account</Button>
+            <Divider style={{backgroundColor: 'transparent'}} />
+            <Button className='logout-button' variant='contained' color='secondary' onClick={props.handleLogoutModal}>Logout</Button>
+            <Divider className='drawer-divider'/>
+            <div className='filter-name'>Country</div>
+            <Divider style={{backgroundColor: 'transparent'}} />
+            <div className='search large'>
+                <InputBase fullWidth/>
+            </div>
+            <div className='filter-name'>City</div>
+            <Divider style={{backgroundColor: 'transparent'}} />
+            <div className='search'>
+                <InputBase fullWidth/>
+            </div>
+            <div className='filter-name'>Price</div>
+            <Divider style={{backgroundColor: 'transparent'}} />
+            <InputBase className='left-search' fullWidth/>
+            <InputBase className='right-search' fullWidth/>
+            <Divider style={{backgroundColor: 'transparent'}} />
+            <div className='filter-name'>Sort by</div>
+            <Divider style={{backgroundColor: 'transparent'}} />
         </div>
     );
 };
