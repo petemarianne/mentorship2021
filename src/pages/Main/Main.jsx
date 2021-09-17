@@ -1,6 +1,6 @@
 import React from 'react';
 import Layout from '../../components/Layout/Layout';
-import './Main.css';
+import './Main.scss';
 
 const Main = () => {
     return (
