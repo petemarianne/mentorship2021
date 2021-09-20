@@ -1,0 +1,80 @@
+.drawer-wrapper {
+  width: 250px;
+
+  .drawer-icons {
+    height: 70px;
+    display: flex;
+    justify-content: space-between;
+
+    .avatar-drawer {
+      border: 1px solid rgba(0, 0, 0, 0.51);
+      height: 45px;
+      width: 45px;
+      margin: 12px 20px 0 0;
+    }
+  }
+
+  .drawer-button-wrapper {
+    display: flex;
+    justify-content: center;
+    padding: 15px 0;
+
+    .submit-button {
+      width: 180px;
+    }
+  }
+
+  .drawer-divider {
+    margin: 0 20px;
+  }
+
+  .my-account-button {
+    margin-left: 15px;
+    margin-top: 10px;
+  }
+
+  .logout-button {
+    margin-left: 15px;
+    margin-bottom: 10px;
+  }
+
+  .filter-name {
+    font-size: 1rem;
+    margin-top: 15px;
+    margin-left: 25px;
+  }
+
+  .search {
+    border: 1px solid rgba(0, 0, 0, 0.51);
+    border-radius: 5px;
+    padding: 0 10px;
+    margin: 9px 25px 0;
+  }
+
+  .left-search {
+    border: 1px solid rgba(0, 0, 0, 0.51);
+    border-radius: 5px;
+    padding: 0 10px;
+    width: 97px;
+    margin-left: 25px;
+    margin-top: 9px;
+  }
+
+  .right-search {
+    border: 1px solid rgba(0, 0, 0, 0.51);
+    border-radius: 5px;
+    padding: 0 10px;
+    width: 97px;
+    margin-left: 6px;
+    margin-top: 9px;
+  }
+
+  .filter-select {
+    width: 200px;
+    height: 32px;
+    border: 1px solid rgba(0, 0, 0, 0.51);
+    border-radius: 5px;
+    margin: 9px 0 15px 25px;
+    padding: 0 10px;
+  }
+}
