@@ -12,7 +12,7 @@ const adsData = [
         price: 300,
         date: new Date(2021, 7,25, 17,35),
         sellerID: 1,
-        description: 'The best puppy!',
+        description: 'big description big description big description big description big description big description big description big description big description big description big description big description big description big description big description big description big description big description big description big description big description big description big description big description big description big description',
         picture: pic1,
     },
     {

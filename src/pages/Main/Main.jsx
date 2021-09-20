@@ -41,7 +41,12 @@ const Main = () => {
                             return (
                                 <div className='ad-wrapper'>
                                     <div className='pic-wrapper'><img src={item.picture} alt={'Ad picture'}/></div>
-                                    <div className='info-wrapper'></div>
+                                    <div className='info-wrapper'>
+                                        <div className='breed'>{item.title}</div>
+                                        <div className='description'>{item.description}</div>
+                                        <div className='price'>{item.price}</div>
+                                        <div className='location'>{item.city}, {item.country}</div>
+                                    </div>
                                 </div>
                             );
                         })}

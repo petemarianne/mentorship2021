@@ -59,18 +59,55 @@
   }
 
   .feed-wrapper {
-    width: 50%; //960
+    width: 50%;
     padding-left: 66px;
 
     .ad-wrapper {
-      margin-bottom: 40px;
+      margin-bottom: 36px;
+      display: flex;
+      justify-content: space-between;
 
       .pic-wrapper {
+
         img {
           border: 1px solid rgba(0, 0, 0, 0.51);
           border-radius: 5px;
-          width: 27%;
+          width: 186px;
           height: 107px;
+        }
+
+        @media only screen and (max-width: 1024px) {
+          img {
+            width: 140px;
+          }
+        }
+      }
+
+      .info-wrapper {
+        margin-left: 20px;
+        width: 37vw;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.51);
+        margin-bottom: 4px;
+
+        .breed,
+        .price {
+          font-size: 18px;
+          margin-bottom: 10px;
+        }
+
+        .description {
+          font-size: 14px;
+          color: rgba(0, 0, 0, 0.51);
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          overflow: hidden;
+          margin-bottom: 10px;
+        }
+
+        .location {
+          margin-top: 10px;
+          font-size: 14px;
+          color: rgba(0, 0, 0, 0.51);
         }
       }
     }
