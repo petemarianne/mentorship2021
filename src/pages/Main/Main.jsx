@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Layout from '../../components/Layout/Layout';
 import './Main.scss';
 import { Button, InputBase, useMediaQuery } from "@material-ui/core";
@@ -6,8 +6,29 @@ import { adsData } from '../../ads-data/ads-data';
 
 const Main = () => {
     const screenSize = useMediaQuery('(min-width: 769px)');
+    const [selectedSort, setSelectedSort] = useState('dateDown');
 
-    const adWrapper = adsData.map((item) => {
+    const comparator = (item1, item2) => {
+        if (item1.price === item2.price) {
+            return item2.date - item1.date;
+        }
+        switch (selectedSort) {
+            case 'dateDown':
+                return item2.date - item1.date;
+            case 'dateUp':
+                return item1.date - item2.date;
+            case 'priceDown':
+                return item2.price - item1.price;
+            case 'priceUp':
+                return item1.price - item2.price;
+        }
+    }
+
+    const handleSelect = (event) => {
+        setSelectedSort(event.target.value);
+    }
+
+    const adWrapper = adsData.sort(comparator).map((item) => {
         return (
             <div className='ad-wrapper'>
                 <div className='pic-wrapper'><img src={item.picture} alt={'Ad picture'}/></div>
@@ -43,11 +64,11 @@ const Main = () => {
                             <InputBase className='price-search' fullWidth/>
                         </div>
                         <div className='filter-name'>Sort by</div>
-                        <select className='filter-select'>
-                            <option>Date ↓</option>
-                            <option>Date ↑</option>
-                            <option>Price ↓</option>
-                            <option>Price ↑</option>
+                        <select className='filter-select' onChange={handleSelect} value={selectedSort}>
+                            <option value='dateDown'>Date ↓</option>
+                            <option value='dateUp'>Date ↑</option>
+                            <option value='priceDown'>Price ↓</option>
+                            <option value='priceUp'>Price ↑</option>
                         </select>
                         <div className='filter-button-wrapper'>
                             <Button className='filter-button' variant='contained' color='primary'>Show result</Button>

@@ -55,6 +55,7 @@
       border-radius: 5px;
       margin: 9px 0 15px 0;
       padding: 0 10px;
+      cursor: pointer;
     }
   }
 
@@ -72,6 +73,7 @@
   margin-bottom: 20px;
   display: flex;
   justify-content: space-between;
+  cursor: pointer;
 
   .pic-wrapper {
     img {
