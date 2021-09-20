@@ -9,6 +9,7 @@
     .filter-button-wrapper {
       display: flex;
       justify-content: center;
+      margin-top: 10px;
 
       .filter-button {
         width: 100%;
@@ -58,7 +59,20 @@
   }
 
   .feed-wrapper {
-    width: 50%;
+    width: 50%; //960
     padding-left: 66px;
+
+    .ad-wrapper {
+      margin-bottom: 40px;
+
+      .pic-wrapper {
+        img {
+          border: 1px solid rgba(0, 0, 0, 0.51);
+          border-radius: 5px;
+          width: 27%;
+          height: 107px;
+        }
+      }
+    }
   }
 }

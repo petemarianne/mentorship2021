@@ -1,7 +1,8 @@
 import React from 'react';
 import Layout from '../../components/Layout/Layout';
 import './Main.scss';
-import {Button, InputBase, useMediaQuery} from "@material-ui/core";
+import { Button, InputBase, useMediaQuery } from "@material-ui/core";
+import { adsData } from '../../ads-data/ads-data';
 
 const Main = () => {
     const screenSize = useMediaQuery('(min-width: 769px)');
@@ -35,7 +36,16 @@ const Main = () => {
                             <Button className='filter-button' variant='contained' color='primary'>Show result</Button>
                         </div>
                     </div>
-                    <div className='feed-wrapper'>feed</div>
+                    <div className='feed-wrapper'>
+                        {adsData.map((item) => {
+                            return (
+                                <div className='ad-wrapper'>
+                                    <div className='pic-wrapper'><img src={item.picture} alt={'Ad picture'}/></div>
+                                    <div className='info-wrapper'></div>
+                                </div>
+                            );
+                        })}
+                    </div>
                 </div>
             )}
         </Layout>
