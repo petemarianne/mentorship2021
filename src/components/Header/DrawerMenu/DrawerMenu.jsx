@@ -56,7 +56,7 @@ const DrawerMenu = (props) => {
 };
 
 DrawerMenu.propTypes = {
-    avatar: PropTypes.any,
+    avatar: PropTypes.string,
     handleLogoutModal: PropTypes.func,
     handleDrawer: PropTypes.func,
     handleSubmitAnAd: PropTypes.func,
