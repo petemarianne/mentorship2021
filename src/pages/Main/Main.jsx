@@ -7,6 +7,23 @@ import { adsData } from '../../ads-data/ads-data';
 const Main = () => {
     const screenSize = useMediaQuery('(min-width: 769px)');
 
+    const adWrapper = adsData.map((item) => {
+        return (
+            <div className='ad-wrapper'>
+                <div className='pic-wrapper'><img src={item.picture} alt={'Ad picture'}/></div>
+                <div className='info-wrapper'>
+                    <div className='breed'>{item.title}</div>
+                    <div className='description'>{item.description}</div>
+                    <div className='price'>{item.price}$</div>
+                    <div className='location-date-wrapper'>
+                        <div>{item.city}, {item.country}</div>
+                        <div>{item.date.getDate()} {item.date.toLocaleString('default', { month: 'short' }).toLowerCase()}., {item.date.getHours()}:{item.date.getMinutes()}</div>
+                    </div>
+                </div>
+            </div>
+        );
+    });
+
     return (
         <Layout>
             {screenSize && (
@@ -37,20 +54,13 @@ const Main = () => {
                         </div>
                     </div>
                     <div className='feed-wrapper'>
-                        {adsData.map((item) => {
-                            return (
-                                <div className='ad-wrapper'>
-                                    <div className='pic-wrapper'><img src={item.picture} alt={'Ad picture'}/></div>
-                                    <div className='info-wrapper'>
-                                        <div className='breed'>{item.title}</div>
-                                        <div className='description'>{item.description}</div>
-                                        <div className='price'>{item.price}</div>
-                                        <div className='location'>{item.city}, {item.country}</div>
-                                    </div>
-                                </div>
-                            );
-                        })}
+                        {adWrapper}
                     </div>
+                </div>
+            )}
+            {!screenSize && (
+                <div className='main-page-mobile-wrapper'>
+                    {adWrapper}
                 </div>
             )}
         </Layout>
