@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import Layout from '../../components/Layout/Layout';
 import './Main.scss';
-import { Button, InputBase, useMediaQuery } from "@material-ui/core";
+import {Button, InputBase, useMediaQuery} from "@material-ui/core";
+import Pagination from '@mui/material/Pagination';
+import Stack from '@mui/material/Stack';
 import { adsData } from '../../ads-data/ads-data';
 import { useSelector } from "react-redux";
 
 const Main = () => {
+    const [page, setPage] = useState(1);
     const breed = useSelector((state) => state.breed);
     const screenSize = useMediaQuery('(min-width: 769px)');
     const [country, setCountry] = useState('')
@@ -21,6 +24,17 @@ const Main = () => {
         priceTo: '',
         sort: 'dateDown'
     });
+
+    useEffect(() => {
+        setFilter({
+            breed,
+            country,
+            city,
+            priceFrom,
+            priceTo,
+            sort
+        })
+    },[breed]);
 
     const comparator = (item1, item2) => {
         if (item1.price === item2.price) {
@@ -77,16 +91,9 @@ const Main = () => {
         }
     }
 
-    useEffect(() => {
-        setFilter({
-            breed,
-            country,
-            city,
-            priceFrom,
-            priceTo,
-            sort
-        })
-    },[breed]);
+    const handleChange = (event, value) => {
+        setPage(value);
+    };
 
     const filterArray = (item) => {
         let result = true;
@@ -113,20 +120,22 @@ const Main = () => {
     }
 
     const adWrapper = adsData.filter(item => filterArray(item)).sort(comparator).map((item, index) => {
-        return (
-            <div key={index} className='ad-wrapper'>
-                <div className='pic-wrapper'><img src={item.picture} alt='dog'/></div>
-                <div className='info-wrapper'>
-                    <div className='breed'>{item.title}</div>
-                    <div className='description'>{item.description}</div>
-                    <div className='price'>{item.price}$</div>
-                    <div className='location-date-wrapper'>
-                        <div>{item.city}, {item.country}</div>
-                        <div>{item.date.getDate()} {item.date.toLocaleString('default', { month: 'short' }).toLowerCase()}., {item.date.getHours()}:{item.date.getMinutes()}</div>
+        if (index >= (page - 1) * 10 && index < page * 10) {
+            return (
+                <div key={index} className='ad-wrapper'>
+                    <div className='pic-wrapper'><img src={item.picture} alt='dog'/></div>
+                    <div className='info-wrapper'>
+                        <div className='breed'>{item.title}</div>
+                        <div className='description'>{item.description}</div>
+                        <div className='price'>{item.price}$</div>
+                        <div className='location-date-wrapper'>
+                            <div>{item.city}, {item.country}</div>
+                            <div>{item.date.getDate()} {item.date.toLocaleString('default', {month: 'short'}).toLowerCase()}., {item.date.getHours()}:{item.date.getMinutes()}</div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        );
+            );
+        }
     });
 
     return (
@@ -160,12 +169,34 @@ const Main = () => {
                     </div>
                     <div className='feed-wrapper'>
                         {adWrapper}
+                        <Stack spacing={2}>
+                            <Pagination
+                                count={adsData.length % 10 === 0 ? adsData.length / 10 : Math.trunc(adsData.length % 10) + 1}
+                                page={page}
+                                onChange={handleChange}
+                                onClick={() => {
+                                    document.body.scrollTop = 0;
+                                    document.documentElement.scrollTop = 0;
+                                }}
+                                className='pagination-wrapper'/>
+                        </Stack>
                     </div>
                 </div>
             )}
             {!screenSize && (
                 <div className='main-page-mobile-wrapper'>
                     {adWrapper}
+                    <Stack spacing={2}>
+                        <Pagination
+                            count={adsData.length % 10 === 0 ? adsData.length / 10 : Math.trunc(adsData.length % 10) + 1}
+                            page={page}
+                            onChange={handleChange}
+                            onClick={() => {
+                                document.body.scrollTop = 0;
+                                document.documentElement.scrollTop = 0;
+                            }}
+                            className='pagination-wrapper'/>
+                    </Stack>
                 </div>
             )}
         </Layout>
