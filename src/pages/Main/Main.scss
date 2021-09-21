@@ -1,0 +1,181 @@
+.main-page-desktop-wrapper {
+  margin: 40px auto 45px;
+  display: flex;
+  justify-content: center;
+
+  .filter-wrapper {
+    width: 16%;
+
+    .filter-button-wrapper {
+      display: flex;
+      justify-content: center;
+      margin-top: 10px;
+
+      .filter-button {
+        width: 100%;
+      }
+
+      @media only screen and (max-width: 920px) {
+        .filter-button {
+          font-size: 11px;
+        }
+      }
+    }
+
+    .filter-name {
+      font-size: 1rem;
+    }
+
+    .search {
+      border: 1px solid rgba(0, 0, 0, 0.51);
+      border-radius: 5px;
+      padding: 0 10px;
+      margin-top: 9px;
+      margin-bottom: 15px;
+    }
+
+    .price-filter {
+      display: flex;
+      justify-content: space-between;
+
+      .price-search {
+        border: 1px solid rgba(0, 0, 0, 0.51);
+        border-radius: 5px;
+        padding: 0 10px;
+        width: 48.5%;
+        margin-top: 9px;
+        margin-bottom: 15px;
+      }
+    }
+
+    .filter-select {
+      width: 100%;
+      height: 32px;
+      border: 1px solid rgba(0, 0, 0, 0.51);
+      border-radius: 5px;
+      margin: 9px 0 15px 0;
+      padding: 0 10px;
+      cursor: pointer;
+    }
+  }
+
+  .feed-wrapper {
+    width: 70%;
+    padding-left: 66px;
+  }
+}
+
+.main-page-mobile-wrapper {
+  margin: 25px 20px 20px;
+}
+
+.ad-wrapper {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+
+  .pic-wrapper {
+    img {
+      border: 1px solid rgba(0, 0, 0, 0.30);
+      border-radius: 4px;
+      width: 186px;
+      height: 120px;
+    }
+
+    @media only screen and (max-width: 1024px) {
+      img {
+        width: 140px;
+        height: 110px;
+      }
+    }
+
+    @media only screen and (max-width: 425px) {
+      img {
+        width: 140px;
+        height: 110px;
+      }
+    }
+  }
+
+  .info-wrapper {
+    margin-left: 20px;
+    width: 77%;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    margin-bottom: 4px;
+
+    .breed,
+    .price {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
+    .description {
+      font-size: 14px;
+      color: rgba(0, 0, 0, 0.51);
+      height: 18px;
+      width: 600px;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+      word-break: break-all;
+      margin-bottom: 10px;
+    }
+
+    @media only screen and (max-width: 1120px) {
+      .description {
+        width: 500px;
+      }
+    }
+
+    @media only screen and (max-width: 940px) {
+      .description {
+        width: 390px;
+      }
+    }
+
+    @media only screen and (max-width: 768px) {
+      .description {
+        width: 400px;
+      }
+    }
+
+    @media only screen and (max-width: 610px) {
+      .description {
+        width: 300px;
+      }
+    }
+
+    @media only screen and (max-width: 510px) {
+      .description {
+        width: 200px;
+      }
+    }
+
+    .location-date-wrapper {
+      margin-top: 13px;
+      font-size: 14px;
+      color: rgba(0, 0, 0, 0.51);
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+
+  @media only screen and (max-width: 375px) {
+    .info-wrapper {
+      .breed,
+      .price {
+        font-size: 14px;
+      }
+
+      .description {
+        font-size: 12px;
+        width: 100px;
+      }
+
+      .location-date-wrapper {
+        font-size: 12px;
+      }
+    }
+  }
+}
