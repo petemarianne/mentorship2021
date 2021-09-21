@@ -1,0 +1,1 @@
+export const BREED_SEARCH = 'BREED_SEARCH';
