@@ -155,9 +155,6 @@ const Main = () => {
                 </div>
             );
         }
-        if (filteredArray.length === 0) {
-            return <div className='nothing-found'>Nothing was found for your search!</div>
-        }
     });
 
     const pagination =
@@ -172,6 +169,8 @@ const Main = () => {
                 }}
                 className={filteredArray.length <= 10 ? 'pagination-wrapper none' : 'pagination-wrapper'}/>
         </Stack>;
+
+    const nothingWasFound = <div className={filteredArray.length === 0 ? 'nothing-found' : 'nothing-found none'}>Nothing was found for your search!</div>;
 
     return (
         <Layout>
@@ -221,6 +220,7 @@ const Main = () => {
                         </div>
                     </div>
                     <div className='feed-wrapper'>
+                        {nothingWasFound}
                         {adWrapper}
                         {pagination}
                     </div>
@@ -228,6 +228,7 @@ const Main = () => {
             )}
             {!screenSize && (
                 <div className='main-page-mobile-wrapper'>
+                    {nothingWasFound}
                     {adWrapper}
                     {pagination}
                 </div>

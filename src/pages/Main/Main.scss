@@ -203,3 +203,30 @@
   display: none;
 }
 
+.nothing-found {
+  display: flex;
+  justify-content: center;
+  margin-top: 200px;
+  margin-bottom: 450px;
+  font-size: 20px;
+  font-weight: 500;
+  color: lighten(#d27a3d, 10);
+}
+
+@media screen and (max-width: 768px) {
+  .nothing-found {
+    margin-top: 100px;
+  }
+}
+
+
+@media screen and (max-width: 360px) {
+  .nothing-found {
+    font-size: 16px;
+  }
+}
+
+.nothing-found.none {
+  display: none;
+}
+
