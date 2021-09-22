@@ -111,15 +111,15 @@ const Main = () => {
             result = result && filter.city.toLowerCase() === item.city.toLowerCase();
         }
         if (filter.priceFrom !== '') {
-            result = result && filter.priceFrom <= item.price;
+            result = result && Number(filter.priceFrom) <= Number(item.price);
         }
         if (filter.priceTo !== '') {
-            result = result && filter.priceTo >= item.price;
+            result = result && Number(filter.priceTo) >= Number(item.price);
         }
         return result;
     }
-
-    const adWrapper = adsData.filter(item => filterArray(item)).sort(comparator).map((item, index) => {
+    const filteredArray = adsData.filter(item => filterArray(item));
+    const adWrapper = filteredArray.sort(comparator).map((item, index) => {
         if (index >= (page - 1) * 10 && index < page * 10) {
             return (
                 <div key={index} className='ad-wrapper'>
@@ -137,6 +137,19 @@ const Main = () => {
             );
         }
     });
+
+    const pagination =
+        <Stack spacing={2}>
+            <Pagination
+                count={adsData.length % 10 === 0 ? adsData.length / 10 : Math.trunc(adsData.length % 10) + 1}
+                page={page}
+                onChange={handleChange}
+                onClick={() => {
+                    document.body.scrollTop = 0;
+                    document.documentElement.scrollTop = 0;
+                }}
+                className={filteredArray.length <= 10 ? 'pagination-wrapper none' : 'pagination-wrapper'}/>
+        </Stack>
 
     return (
         <Layout>
@@ -169,34 +182,14 @@ const Main = () => {
                     </div>
                     <div className='feed-wrapper'>
                         {adWrapper}
-                        <Stack spacing={2}>
-                            <Pagination
-                                count={adsData.length % 10 === 0 ? adsData.length / 10 : Math.trunc(adsData.length % 10) + 1}
-                                page={page}
-                                onChange={handleChange}
-                                onClick={() => {
-                                    document.body.scrollTop = 0;
-                                    document.documentElement.scrollTop = 0;
-                                }}
-                                className='pagination-wrapper'/>
-                        </Stack>
+                        {pagination}
                     </div>
                 </div>
             )}
             {!screenSize && (
                 <div className='main-page-mobile-wrapper'>
                     {adWrapper}
-                    <Stack spacing={2}>
-                        <Pagination
-                            count={adsData.length % 10 === 0 ? adsData.length / 10 : Math.trunc(adsData.length % 10) + 1}
-                            page={page}
-                            onChange={handleChange}
-                            onClick={() => {
-                                document.body.scrollTop = 0;
-                                document.documentElement.scrollTop = 0;
-                            }}
-                            className='pagination-wrapper'/>
-                    </Stack>
+                    {pagination}
                 </div>
             )}
         </Layout>
