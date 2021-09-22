@@ -7,14 +7,23 @@ import './DrawerMenu.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { countryFilter } from '../../../store/actions/countryAction';
 import { cityFilter } from '../../../store/actions/cityAction';
+import { priceFromFilter } from '../../../store/actions/priceFromAction';
+import { priceToFilter } from '../../../store/actions/priceToAction';
+import { sortFilter } from '../../../store/actions/sortAction';
 
 const DrawerMenu = (props) => {
     const dispatch = useDispatch();
     const country = useSelector((state) => state.country);
     const city = useSelector((state) => state.city);
+    const priceFrom = useSelector((state) => state.priceFrom);
+    const priceTo = useSelector((state) => state.priceTo);
+    const sort = useSelector((state) => state.sort);
 
     const [countryState, setCountryState] = useState(country);
     const [cityState, setCityState] = useState(city);
+    const [priceFromState, setPriceFrom] = useState(priceFrom);
+    const [priceToState, setPriceTo] = useState(priceTo);
+    const [sortState, setSortState] = useState(sort);
 
     const handleCountry = (event) => {
         setCountryState(event.target.value);
@@ -24,9 +33,24 @@ const DrawerMenu = (props) => {
         setCityState(event.target.value);
     }
 
+    const handlePriceFrom = (event) => {
+        setPriceFrom(event.target.value);
+    }
+
+    const handlePriceTo = (event) => {
+        setPriceTo(event.target.value);
+    }
+
+    const handleSort = (event) => {
+        setSortState(event.target.value);
+    }
+
     const handleEnter = () => {
         dispatch(countryFilter(countryState));
         dispatch(cityFilter(cityState));
+        dispatch(priceFromFilter(priceFromState));
+        dispatch(priceToFilter(priceToState));
+        dispatch(sortFilter(sortState));
     }
 
     return (
@@ -58,16 +82,16 @@ const DrawerMenu = (props) => {
             </div>
             <div className='filter-name'>Price</div>
             <Divider style={{backgroundColor: 'transparent'}} />
-            <InputBase className='left-search' fullWidth/>
-            <InputBase className='right-search' fullWidth/>
+            <InputBase className='left-search' value={priceFromState} onChange={handlePriceFrom} fullWidth/>
+            <InputBase className='right-search' value={priceToState} onChange={handlePriceTo} fullWidth/>
             <Divider style={{backgroundColor: 'transparent'}} />
             <div className='filter-name'>Sort by</div>
             <Divider style={{backgroundColor: 'transparent'}} />
-            <select className='filter-select'>
-                <option>Date ↓</option>
-                <option>Date ↑</option>
-                <option>Price ↓</option>
-                <option>Price ↑</option>
+            <select className='filter-select' onChange={handleSort} value={sortState}>
+                <option value='dateDown'>Date ↓</option>
+                <option value='dateUp'>Date ↑</option>
+                <option value='priceDown'>Price ↓</option>
+                <option value='priceUp'>Price ↑</option>
             </select>
             <Divider style={{backgroundColor: 'transparent'}} />
             <div className='drawer-button-wrapper'>

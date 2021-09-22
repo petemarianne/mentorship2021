@@ -11,6 +11,9 @@ const Main = () => {
     const breed = useSelector((state) => state.breed);
     const countryMobile = useSelector((state) => state.country);
     const cityMobile = useSelector((state) => state.city);
+    const priceFromMobile = useSelector((state) => state.priceFrom);
+    const priceToMobile = useSelector((state) => state.priceTo);
+    const sortMobile = useSelector((state) => state.sort);
 
     const screenSize = useMediaQuery('(min-width: 769px)');
 
@@ -44,12 +47,12 @@ const Main = () => {
                 breed,
                 country: countryMobile,
                 city: cityMobile,
-                priceFrom,
-                priceTo,
-                sort
+                priceFrom: priceFromMobile,
+                priceTo: priceToMobile,
+                sort: sortMobile
             })
         }
-    },[breed, countryMobile, cityMobile]);
+    },[breed, countryMobile, cityMobile, priceFromMobile, priceToMobile, sortMobile]);
 
     const comparator = (item1, item2) => {
         if (item1.price === item2.price) {
