@@ -1,16 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import Layout from '../../components/Layout/Layout';
 import './Main.scss';
-import {Button, InputBase, useMediaQuery} from "@material-ui/core";
+import { Button, InputBase, useMediaQuery } from "@material-ui/core";
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 import { adsData } from '../../ads-data/ads-data';
-import { useSelector } from "react-redux";
+import { useSelector } from 'react-redux';
 
 const Main = () => {
-    const [page, setPage] = useState(1);
     const breed = useSelector((state) => state.breed);
+    const countryMobile = useSelector((state) => state.country);
+    const cityMobile = useSelector((state) => state.city);
+
     const screenSize = useMediaQuery('(min-width: 769px)');
+
+    const [page, setPage] = useState(1);
     const [country, setCountry] = useState('')
     const [city, setCity] = useState('')
     const [priceFrom, setPriceFrom] = useState('')
@@ -26,15 +30,26 @@ const Main = () => {
     });
 
     useEffect(() => {
-        setFilter({
-            breed,
-            country,
-            city,
-            priceFrom,
-            priceTo,
-            sort
-        })
-    },[breed]);
+        if (screenSize) {
+            setFilter({
+                breed,
+                country,
+                city,
+                priceFrom,
+                priceTo,
+                sort
+            })
+        } else {
+            setFilter({
+                breed,
+                country: countryMobile,
+                city: cityMobile,
+                priceFrom,
+                priceTo,
+                sort
+            })
+        }
+    },[breed, countryMobile, cityMobile]);
 
     const comparator = (item1, item2) => {
         if (item1.price === item2.price) {

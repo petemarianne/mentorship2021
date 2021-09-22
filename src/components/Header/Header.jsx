@@ -44,7 +44,6 @@ const Header = () => {
 
     const handleBreed = (event) => {
         setBreedState(event.target.value)
-
     }
 
     const handleEnter = (event) => {
@@ -99,7 +98,7 @@ const Header = () => {
                             <div className={'logo'}><img src={logo} alt={'logo'}/></div>
                         </div>
                         <div className={'search mobile'}>
-                            <InputBase placeholder='Search…' value={breed} onChange={handleBreed} fullWidth/>
+                            <InputBase placeholder='Search…' value={breedState} onChange={handleBreed} onKeyDown={handleEnter} fullWidth/>
                         </div>
                     </>
                 )}

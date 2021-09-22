@@ -3,12 +3,15 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
 import { breedReducer } from './reducers/breedReducer';
 import { countryReducer } from './reducers/countryReducer';
+import { cityReducer } from './reducers/cityReducer';
+import { priceReducer } from './reducers/priceReducer';
 
 const rootReducers = combineReducers({
     breed: breedReducer,
     country: countryReducer,
-    /*city: cityReducer,
-    priceFrom: priceFromReducer,
+    city: cityReducer,
+    price: priceReducer,
+    /*priceFrom: priceFromReducer,
     priceTo: priceToReducer,
     sort: sortReducer,*/
 
