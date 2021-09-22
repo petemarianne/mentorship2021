@@ -16,7 +16,7 @@ const adsData = [
         picture: pic1,
     },
     {
-        id: 1,
+        id: 2,
         title: 'Bulldog',
         city: 'Paris',
         country: 'France',
@@ -27,7 +27,7 @@ const adsData = [
         picture: pic2,
     },
     {
-        id: 1,
+        id: 3,
         title: 'Yorkshire Terrier',
         city: 'New York',
         country: 'USA',
@@ -38,7 +38,7 @@ const adsData = [
         picture: pic3,
     },
     {
-        id: 1,
+        id: 4,
         title: 'Akita Chow',
         city: 'Minsk',
         country: 'Belarus',
@@ -49,7 +49,7 @@ const adsData = [
         picture: pic4,
     },
     {
-        id: 1,
+        id: 5,
         title: 'Xolo',
         city: 'Warsaw',
         country: 'Poland',
@@ -60,7 +60,7 @@ const adsData = [
         picture: pic1,
     },
     {
-        id: 1,
+        id: 6,
         title: 'Xolo',
         city: 'Moscow',
         country: 'Russia',
@@ -71,7 +71,7 @@ const adsData = [
         picture: pic1,
     },
     {
-        id: 1,
+        id: 7,
         title: 'Yorkshire Terrier',
         city: 'Minsk',
         country: 'Belarus',
@@ -82,7 +82,7 @@ const adsData = [
         picture: pic2,
     },
     {
-        id: 1,
+        id: 8,
         title: 'Beagle',
         city: 'Minsk',
         country: 'Belarus',
@@ -93,7 +93,7 @@ const adsData = [
         picture: pic3,
     },
     {
-        id: 1,
+        id: 9,
         title: 'Bichon Frise',
         city: 'Novopolotsk',
         country: 'Belarus',
@@ -104,7 +104,7 @@ const adsData = [
         picture: pic4,
     },
     {
-        id: 1,
+        id: 10,
         title: 'Borsoi',
         city: 'Brest',
         country: 'France',
@@ -115,7 +115,7 @@ const adsData = [
         picture: pic1,
     },
     {
-        id: 1,
+        id: 11,
         title: 'Borsoi',
         city: 'Gdansk',
         country: 'Poland',
@@ -126,7 +126,7 @@ const adsData = [
         picture: pic1,
     },
     {
-        id: 1,
+        id: 12,
         title: 'Dalmatin',
         city: 'Berlin',
         country: 'Germany',
@@ -137,7 +137,7 @@ const adsData = [
         picture: pic2,
     },
     {
-        id: 1,
+        id: 13,
         title: 'Dalmatin',
         city: 'Berlin',
         country: 'Germany',
@@ -148,7 +148,7 @@ const adsData = [
         picture: pic3,
     },
     {
-        id: 1,
+        id: 14,
         title: 'Huskita',
         city: 'Madrid',
         country: 'Spain',
@@ -159,7 +159,7 @@ const adsData = [
         picture: pic4,
     },
     {
-        id: 1,
+        id: 15,
         title: 'Irish Terrier',
         city: 'Gomel',
         country: 'Belarus',
@@ -170,7 +170,7 @@ const adsData = [
         picture: pic1,
     },
     {
-        id: 1,
+        id: 16,
         title: 'Maltese',
         city: 'Gomel',
         country: 'Belarus',
@@ -181,7 +181,7 @@ const adsData = [
         picture: pic1,
     },
     {
-        id: 1,
+        id: 17,
         title: 'Xolo',
         city: 'Moscow',
         country: 'Russia',
@@ -203,7 +203,7 @@ const adsData = [
         picture: pic3,
     },
     {
-        id: 1,
+        id: 18,
         title: 'Yorkshire Terrier',
         city: 'Riga',
         country: 'Latvia',
@@ -214,7 +214,7 @@ const adsData = [
         picture: pic4,
     },
     {
-        id: 1,
+        id: 19,
         title: 'Poodle',
         city: 'Nice',
         country: 'France',

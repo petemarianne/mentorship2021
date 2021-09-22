@@ -154,6 +154,9 @@ const Main = () => {
                 </div>
             );
         }
+        if (filteredArray.length === 0) {
+            return <div className='nothing-found'>Nothing was found for your search!</div>
+        }
     });
 
     const pagination =
