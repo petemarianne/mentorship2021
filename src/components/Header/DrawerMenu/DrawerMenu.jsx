@@ -94,6 +94,23 @@ const DrawerMenu = (props) => {
                 <option value='priceUp'>Price ↑</option>
             </select>
             <Divider style={{backgroundColor: 'transparent'}} />
+            <div
+                className='reset-filters'
+                onClick={() => {
+                    dispatch(countryFilter(''));
+                    dispatch(cityFilter(''));
+                    dispatch(priceFromFilter(''));
+                    dispatch(priceToFilter(''));
+                    dispatch(sortFilter('dateDown'));
+                    setCountryState('');
+                    setCityState('');
+                    setPriceFrom('');
+                    setPriceTo('');
+                    setSortState('dateDown')
+                    props.handleDrawer();
+                }}
+            >Reset filters</div>
+            <Divider style={{backgroundColor: 'transparent'}} />
             <div className='drawer-button-wrapper'>
                 <Button className='submit-button' variant='contained' color='primary' onClick={() => {handleEnter(); props.handleDrawer();}}>Show result</Button>
             </div>

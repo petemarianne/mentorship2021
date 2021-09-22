@@ -57,6 +57,20 @@
       padding: 0 10px;
       cursor: pointer;
     }
+
+    .reset-filters {
+      text-align: right;
+      font-size: 14px;
+      margin-top: -7px;
+      margin-bottom: 20px;
+      cursor: pointer;
+      color: rgba(0, 0, 0, 0.51);
+    }
+
+    .reset-filters:hover {
+      color: rgba(0, 0, 0, 0.8);
+      transition: color 0.2s ease;
+    }
   }
 
   .feed-wrapper {

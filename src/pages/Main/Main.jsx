@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Layout from '../../components/Layout/Layout';
 import './Main.scss';
-import { Button, InputBase, useMediaQuery } from "@material-ui/core";
+import { Button, InputBase, useMediaQuery, CircularProgress } from '@material-ui/core';
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 import { adsData } from '../../ads-data/ads-data';
@@ -136,6 +136,7 @@ const Main = () => {
         }
         return result;
     }
+
     const filteredArray = adsData.filter(item => filterArray(item));
     const adWrapper = filteredArray.sort(comparator).map((item, index) => {
         if (index >= (page - 1) * 10 && index < page * 10) {
@@ -170,7 +171,7 @@ const Main = () => {
                     document.documentElement.scrollTop = 0;
                 }}
                 className={filteredArray.length <= 10 ? 'pagination-wrapper none' : 'pagination-wrapper'}/>
-        </Stack>
+        </Stack>;
 
     return (
         <Layout>
@@ -179,7 +180,7 @@ const Main = () => {
                     <div className='filter-wrapper'>
                         <div className='filter-name'>Country</div>
                         <div className='search large'>
-                            <InputBase value={country} onChange={handleCountry} onKeyDown={handleEnter} fullWidth/>
+                            <InputBase id='countryInput' value={country} onChange={handleCountry} onKeyDown={handleEnter} fullWidth/>
                         </div>
                         <div className='filter-name'>City</div>
                         <div className='search'>
@@ -197,6 +198,24 @@ const Main = () => {
                             <option value='priceDown'>Price ↓</option>
                             <option value='priceUp'>Price ↑</option>
                         </select>
+                        <div
+                            className='reset-filters'
+                            onClick={() => {
+                                setFilter({
+                                    breed,
+                                    country: '',
+                                    city: '',
+                                    priceFrom: '',
+                                    priceTo: '',
+                                    sort: 'dateDown'
+                                });
+                                setCountry('');
+                                setCity('');
+                                setPriceFrom('');
+                                setPriceTo('');
+                                setSort('dateDown')
+                            }}
+                        >Reset filters</div>
                         <div className='filter-button-wrapper'>
                             <Button className='filter-button' variant='contained' color='primary' onClick={handleFilter}>Show result</Button>
                         </div>
