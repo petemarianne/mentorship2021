@@ -194,6 +194,10 @@
   }
 }
 
+.ad-wrapper.none {
+  display: none;
+}
+
 .pagination-wrapper {
   display: flex;
   justify-content: center;
@@ -230,3 +234,25 @@
   display: none;
 }
 
+.MuiCircularProgress-colorPrimary {
+  color: #d27a3d !important;
+}
+
+.loading-wrapper {
+  display: flex;
+  justify-content: center;
+
+  .loading {
+    margin-top: 140px;
+  }
+
+  @media screen and (max-width: 768px) {
+    .loading {
+      margin-bottom: 140px;
+    }
+  }
+}
+
+.loading.done {
+  display: none;
+}
