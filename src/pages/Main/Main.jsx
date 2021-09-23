@@ -17,6 +17,7 @@ const Main = () => {
 
     const screenSize = useMediaQuery('(min-width: 769px)');
 
+    const [loading, setLoading] = useState(true);
     const [page, setPage] = useState(1);
     const [country, setCountry] = useState('')
     const [city, setCity] = useState('')
@@ -33,6 +34,10 @@ const Main = () => {
     });
 
     useEffect(() => {
+        setLoading(true);
+        setTimeout(() => {
+            setLoading(false);
+        }, 1300);
         if (screenSize) {
             setFilter({
                 breed,
@@ -93,6 +98,10 @@ const Main = () => {
     }
 
     const handleFilter = () => {
+        setLoading(true);
+        setTimeout(() => {
+            setLoading(false);
+        }, 1300);
         setFilter({
             breed,
             country,
@@ -141,7 +150,7 @@ const Main = () => {
     const adWrapper = filteredArray.sort(comparator).map((item, index) => {
         if (index >= (page - 1) * 10 && index < page * 10) {
             return (
-                <div key={index} className='ad-wrapper'>
+                <div key={index} className={loading ? 'ad-wrapper none' : 'ad-wrapper'}>
                     <div className='pic-wrapper'><img src={item.picture} alt='dog'/></div>
                     <div className='info-wrapper'>
                         <div className='breed'>{item.title}</div>
@@ -167,10 +176,12 @@ const Main = () => {
                     document.body.scrollTop = 0;
                     document.documentElement.scrollTop = 0;
                 }}
-                className={filteredArray.length <= 10 ? 'pagination-wrapper none' : 'pagination-wrapper'}/>
+                className={filteredArray.length <= 10 || loading ? 'pagination-wrapper none' : 'pagination-wrapper'}/>
         </Stack>;
 
     const nothingWasFound = <div className={filteredArray.length === 0 ? 'nothing-found' : 'nothing-found none'}>Nothing was found for your search!</div>;
+
+    const loadingJSX = <div className='loading-wrapper'><CircularProgress className={loading ? 'loading' : 'loading done'}/></div>;
 
     return (
         <Layout>
@@ -220,6 +231,7 @@ const Main = () => {
                         </div>
                     </div>
                     <div className='feed-wrapper'>
+                        {loadingJSX}
                         {nothingWasFound}
                         {adWrapper}
                         {pagination}
@@ -228,6 +240,7 @@ const Main = () => {
             )}
             {!screenSize && (
                 <div className='main-page-mobile-wrapper'>
+                    {loadingJSX}
                     {nothingWasFound}
                     {adWrapper}
                     {pagination}
