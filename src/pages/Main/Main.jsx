@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import Layout from '../../components/Layout/Layout';
 import './Main.scss';
-import { Button, InputBase, useMediaQuery } from "@material-ui/core";
+import {Button, InputBase, useMediaQuery} from "@material-ui/core";
 import { adsData } from '../../ads-data/ads-data';
+import { Link } from "react-router-dom";
 
 const Main = () => {
     const screenSize = useMediaQuery('(min-width: 769px)');
@@ -30,7 +31,7 @@ const Main = () => {
 
     const adWrapper = adsData.sort(comparator).map((item) => {
         return (
-            <div className='ad-wrapper'>
+            <Link className='ad-wrapper' to='/ad' style={{ textDecoration: 'none', color: 'black'}}>
                 <div className='pic-wrapper'><img src={item.picture} alt={'Ad picture'}/></div>
                 <div className='info-wrapper'>
                     <div className='breed'>{item.title}</div>
@@ -41,7 +42,7 @@ const Main = () => {
                         <div>{item.date.getDate()} {item.date.toLocaleString('default', { month: 'short' }).toLowerCase()}., {item.date.getHours()}:{item.date.getMinutes()}</div>
                     </div>
                 </div>
-            </div>
+            </Link>
         );
     });
 
