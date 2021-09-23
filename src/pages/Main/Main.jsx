@@ -35,7 +35,7 @@ const Main = () => {
 
     useEffect(() => {
         setLoading(true);
-        setTimeout(() => {
+        setTimeout(() => { // DELETE AFTER CONNECTING FIREBASE!
             setLoading(false);
         }, 1300);
         if (screenSize) {
