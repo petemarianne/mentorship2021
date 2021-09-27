@@ -6,6 +6,7 @@ import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 import { adsData } from '../../ads-data/ads-data';
 import { useSelector } from 'react-redux';
+import { Link } from "react-router-dom";
 
 const Main = () => {
     const breed = useSelector((state) => state.breed);
