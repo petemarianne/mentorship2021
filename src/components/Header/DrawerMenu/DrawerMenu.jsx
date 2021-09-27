@@ -1,12 +1,11 @@
 import React from 'react';
-//import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Divider, Button, Avatar, InputBase } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import './DrawerMenu.scss';
+import { Link } from "react-router-dom";
 
 const DrawerMenu = (props) => {
-
     return (
         <div className='drawer-wrapper'>
             <div className='drawer-icons'>
@@ -17,10 +16,10 @@ const DrawerMenu = (props) => {
             </div>
             <Divider/>
             <div className='drawer-button-wrapper'>
-                <Button className='submit-button' variant='contained' color='primary'>Submit an ad</Button>
+                <Button className='submit-button' variant='contained' color='primary' onClick={props.handleOpen}>Submit an ad</Button>
             </div>
             <Divider className='drawer-divider'/>
-            <Button className='my-account-button' variant='contained' color='secondary'>My account</Button>
+            <Button className='my-account-button' variant='contained' color='secondary'  component={Link} to={'/profile'}>My profile</Button>
             <Divider style={{backgroundColor: 'transparent'}} />
             <Button className='logout-button' variant='contained' color='secondary' onClick={props.handleLogoutModal}>Logout</Button>
             <Divider className='drawer-divider'/>
@@ -60,6 +59,7 @@ DrawerMenu.propTypes = {
     handleLogoutModal: PropTypes.func,
     handleDrawer: PropTypes.func,
     handleSubmitAnAd: PropTypes.func,
+    handleOpen: PropTypes.func,
 };
 
 export default DrawerMenu;

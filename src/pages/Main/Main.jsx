@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Layout from '../../components/Layout/Layout';
 import './Main.scss';
-import { Button, InputBase, useMediaQuery } from "@material-ui/core";
-import { app } from "../../firebase";
+import { Button, InputBase, useMediaQuery } from '@material-ui/core';
+import { app } from '../../firebase';
+import { Link } from 'react-router-dom';
 
 const Main = () => {
     const db = app.firestore();
@@ -41,7 +42,7 @@ const Main = () => {
 
     const adWrapper = adsData.sort(comparator).map((item) => {
         return (
-            <div className='ad-wrapper'>
+            <Link className='ad-wrapper' to='/ad' style={{ textDecoration: 'none', color: 'black'}}>
                 <div className='pic-wrapper'><img src={item.picture} alt={'Ad picture'}/></div>
                 <div className='info-wrapper'>
                     <div className='breed'>{item.title}</div>
@@ -52,7 +53,7 @@ const Main = () => {
                         <div>{new Date(item.date.seconds * 1000).getDate()} {new Date(item.date.seconds * 1000).toLocaleString('default', { month: 'short' }).toLowerCase()}., {new Date(item.date.seconds * 1000).getHours()}:{new Date(item.date.seconds * 1000).getMinutes()}</div>
                     </div>
                 </div>
-            </div>
+            </Link>
         );
     });
 
