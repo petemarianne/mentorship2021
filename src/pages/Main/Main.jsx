@@ -5,60 +5,31 @@ import { Button, InputBase, useMediaQuery, CircularProgress } from '@material-ui
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 import { adsData } from '../../ads-data/ads-data';
-import { useSelector } from 'react-redux';
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
+import useFilter from '../../hooks/useFilter';
 
 const Main = () => {
-    const breed = useSelector((state) => state.breed);
-    const countryMobile = useSelector((state) => state.country);
-    const cityMobile = useSelector((state) => state.city);
-    const priceFromMobile = useSelector((state) => state.priceFrom);
-    const priceToMobile = useSelector((state) => state.priceTo);
-    const sortMobile = useSelector((state) => state.sort);
-
     const screenSize = useMediaQuery('(min-width: 769px)');
 
-    const [loading, setLoading] = useState(true);
-    const [page, setPage] = useState(1);
-    const [country, setCountry] = useState('')
-    const [city, setCity] = useState('')
-    const [priceFrom, setPriceFrom] = useState('')
-    const [priceTo, setPriceTo] = useState('')
-    const [sort, setSort] = useState('dateDown')
-    const [filter, setFilter] = useState({
-        breed: '',
+    const {filter, handleFilter} = useFilter();
+
+    const [localFilter, setLocalFilter] = useState({
         country: '',
         city: '',
         priceFrom: '',
         priceTo: '',
         sort: 'dateDown'
-    });
+    })
+
+    const [loading, setLoading] = useState(true);
+    const [page, setPage] = useState(1);
 
     useEffect(() => {
         setLoading(true);
         setTimeout(() => { // DELETE AFTER CONNECTING FIREBASE!
             setLoading(false);
         }, 1300);
-        if (screenSize) {
-            setFilter({
-                breed,
-                country,
-                city,
-                priceFrom,
-                priceTo,
-                sort
-            })
-        } else {
-            setFilter({
-                breed,
-                country: countryMobile,
-                city: cityMobile,
-                priceFrom: priceFromMobile,
-                priceTo: priceToMobile,
-                sort: sortMobile
-            })
-        }
-    },[breed, countryMobile, cityMobile, priceFromMobile, priceToMobile, sortMobile]);
+    },[]);
 
     const comparator = (item1, item2) => {
         if (item1.price === item2.price) {
@@ -79,43 +50,32 @@ const Main = () => {
     }
 
     const handleCountry = (event) => {
-        setCountry(event.target.value);
+        setLocalFilter({country: event.target.value});
     }
 
     const handleCity = (event) => {
-        setCity(event.target.value);
+        setLocalFilter({city: event.target.value});
     }
 
     const handlePriceFrom = (event) => {
-        setPriceFrom(event.target.value);
+        setLocalFilter({priceFrom: event.target.value});
     }
 
     const handlePriceTo = (event) => {
-        setPriceTo(event.target.value);
+        setLocalFilter({priceTo: event.target.value});
     }
 
     const handleSelect = (event) => {
-        setSort(event.target.value);
+        setLocalFilter({sort: event.target.value});
     }
 
-    const handleFilter = () => {
-        setLoading(true);
-        setTimeout(() => {
-            setLoading(false);
-        }, 1300);
-        setFilter({
-            breed,
-            country,
-            city,
-            priceFrom,
-            priceTo,
-            sort
-        });
+    const setFilter = () => {
+        handleFilter(localFilter.country, localFilter.city, localFilter.priceFrom, localFilter.priceTo, localFilter.sort);
     }
 
     const handleEnter = (event) => {
         if (event.key === 'Enter') {
-            handleFilter();
+            setFilter();
         }
     }
 
@@ -151,7 +111,7 @@ const Main = () => {
     const adWrapper = filteredArray.sort(comparator).map((item, index) => {
         if (index >= (page - 1) * 10 && index < page * 10) {
             return (
-                <div key={index} className={loading ? 'ad-wrapper none' : 'ad-wrapper'}>
+                <Link to='/ad' style={{ textDecoration: 'none', color: 'black'}} key={index} className={loading ? 'ad-wrapper none' : 'ad-wrapper'}>
                     <div className='pic-wrapper'><img src={item.picture} alt='dog'/></div>
                     <div className='info-wrapper'>
                         <div className='breed'>{item.title}</div>
@@ -162,7 +122,7 @@ const Main = () => {
                             <div>{item.date.getDate()} {item.date.toLocaleString('default', {month: 'short'}).toLowerCase()}., {item.date.getHours()}:{item.date.getMinutes()}</div>
                         </div>
                     </div>
-                </div>
+                </Link>
             );
         }
     });
@@ -191,19 +151,19 @@ const Main = () => {
                     <div className='filter-wrapper'>
                         <div className='filter-name'>Country</div>
                         <div className='search large'>
-                            <InputBase id='countryInput' value={country} onChange={handleCountry} onKeyDown={handleEnter} fullWidth/>
+                            <InputBase id='countryInput' value={localFilter.country} onChange={handleCountry} onKeyDown={handleEnter} fullWidth/>
                         </div>
                         <div className='filter-name'>City</div>
                         <div className='search'>
-                            <InputBase value={city} onChange={handleCity} onKeyDown={handleEnter} fullWidth/>
+                            <InputBase value={localFilter.city} onChange={handleCity} onKeyDown={handleEnter} fullWidth/>
                         </div>
                         <div className='filter-name'>Price</div>
                         <div className='price-filter'>
-                            <InputBase value={priceFrom} onChange={handlePriceFrom} onKeyDown={handleEnter} className='price-search' fullWidth/>
-                            <InputBase value={priceTo} onChange={handlePriceTo} onKeyDown={handleEnter} className='price-search' fullWidth/>
+                            <InputBase value={localFilter.priceFrom} onChange={handlePriceFrom} onKeyDown={handleEnter} className='price-search' fullWidth/>
+                            <InputBase value={localFilter.priceTo} onChange={handlePriceTo} onKeyDown={handleEnter} className='price-search' fullWidth/>
                         </div>
                         <div className='filter-name'>Sort by</div>
-                        <select className='filter-select' onChange={handleSelect} onKeyDown={handleEnter} value={sort}>
+                        <select className='filter-select' onChange={handleSelect} onKeyDown={handleEnter} value={localFilter.sort}>
                             <option value='dateDown'>Date ↓</option>
                             <option value='dateUp'>Date ↑</option>
                             <option value='priceDown'>Price ↓</option>
@@ -212,23 +172,18 @@ const Main = () => {
                         <div
                             className='reset-filters'
                             onClick={() => {
-                                setFilter({
-                                    breed,
+                                setLocalFilter({
                                     country: '',
                                     city: '',
                                     priceFrom: '',
                                     priceTo: '',
                                     sort: 'dateDown'
-                                });
-                                setCountry('');
-                                setCity('');
-                                setPriceFrom('');
-                                setPriceTo('');
-                                setSort('dateDown')
+                                })
+                                handleFilter('','','','','dateDown');
                             }}
                         >Reset filters</div>
                         <div className='filter-button-wrapper'>
-                            <Button className='filter-button' variant='contained' color='primary' onClick={handleFilter}>Show result</Button>
+                            <Button className='filter-button' variant='contained' color='primary' onClick={setFilter}>Show result</Button>
                         </div>
                     </div>
                     <div className='feed-wrapper'>
