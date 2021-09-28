@@ -51,7 +51,7 @@ const Main = () => {
                     <div className='price'>{item.price}$</div>
                     <div className='location-date-wrapper'>
                         <div>{item.city}, {item.country}</div>
-                        <div>{new Date(item.date.seconds * 1000).getDate()} {new Date(item.date.seconds * 1000).toLocaleString('default', { month: 'short' }).toLowerCase()}., {new Date(item.date.seconds * 1000).getHours()}:{new Date(item.date.seconds * 1000).getMinutes()}</div>
+                        <div>{item.date.toDate().getDate()} {item.date.toDate().toLocaleString('default', { month: 'short' }).toLowerCase()}, {item.date.toDate().getHours()}:{item.date.toDate().getMinutes()}</div>
                     </div>
                 </div>
             </Link>
