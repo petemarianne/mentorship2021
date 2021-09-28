@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Layout from '../../components/Layout/Layout';
 import './Main.scss';
 import { Button, InputBase, useMediaQuery } from '@material-ui/core';
@@ -41,6 +41,7 @@ const Main = () => {
     }
 
     const adWrapper = adsData.sort(comparator).map((item) => {
+        console.log(item);
         return (
             <Link className='ad-wrapper' to='/ad' style={{ textDecoration: 'none', color: 'black'}}>
                 <div className='pic-wrapper'><img src={item.picture} alt={'Ad picture'}/></div>
