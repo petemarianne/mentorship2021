@@ -1,11 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Layout from '../../components/Layout/Layout';
 import './Main.scss';
-import {Button, InputBase, useMediaQuery} from "@material-ui/core";
-import { adsData } from '../../ads-data/ads-data';
-import { Link } from "react-router-dom";
+import { Button, InputBase, useMediaQuery } from '@material-ui/core';
+import { app } from '../../firebase';
+import { Link } from 'react-router-dom';
 
 const Main = () => {
+    const db = app.firestore();
+    const [adsData, setAdsData] = useState([]);
+
+    useEffect(() => {
+        const fetchAds = async () => {
+            const adsCollection = await db.collection('dogAds').get();
+            setAdsData(adsCollection.docs.map((doc) => {return doc.data();}));
+        };
+        fetchAds();
+    }, []);
+
     const screenSize = useMediaQuery('(min-width: 769px)');
     const [selectedSort, setSelectedSort] = useState('dateDown');
 
@@ -39,7 +50,7 @@ const Main = () => {
                     <div className='price'>{item.price}$</div>
                     <div className='location-date-wrapper'>
                         <div>{item.city}, {item.country}</div>
-                        <div>{item.date.getDate()} {item.date.toLocaleString('default', { month: 'short' }).toLowerCase()}., {item.date.getHours()}:{item.date.getMinutes()}</div>
+                        <div>{item.date.toDate().toLocaleString('default', {day: 'numeric', month: 'short', hour: 'numeric', minute: 'numeric'}).toLowerCase()}</div>
                     </div>
                 </div>
             </Link>
