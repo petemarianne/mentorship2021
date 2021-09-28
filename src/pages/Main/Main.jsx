@@ -41,7 +41,7 @@ const Main = () => {
     }
 
     const adWrapper = adsData.sort(comparator).map((item) => {
-        console.log(item);
+        const date = item.date.toDate();
         return (
             <Link className='ad-wrapper' to='/ad' style={{ textDecoration: 'none', color: 'black'}}>
                 <div className='pic-wrapper'><img src={item.picture} alt={'Ad picture'}/></div>
@@ -51,7 +51,7 @@ const Main = () => {
                     <div className='price'>{item.price}$</div>
                     <div className='location-date-wrapper'>
                         <div>{item.city}, {item.country}</div>
-                        <div>{item.date.toDate().getDate()} {item.date.toDate().toLocaleString('default', { month: 'short' }).toLowerCase()}, {item.date.toDate().getHours()}:{item.date.toDate().getMinutes()}</div>
+                        <div>{date.getDate()} {date.toLocaleString('default', { month: 'short' }).toLowerCase()}, {date.getHours()}:{date.getMinutes()}</div>
                     </div>
                 </div>
             </Link>
