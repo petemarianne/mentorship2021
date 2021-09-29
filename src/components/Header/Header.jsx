@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import './Header.scss';
 import { AppBar, Button, InputBase, Toolbar, useMediaQuery, Avatar, IconButton, Drawer, Modal } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -7,14 +7,14 @@ import logo from '../../assets/images/logo.svg';
 import avatar from '../../assets/images/dog-owner.jpg';
 import AccountDropdown from './AccountDropdown/AccountDropdown';
 import DrawerMenu from './DrawerMenu/DrawerMenu';
-import { useDispatch, useSelector } from 'react-redux';
-import { breedSearch } from '../../store/actions/breedAction';
 import { Link } from 'react-router-dom';
 import { AdFormModal } from '../AdFormModal/AdFormModal';
+import {FilterContext} from '../../contexts/filter-context';
 
 const Header = () => {
-    const dispatch = useDispatch();
-    const breed = useSelector((state) => state.breed);
+    const [breed, setBreed] = useState('');
+
+    const {filter, handleFilter} = useContext(FilterContext);
 
     const screenSize = useMediaQuery('(min-width: 769px)');
 
@@ -24,7 +24,6 @@ const Header = () => {
             isDrawerOpen: false,
         }
     );
-    const [breedState, setBreedState] = useState(breed)
     const [open, setOpen] = useState(false);
 
     const handleOpen = () => {
@@ -54,12 +53,12 @@ const Header = () => {
     }
 
     const handleBreed = (event) => {
-        setBreedState(event.target.value)
+        setBreed(event.target.value);
     }
 
     const handleEnter = (event) => {
         if (event.key === 'Enter') {
-            dispatch(breedSearch(breedState));
+            handleFilter(filter.country, filter.city, filter.priceFrom, filter.priceTo, filter.sort, breed);
         }
     }
 
@@ -76,7 +75,7 @@ const Header = () => {
                             <div>G &nbsp;SHOP</div>
                         </Link>
                         <div className={'search desktop'}>
-                            <InputBase placeholder='Search for a breed…' value={breedState} onChange={handleBreed} onKeyDown={handleEnter} fullWidth/>
+                            <InputBase placeholder='Search for a breed…' value={breed} onChange={handleBreed} onKeyDown={handleEnter} fullWidth/>
                         </div>
                         <div className={'toolbar-right-side desktop'}>
                             <div className={'submit-an-ad-button-wrapper'}>
@@ -111,7 +110,7 @@ const Header = () => {
                             <Link className={'logo'} to={'/'} style={{ textDecoration: 'none' }}><img src={logo} alt={'logo'}/></Link>
                         </div>
                         <div className={'search mobile'}>
-                            <InputBase placeholder='Search…' value={breedState} onChange={handleBreed} onKeyDown={handleEnter} fullWidth/>
+                            <InputBase placeholder='Search…' value={breed} onChange={handleBreed} onKeyDown={handleEnter} fullWidth/>
                         </div>
                     </>
                 )}

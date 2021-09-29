@@ -1,46 +1,37 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Layout from '../../components/Layout/Layout';
 import './Main.scss';
-import { Button, InputBase, useMediaQuery, CircularProgress } from '@material-ui/core';
+import {useMediaQuery, CircularProgress, Button} from '@material-ui/core';
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 import { Link } from 'react-router-dom';
 import { app } from '../../firebase';
-import useFilter from '../../hooks/useFilter';
+import Filter from '../../components/Filter/Filter'
+import { FilterContext } from '../../contexts/filter-context'
 
 const Main = () => {
     const db = app.firestore();
+
     const [adsData, setAdsData] = useState([]);
-
-    useEffect(() => {
-        const fetchAds = async () => {
-            const adsCollection = await db.collection('dogAds').get();
-            setAdsData(adsCollection.docs.map((doc) => {return doc.data();}));
-        };
-        fetchAds();
-    }, []);
-
-    const screenSize = useMediaQuery('(min-width: 769px)');
-
-    const {filter, handleFilter} = useFilter();
-
-    const [localFilter, setLocalFilter] = useState({
-        country: '',
-        city: '',
-        priceFrom: '',
-        priceTo: '',
-        sort: 'dateDown'
-    })
-
     const [loading, setLoading] = useState(true);
     const [page, setPage] = useState(1);
 
+    let {filter, handleFilter} = useContext(FilterContext);
+
+    const fetchAds = async () => {
+        const adsCollection = await db.collection('dogAds').get();
+        setAdsData(adsCollection.docs.map((doc) => {return doc.data();}));
+    };
+
     useEffect(() => {
         setLoading(true);
-        setTimeout(() => { // DELETE AFTER CONNECTING FIREBASE!
+        setTimeout(() => {
+            fetchAds();
             setLoading(false);
-        }, 1300);
-    },[]);
+        }, 1000)
+    }, []);
+
+    const screenSize = useMediaQuery('(min-width: 769px)');
 
     const comparator = (item1, item2) => {
         if (item1.price === item2.price) {
@@ -60,43 +51,13 @@ const Main = () => {
         }
     }
 
-    const handleCountry = (event) => {
-        setLocalFilter({country: event.target.value});
-    }
-
-    const handleCity = (event) => {
-        setLocalFilter({city: event.target.value});
-    }
-
-    const handlePriceFrom = (event) => {
-        setLocalFilter({priceFrom: event.target.value});
-    }
-
-    const handlePriceTo = (event) => {
-        setLocalFilter({priceTo: event.target.value});
-    }
-
-    const handleSelect = (event) => {
-        setLocalFilter({sort: event.target.value});
-    }
-
-    const setFilter = () => {
-        handleFilter(localFilter.country, localFilter.city, localFilter.priceFrom, localFilter.priceTo, localFilter.sort);
-    }
-
-    const handleEnter = (event) => {
-        if (event.key === 'Enter') {
-            setFilter();
-        }
-    }
-
     const handleChange = (event, value) => {
         setPage(value);
     };
 
     const filterArray = (item) => {
         let result = true;
-        if (filter.breed !== '' ) {
+        if (filter.breed !== '') {
             if (item.title.toLowerCase().indexOf(filter.breed.toLowerCase()) === -1 && item.description.toLowerCase().indexOf(filter.breed.toLowerCase()) === -1) {
                 return false;
             } else {
@@ -159,44 +120,7 @@ const Main = () => {
         <Layout>
             {screenSize && (
                 <div className='main-page-desktop-wrapper'>
-                    <div className='filter-wrapper'>
-                        <div className='filter-name'>Country</div>
-                        <div className='search large'>
-                            <InputBase id='countryInput' value={localFilter.country} onChange={handleCountry} onKeyDown={handleEnter} fullWidth/>
-                        </div>
-                        <div className='filter-name'>City</div>
-                        <div className='search'>
-                            <InputBase value={localFilter.city} onChange={handleCity} onKeyDown={handleEnter} fullWidth/>
-                        </div>
-                        <div className='filter-name'>Price</div>
-                        <div className='price-filter'>
-                            <InputBase value={localFilter.priceFrom} onChange={handlePriceFrom} onKeyDown={handleEnter} className='price-search' fullWidth/>
-                            <InputBase value={localFilter.priceTo} onChange={handlePriceTo} onKeyDown={handleEnter} className='price-search' fullWidth/>
-                        </div>
-                        <div className='filter-name'>Sort by</div>
-                        <select className='filter-select' onChange={handleSelect} onKeyDown={handleEnter} value={localFilter.sort}>
-                            <option value='dateDown'>Date ↓</option>
-                            <option value='dateUp'>Date ↑</option>
-                            <option value='priceDown'>Price ↓</option>
-                            <option value='priceUp'>Price ↑</option>
-                        </select>
-                        <div
-                            className='reset-filters'
-                            onClick={() => {
-                                setLocalFilter({
-                                    country: '',
-                                    city: '',
-                                    priceFrom: '',
-                                    priceTo: '',
-                                    sort: 'dateDown'
-                                })
-                                handleFilter('','','','','dateDown');
-                            }}
-                        >Reset filters</div>
-                        <div className='filter-button-wrapper'>
-                            <Button className='filter-button' variant='contained' color='primary' onClick={setFilter}>Show result</Button>
-                        </div>
-                    </div>
+                    <Filter />
                     <div className='feed-wrapper'>
                         {loadingJSX}
                         {nothingWasFound}
