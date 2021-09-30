@@ -1,0 +1,66 @@
+.ad-page-desktop-wrapper {
+  margin: 40px auto 45px;
+
+  .picture-info-seller-wrapper {
+    display: flex;
+    justify-content: center;
+
+    .pic-wrapper {
+      img {
+        border: 1px solid rgba(0, 0, 0, 0.30);
+        border-radius: 4px;
+        width: 300px;
+        height: 190px;
+      }
+    }
+
+    .info-wrapper {
+      width: 43%;
+    }
+
+    .buttons-seller-info-wrapper {
+      width: 21.5%;
+
+      .call-button-wrapper {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 10px;
+
+        .call-button {
+          width: 100%;
+        }
+      }
+
+      .email-button-wrapper {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 15px;
+
+        .email-button {
+          width: 100%;
+        }
+      }
+
+      .seller-info-wrapper {
+        display: flex;
+
+        .avatar-wrapper {
+          margin-right: 13px;
+
+          img {
+            border: 1px solid rgba(0, 0, 0, 0.30);
+            border-radius: 4px;
+            width: 90px;
+            height: 90px;
+          }
+        }
+
+        .info-wrapper {
+          .username{
+            font-size: 18px;
+          }
+        }
+      }
+    }
+  }
+}

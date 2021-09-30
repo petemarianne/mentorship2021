@@ -8,13 +8,19 @@ import { Link } from 'react-router-dom';
 const Main = () => {
     const db = app.firestore();
     const [adsData, setAdsData] = useState([]);
+    const [users, setUsers] = useState([]);
 
     useEffect(() => {
         const fetchAds = async () => {
             const adsCollection = await db.collection('dogAds').get();
             setAdsData(adsCollection.docs.map((doc) => {return doc.data();}));
         };
+        const fetchUsers = async () => {
+            const usersCollection = await db.collection('users').get();
+            setUsers(usersCollection.docs.map((doc) => {return doc.data();}));
+        };
         fetchAds();
+        fetchUsers();
     }, []);
 
     const screenSize = useMediaQuery('(min-width: 769px)');
@@ -40,9 +46,24 @@ const Main = () => {
         setSelectedSort(event.target.value);
     }
 
+    const setAdDetails = (id) => {
+        const ad = adsData.filter((item) => {
+            if (item.id === id) {
+                return item;
+            }
+        });
+        localStorage.setItem('currentAd', JSON.stringify(ad[0]));
+        const user = users.filter((item) => {
+            if (item.id === ad[0].sellerID) {
+                return item;
+            }
+        });
+        localStorage.setItem('currentUser', JSON.stringify(user[0]));
+    };
+
     const adWrapper = adsData.sort(comparator).map((item) => {
         return (
-            <Link className='ad-wrapper' to='/ad' style={{ textDecoration: 'none', color: 'black'}}>
+            <Link className='ad-wrapper' to='/ad' style={{ textDecoration: 'none', color: 'black'}} onClick={() => {setAdDetails(item.id)}}>
                 <div className='pic-wrapper'><img src={item.picture} alt={'Ad picture'}/></div>
                 <div className='info-wrapper'>
                     <div className='breed'>{item.title}</div>
