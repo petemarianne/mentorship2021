@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useContext } from 'react';
-import Layout from '../../components/Layout/Layout';
 import './Main.scss';
-import {useMediaQuery, CircularProgress, Button} from '@material-ui/core';
+import { useMediaQuery, CircularProgress } from '@material-ui/core';
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 import { Link } from 'react-router-dom';
 import { app } from '../../firebase';
 import Filter from '../../components/Filter/Filter'
 import { FilterContext } from '../../contexts/filter-context'
+import { filterAds } from '../../utils/filterAds';
 
 const Main = () => {
     const db = app.firestore();
@@ -15,21 +15,14 @@ const Main = () => {
     const [adsData, setAdsData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [page, setPage] = useState(1);
+    const [nothingFoundClass, setNothingFoundClass] = useState('nothing-found none');
 
-    let {filter, handleFilter} = useContext(FilterContext);
+    const {filter} = useContext(FilterContext);
 
     const fetchAds = async () => {
         const adsCollection = await db.collection('dogAds').get();
         setAdsData(adsCollection.docs.map((doc) => {return doc.data();}));
     };
-
-    useEffect(() => {
-        setLoading(true);
-        setTimeout(() => {
-            fetchAds();
-            setLoading(false);
-        }, 1000)
-    }, []);
 
     const screenSize = useMediaQuery('(min-width: 769px)');
 
@@ -37,49 +30,25 @@ const Main = () => {
         if (item1.price === item2.price) {
             return item2.date - item1.date;
         }
-        switch (filter.sort) {
-            case 'dateDown':
-                return item2.date - item1.date;
-            case 'dateUp':
-                return item1.date - item2.date;
-            case 'priceDown':
-                return item2.price - item1.price;
-            case 'priceUp':
-                return item1.price - item2.price;
-            default:
-                return item2.date - item1.date;
-        }
+            switch (filter.sort) {
+                case 'dateDown':
+                    return item2.date - item1.date;
+                case 'dateUp':
+                    return item1.date - item2.date;
+                case 'priceDown':
+                    return item2.price - item1.price;
+                case 'priceUp':
+                    return item1.price - item2.price;
+                default:
+                    return item2.date - item1.date;
+            }
     }
 
     const handleChange = (event, value) => {
         setPage(value);
     };
 
-    const filterArray = (item) => {
-        let result = true;
-        if (filter.breed !== '') {
-            if (item.title.toLowerCase().indexOf(filter.breed.toLowerCase()) === -1 && item.description.toLowerCase().indexOf(filter.breed.toLowerCase()) === -1) {
-                return false;
-            } else {
-                result = item.title.toLowerCase().indexOf(filter.breed.toLowerCase()) || item.description.toLowerCase().indexOf(filter.breed.toLowerCase());
-            }
-        }
-        if (filter.country !== '') {
-            result = result && filter.country.toLowerCase() === item.country.toLowerCase();
-        }
-        if (filter.city !== '') {
-            result = result && filter.city.toLowerCase() === item.city.toLowerCase();
-        }
-        if (filter.priceFrom !== '') {
-            result = result && Number(filter.priceFrom) <= Number(item.price);
-        }
-        if (filter.priceTo !== '') {
-            result = result && Number(filter.priceTo) >= Number(item.price);
-        }
-        return result;
-    }
-
-    const filteredArray = adsData.filter(item => filterArray(item));
+    const filteredArray = adsData.filter(item => filterAds(item, filter));
     const adWrapper = filteredArray.sort(comparator).map((item, index) => {
         if (index >= (page - 1) * 10 && index < page * 10) {
             return (
@@ -112,12 +81,32 @@ const Main = () => {
                 className={filteredArray.length <= 10 || loading ? 'pagination-wrapper none' : 'pagination-wrapper'}/>
         </Stack>;
 
-    const nothingWasFound = <div className={filteredArray.length === 0 ? 'nothing-found' : 'nothing-found none'}>Nothing was found for your search!</div>;
+    const nothingWasFound = <div className={nothingFoundClass}>Nothing was found for your search!</div>;
 
     const loadingJSX = <div className='loading-wrapper'><CircularProgress className={loading ? 'loading' : 'loading done'}/></div>;
 
+    useEffect(() => {
+        setLoading(true);
+        setTimeout(() => {
+            fetchAds();
+            setLoading(false);
+        }, 1300)
+    }, []);
+
+    useEffect(() => {
+        setLoading(true);
+        setNothingFoundClass('nothing-found none');
+        setPage(1);
+        setTimeout(() => {
+            setLoading(false);
+            if (adsData.length !== 0 && filteredArray.length === 0) {
+                setNothingFoundClass('nothing-found');
+            }
+        }, 1300)
+    }, [filter]);
+
     return (
-        <Layout>
+        <>
             {screenSize && (
                 <div className='main-page-desktop-wrapper'>
                     <Filter />
@@ -137,7 +126,7 @@ const Main = () => {
                     {pagination}
                 </div>
             )}
-        </Layout>
+        </>
     );
 };
 

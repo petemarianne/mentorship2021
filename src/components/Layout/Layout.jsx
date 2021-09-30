@@ -3,14 +3,14 @@ import PropTypes from 'prop-types';
 import './Layout.scss';
 import Footer from '../Footer/Footer';
 import Header from "../Header/Header";
-import useFilter from "../../hooks/useFilter";
 import { FilterContext } from '../../contexts/filter-context';
+import useFilter from "../../hooks/useFilter";
 
 const Layout = ({ pageWrapperClass, children }) => {
-    const {filter, handleFilter} = useFilter();
+    const {filterState, handleFilter} = useFilter();
 
     return (
-        <FilterContext.Provider value={{filter, handleFilter}}>
+        <FilterContext.Provider value={{filter: filterState, handleFilter}}>
             <Header />
             <main id='main' className={pageWrapperClass}>
                 {children}

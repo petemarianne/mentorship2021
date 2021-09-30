@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, { useContext, useState } from 'react';
 import './Filter.scss';
 import { Button, Divider, InputBase, useMediaQuery } from '@material-ui/core';
 import PropTypes from 'prop-types';
@@ -7,7 +7,7 @@ import { FilterContext } from '../../contexts/filter-context';
 const Filter = (props) => {
     const screenSize = useMediaQuery('(min-width: 769px)');
 
-    const {filter, handleFilter} = useContext(FilterContext);
+    const {handleFilter} = useContext(FilterContext);
 
     const [localFilter, setLocalFilter] = useState({
         country: '',
@@ -18,30 +18,63 @@ const Filter = (props) => {
     })
 
     const handleCountry = (event) => {
+        const cloneFilter = Object.assign({}, localFilter);
         setLocalFilter({
-            breed: '',
+            breed: cloneFilter.breed,
             country: event.target.value,
-            city: '',
-            priceFrom: '',
-            priceTo: '',
-            sort: 'dateDown'
+            city: cloneFilter.city,
+            priceFrom: cloneFilter.priceFrom,
+            priceTo: cloneFilter.priceTo,
+            sort: cloneFilter.sort
         });
     }
 
     const handleCity = (event) => {
-        setLocalFilter({city: event.target.value});
+        const cloneFilter = Object.assign({}, localFilter);
+        setLocalFilter({
+            breed: cloneFilter.breed,
+            country: cloneFilter.country,
+            city: event.target.value,
+            priceFrom: cloneFilter.priceFrom,
+            priceTo: cloneFilter.priceTo,
+            sort: cloneFilter.sort
+        });
     }
 
     const handlePriceFrom = (event) => {
-        setLocalFilter({priceFrom: event.target.value});
+        const cloneFilter = Object.assign({}, localFilter);
+        setLocalFilter({
+            breed: cloneFilter.breed,
+            country: cloneFilter.country,
+            city: cloneFilter.city,
+            priceFrom: event.target.value,
+            priceTo: cloneFilter.priceTo,
+            sort: cloneFilter.sort
+        });
     }
 
     const handlePriceTo = (event) => {
-        setLocalFilter({priceTo: event.target.value});
+        const cloneFilter = Object.assign({}, localFilter);
+        setLocalFilter({
+            breed: cloneFilter.breed,
+            country: cloneFilter.country,
+            city: cloneFilter.city,
+            priceFrom: cloneFilter.priceFrom,
+            priceTo: event.target.value,
+            sort: cloneFilter.sort
+        });
     }
 
     const handleSelect = (event) => {
-        setLocalFilter({sort: event.target.value});
+        const cloneFilter = Object.assign({}, localFilter);
+        setLocalFilter({
+            breed: cloneFilter.breed,
+            country: cloneFilter.country,
+            city: cloneFilter.city,
+            priceFrom: cloneFilter.priceFrom,
+            priceTo: cloneFilter.priceTo,
+            sort: event.target.value
+        });
     }
 
     const setFilter = () => {

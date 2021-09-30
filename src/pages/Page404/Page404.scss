@@ -8,7 +8,6 @@
 .logo404-wrapper {
     display: flex;
     justify-content: center;
-    margin-top: 120px;
 
     .four {
         font-family: ReemKufi, sans-serif;
@@ -30,8 +29,6 @@
 
 @media only screen and (max-width: 500px) {
     .logo404-wrapper {
-        margin-top: 90px;
-
         .four {
             font-size: 170px;
         }
@@ -79,12 +76,17 @@
     align-items: center;
     justify-content: center;
     margin-top: 40px;
+    margin-bottom: 150px;
 
     .go-home-button {
         width: 217px;
     }
+}
 
-    @media only screen and (max-width: 675px) {
+@media only screen and (max-width: 675px) {
+    .button-wrapper {
+        margin-bottom: 50px;
+
         .go-home-button {
             width: 150px;
         }

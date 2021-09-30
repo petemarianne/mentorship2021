@@ -9,4 +9,4 @@ export const filter = {
     sort: 'dateDown'
 };
 
-export const FilterContext = createContext({filter: filter, handleFilter: () => {}});
+export const FilterContext = createContext({filter, handleFilter: () => {}});
