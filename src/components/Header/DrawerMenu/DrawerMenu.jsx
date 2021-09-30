@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { Divider, Button, Avatar } from '@material-ui/core';
+import {Divider, Button, Avatar, InputBase} from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import './DrawerMenu.scss';
 import Filter from '../../Filter/Filter';
@@ -24,7 +24,11 @@ const DrawerMenu = (props) => {
             <Divider style={{backgroundColor: 'transparent'}} />
             <Button className='logout-button' variant='contained' color='secondary' onClick={props.handleLogoutModal}>Logout</Button>
             <Divider className='drawer-divider'/>
-            <Filter handleDrawer={props.handleDrawer}/>
+            <Filter
+                handleDrawer={props.handleDrawer}
+                Divider={<Divider style={{backgroundColor: 'transparent'}}/>}
+                desktopVersion='none'
+            />
         </div>
     );
 };

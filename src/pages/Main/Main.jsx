@@ -109,7 +109,7 @@ const Main = () => {
         <>
             {screenSize && (
                 <div className='main-page-desktop-wrapper'>
-                    <Filter />
+                    <Filter mobileVersion='none'/>
                     <div className='feed-wrapper'>
                         {loadingJSX}
                         {nothingWasFound}
