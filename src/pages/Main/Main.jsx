@@ -4,18 +4,15 @@ import { useMediaQuery, CircularProgress } from '@material-ui/core';
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 import { Link } from 'react-router-dom';
-import { app } from '../../firebase';
+import { db } from '../../firebase';
 import Filter from '../../components/Filter/Filter'
 import { FilterContext } from '../../contexts/filter-context'
 import { filterAds } from '../../utils/filterAds';
 
 const Main = () => {
-    const db = app.firestore();
-
     const [adsData, setAdsData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [page, setPage] = useState(1);
-    const [nothingFoundClass, setNothingFoundClass] = useState('nothing-found none');
 
     const {filter} = useContext(FilterContext);
 
@@ -81,8 +78,6 @@ const Main = () => {
                 className={filteredArray.length <= 10 || loading ? 'pagination-wrapper none' : 'pagination-wrapper'}/>
         </Stack>;
 
-    const nothingWasFound = <div className={nothingFoundClass}>Nothing was found for your search!</div>;
-
     const loadingJSX = <div className='loading-wrapper'><CircularProgress className={loading ? 'loading' : 'loading done'}/></div>;
 
     useEffect(() => {
@@ -95,13 +90,9 @@ const Main = () => {
 
     useEffect(() => {
         setLoading(true);
-        setNothingFoundClass('nothing-found none');
         setPage(1);
         setTimeout(() => {
             setLoading(false);
-            if (adsData.length !== 0 && filteredArray.length === 0) {
-                setNothingFoundClass('nothing-found');
-            }
         }, 1300)
     }, [filter]);
 
@@ -109,10 +100,10 @@ const Main = () => {
         <>
             {screenSize && (
                 <div className='main-page-desktop-wrapper'>
-                    <Filter mobileVersion='none'/>
+                    <Filter isMenu={false}/>
                     <div className='feed-wrapper'>
                         {loadingJSX}
-                        {nothingWasFound}
+                        {!loading && adsData.length !== 0 && filteredArray.length === 0 ? <div className={'nothing-found'}>Nothing was found for your search!</div> : <></>}
                         {adWrapper}
                         {pagination}
                     </div>
@@ -121,7 +112,7 @@ const Main = () => {
             {!screenSize && (
                 <div className='main-page-mobile-wrapper'>
                     {loadingJSX}
-                    {nothingWasFound}
+                    {!loading && adsData.length !== 0 && filteredArray.length === 0 ? <div className={'nothing-found'}>Nothing was found for your search!</div> : <></>}
                     {adWrapper}
                     {pagination}
                 </div>

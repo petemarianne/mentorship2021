@@ -7,10 +7,10 @@ import { FilterContext } from '../../contexts/filter-context';
 import useFilter from "../../hooks/useFilter";
 
 const Layout = ({ pageWrapperClass, children }) => {
-    const {filterState, handleFilter} = useFilter();
+    const {filterState, setFilterState} = useFilter();
 
     return (
-        <FilterContext.Provider value={{filter: filterState, handleFilter}}>
+        <FilterContext.Provider value={{filter: filterState, setFilterState}}>
             <Header />
             <main id='main' className={pageWrapperClass}>
                 {children}

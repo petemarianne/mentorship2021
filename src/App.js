@@ -15,7 +15,7 @@ const App = () => {
                 <Layout>
                     <Switch>
                         <Route path='/' exact><Main /></Route>
-                        <Route path='/details'><Ad /></Route>
+                        <Route path='/ad'><Ad /></Route>
                         <Route path='/profile'><Profile /></Route>
                         <Route path='*' render={() => <Page404 />} />
                     </Switch>

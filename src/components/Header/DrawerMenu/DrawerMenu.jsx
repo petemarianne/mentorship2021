@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import {Divider, Button, Avatar, InputBase} from '@material-ui/core';
+import { Divider, Button, Avatar } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import './DrawerMenu.scss';
 import Filter from '../../Filter/Filter';
@@ -27,7 +27,7 @@ const DrawerMenu = (props) => {
             <Filter
                 handleDrawer={props.handleDrawer}
                 Divider={<Divider style={{backgroundColor: 'transparent'}}/>}
-                desktopVersion='none'
+                isMenu={true}
             />
         </div>
     );

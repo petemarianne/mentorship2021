@@ -9,12 +9,12 @@ import AccountDropdown from './AccountDropdown/AccountDropdown';
 import DrawerMenu from './DrawerMenu/DrawerMenu';
 import { Link } from 'react-router-dom';
 import { AdFormModal } from '../AdFormModal/AdFormModal';
-import {FilterContext} from '../../contexts/filter-context';
+import { FilterContext } from '../../contexts/filter-context';
 
 const Header = () => {
     const [breed, setBreed] = useState('');
 
-    const {filter, handleFilter} = useContext(FilterContext);
+    const {filter, setFilterState} = useContext(FilterContext);
 
     const screenSize = useMediaQuery('(min-width: 769px)');
 
@@ -35,21 +35,15 @@ const Header = () => {
     };
 
     const handleDropdownOpen = (event) => {
-        setStates({
-            isDropdownOpen: event.currentTarget,
-        });
+        setStates({...states, isDropdownOpen: event.currentTarget});
     }
 
     const handleDropdownClose = () => {
-        setStates({
-            isDropdownOpen: null,
-        });
+        setStates({...states, isDropdownOpen: null});
     }
 
     const handleDrawer = (value) => {
-        setStates({
-            isDrawerOpen: value,
-        });
+        setStates({...states, isDrawerOpen: value});
     }
 
     const handleBreed = (event) => {
@@ -58,7 +52,7 @@ const Header = () => {
 
     const handleEnter = (event) => {
         if (event.key === 'Enter') {
-            handleFilter(filter.country, filter.city, filter.priceFrom, filter.priceTo, filter.sort, breed);
+            setFilterState({...filter, breed});
         }
     }
 

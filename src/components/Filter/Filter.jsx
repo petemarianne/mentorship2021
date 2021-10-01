@@ -5,72 +5,32 @@ import PropTypes from 'prop-types';
 import { FilterContext } from '../../contexts/filter-context';
 
 const Filter = (props) => {
-    const {filter, handleFilter} = useContext(FilterContext);
+    const {filter, setFilterState} = useContext(FilterContext);
 
     const [localFilter, setLocalFilter] = useState(filter);
 
     const handleCountry = (event) => {
-        const cloneFilter = Object.assign({}, localFilter);
-        setLocalFilter({
-            breed: cloneFilter.breed,
-            country: event.target.value,
-            city: cloneFilter.city,
-            priceFrom: cloneFilter.priceFrom,
-            priceTo: cloneFilter.priceTo,
-            sort: cloneFilter.sort
-        });
+        setLocalFilter({...localFilter, country: event.target.value});
     }
 
     const handleCity = (event) => {
-        const cloneFilter = Object.assign({}, localFilter);
-        setLocalFilter({
-            breed: cloneFilter.breed,
-            country: cloneFilter.country,
-            city: event.target.value,
-            priceFrom: cloneFilter.priceFrom,
-            priceTo: cloneFilter.priceTo,
-            sort: cloneFilter.sort
-        });
+        setLocalFilter({...localFilter, city: event.target.value});
     }
 
     const handlePriceFrom = (event) => {
-        const cloneFilter = Object.assign({}, localFilter);
-        setLocalFilter({
-            breed: cloneFilter.breed,
-            country: cloneFilter.country,
-            city: cloneFilter.city,
-            priceFrom: event.target.value,
-            priceTo: cloneFilter.priceTo,
-            sort: cloneFilter.sort
-        });
+        setLocalFilter({...localFilter, priceFrom: event.target.value});
     }
 
     const handlePriceTo = (event) => {
-        const cloneFilter = Object.assign({}, localFilter);
-        setLocalFilter({
-            breed: cloneFilter.breed,
-            country: cloneFilter.country,
-            city: cloneFilter.city,
-            priceFrom: cloneFilter.priceFrom,
-            priceTo: event.target.value,
-            sort: cloneFilter.sort
-        });
+        setLocalFilter({...localFilter, priceTo: event.target.value});
     }
 
     const handleSelect = (event) => {
-        const cloneFilter = Object.assign({}, localFilter);
-        setLocalFilter({
-            breed: cloneFilter.breed,
-            country: cloneFilter.country,
-            city: cloneFilter.city,
-            priceFrom: cloneFilter.priceFrom,
-            priceTo: cloneFilter.priceTo,
-            sort: event.target.value
-        });
+        setLocalFilter({...localFilter, sort: event.target.value});
     }
 
     const setFilter = () => {
-        handleFilter(localFilter.country, localFilter.city, localFilter.priceFrom, localFilter.priceTo, localFilter.sort);
+        setFilterState({...localFilter, breed: filter.breed});
     }
 
     const handleEnter = (event) => {
@@ -80,15 +40,16 @@ const Filter = (props) => {
     }
 
     const resetFilter = () => {
-        setLocalFilter({
+        const emptyFilter = {
             breed: '',
             country: '',
             city: '',
             priceFrom: '',
             priceTo: '',
             sort: 'dateDown'
-        });
-        handleFilter('', '', '', '', 'dateDown', '');
+        };
+        setLocalFilter(emptyFilter);
+        setFilterState(emptyFilter);
     }
     return (
         <div className='filter-wrapper'>
@@ -104,12 +65,19 @@ const Filter = (props) => {
             </div>
             <div className='filter-name'>Price</div>
             {props.Divider}
-            <div className={`price-filter ${props.desktopVersion}`}>
-                <InputBase value={localFilter.priceFrom} onChange={handlePriceFrom} onKeyDown={handleEnter} className='price-search' fullWidth/>
-                <InputBase value={localFilter.priceTo} onChange={handlePriceTo} onKeyDown={handleEnter} className='price-search' fullWidth/>
-            </div>
-            <InputBase className={`left-search ${props.mobileVersion}`} value={localFilter.priceFrom} onChange={handlePriceFrom} fullWidth/>
-            <InputBase className={`right-search ${props.mobileVersion}`} value={localFilter.priceTo} onChange={handlePriceTo} fullWidth/>
+            {!props.isMenu ?
+                <div className='price-filter'>
+                    <InputBase value={localFilter.priceFrom} onChange={handlePriceFrom} onKeyDown={handleEnter}
+                               className='price-search' fullWidth/>
+                    <InputBase value={localFilter.priceTo} onChange={handlePriceTo} onKeyDown={handleEnter}
+                               className='price-search' fullWidth/>
+                </div>
+                :
+                <>
+                <InputBase className='left-search' value={localFilter.priceFrom} onChange={handlePriceFrom} fullWidth/>
+                <InputBase className='right-search' value={localFilter.priceTo} onChange={handlePriceTo} fullWidth/>
+                </>
+            }
             {props.Divider}
             <div className='filter-name'>Sort by</div>
             {props.Divider}
@@ -124,15 +92,20 @@ const Filter = (props) => {
                 className='reset-filters'
                 onClick={() => {
                     resetFilter();
-                    props.handleDrawer();
+                    if (props.isMenu) {
+                        props.handleDrawer();
+                    }
                 }}
             >Reset filters</div>
-            <div className={`filter-button-wrapper ${props.desktopVersion}`}>
-                <Button className='filter-button' variant='contained' color='primary' onClick={() => {setFilter();}}>Show result</Button>
-            </div>
-            <div className={`drawer-button-wrapper ${props.mobileVersion}`}>
-                <Button className='submit-button' variant='contained' color='primary' onClick={() => {setFilter(); props.handleDrawer();}}>Show result</Button>
-            </div>
+            {!props.isMenu ?
+                <div className='filter-button-wrapper'>
+                    <Button className='filter-button' variant='contained' color='primary' onClick={() => {setFilter();}}>Show result</Button>
+                </div>
+                :
+                <div className='drawer-button-wrapper'>
+                    <Button className='submit-button' variant='contained' color='primary' onClick={() => {setFilter(); props.handleDrawer();}}>Show result</Button>
+                </div>
+            }
         </div>
     )
 }
@@ -140,8 +113,7 @@ const Filter = (props) => {
 Filter.propTypes = {
     handleDrawer: PropTypes.func,
     Divider: PropTypes.any,
-    mobileVersion: PropTypes.string,
-    desktopVersion: PropTypes.string,
+    isMenu: PropTypes.bool,
 };
 
 export default Filter;
