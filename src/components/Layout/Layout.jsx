@@ -1,13 +1,12 @@
-import React from 'react';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import './Layout.scss';
 import Footer from '../Footer/Footer';
-import Header from "../Header/Header";
-import { FilterContext } from '../../contexts/filter-context';
-import useFilter from "../../hooks/useFilter";
+import Header from '../Header/Header';
+import { emptyFilter, FilterContext } from '../../contexts/filter-context';
 
 const Layout = ({ pageWrapperClass, children }) => {
-    const {filterState, setFilterState} = useFilter();
+    const [filterState, setFilterState] = useState(emptyFilter);
 
     return (
         <FilterContext.Provider value={{filter: filterState, setFilterState}}>

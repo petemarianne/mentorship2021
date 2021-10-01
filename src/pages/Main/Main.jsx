@@ -82,10 +82,9 @@ const Main = () => {
 
     useEffect(() => {
         setLoading(true);
-        setTimeout(() => {
-            fetchAds();
+        fetchAds().then(() => {
             setLoading(false);
-        }, 1300)
+        })
     }, []);
 
     useEffect(() => {

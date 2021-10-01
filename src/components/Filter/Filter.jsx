@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import './Filter.scss';
 import { Button, InputBase } from '@material-ui/core';
 import PropTypes from 'prop-types';
-import { FilterContext } from '../../contexts/filter-context';
+import { emptyFilter, FilterContext } from '../../contexts/filter-context';
 
 const Filter = (props) => {
     const {filter, setFilterState} = useContext(FilterContext);
@@ -40,14 +40,6 @@ const Filter = (props) => {
     }
 
     const resetFilter = () => {
-        const emptyFilter = {
-            breed: '',
-            country: '',
-            city: '',
-            priceFrom: '',
-            priceTo: '',
-            sort: 'dateDown'
-        };
         setLocalFilter(emptyFilter);
         setFilterState(emptyFilter);
     }

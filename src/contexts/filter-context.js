@@ -1,6 +1,6 @@
 import { createContext } from 'react';
 
-export const filter = {
+export const emptyFilter = {
     breed: '',
     country: '',
     city: '',
@@ -9,4 +9,4 @@ export const filter = {
     sort: 'dateDown'
 };
 
-export const FilterContext = createContext({filter, setFilterState: () => {}});
+export const FilterContext = createContext({filter: emptyFilter, setFilterState: () => {}});
