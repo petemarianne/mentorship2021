@@ -1,6 +1,6 @@
 import React from 'react';
 import Layout from '../../components/Layout/Layout';
-import {Button, useMediaQuery} from '@material-ui/core';
+import { Button, useMediaQuery } from '@material-ui/core';
 import './Ad.scss';
 
 const Ad = () => {
@@ -16,12 +16,9 @@ const Ad = () => {
                         <div className='pic-wrapper'><img src={ad.picture} alt={'Ad picture'}/></div>
                         <div className='info-wrapper'>
                             <div className='breed'>{ad.title}</div>
-                            <div className='description'>{ad.description}</div>
+                            <div className='location'>{ad.city}, {ad.country}</div>
                             <div className='price'>{ad.price}$</div>
-                            <div className='location-date-wrapper'>
-                                <div>{ad.city}, {ad.country}</div>
-                                <div>{ad.date.seconds.toLocaleString('default', {day: 'numeric', month: 'short', hour: 'numeric', minute: 'numeric'}).toLowerCase()}</div>
-                            </div>
+                            <div className='date'>published on {new Date(ad.date.seconds * 1000).toLocaleString('default', {day: 'numeric', month: 'long', year: 'numeric', hour: 'numeric', minute: 'numeric'})}</div>
                         </div>
                         <div className='buttons-seller-info-wrapper'>
                             <div className='call-button-wrapper'>
@@ -34,9 +31,15 @@ const Ad = () => {
                                 <div className='avatar-wrapper'><img src={user.avatar} alt='User avatar'/></div>
                                 <div className='info-wrapper'>
                                     <div className='username'>{user.name}</div>
+                                    <div className='ads-count'>Ads: {user.activeAds}</div>
+                                    <div className='date'>On Dog Shop since {new Date(user.date.seconds * 1000).toLocaleString('default', {month: 'long',  year: 'numeric'})}</div>
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <div className='description-wrapper'>
+                        <div>Description</div>
+                        <div className='description'>{ad.description}</div>
                     </div>
                 </div>
             )}

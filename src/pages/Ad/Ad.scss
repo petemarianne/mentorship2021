@@ -6,20 +6,46 @@
     justify-content: center;
 
     .pic-wrapper {
+      border: 1px solid rgba(0, 0, 0, 0.30);
+      border-radius: 4px;
+      width: 300px;
+      height: 190px;
+      overflow: hidden;
+      cursor: pointer;
+
       img {
-        border: 1px solid rgba(0, 0, 0, 0.30);
-        border-radius: 4px;
         width: 300px;
         height: 190px;
       }
     }
 
     .info-wrapper {
-      width: 43%;
+      width: 40%;
+      padding-left: 30px;
+
+      .breed {
+        font-size: 28px;
+        margin-bottom: 10px;
+      }
+
+      .location {
+        font-size: 18px;
+        color: rgba(0, 0, 0, 0.51);
+        margin-bottom: 30px;
+      }
+
+      .price {
+        font-size: 32px;
+        margin-bottom: 35px;
+      }
+
+      .date {
+        color: rgba(0, 0, 0, 0.51);
+      }
     }
 
     .buttons-seller-info-wrapper {
-      width: 21.5%;
+      width: 325px;
 
       .call-button-wrapper {
         display: flex;
@@ -43,23 +69,223 @@
 
       .seller-info-wrapper {
         display: flex;
+        justify-content: space-between;
 
         .avatar-wrapper {
-          margin-right: 13px;
+          display: inline-block;
+          //margin-right: 13px;
+          width: 90px;
+          height: 90px;
+          overflow: hidden;
+          border: 1px solid rgba(0, 0, 0, 0.30);
+          border-radius: 4px;
 
           img {
-            border: 1px solid rgba(0, 0, 0, 0.30);
-            border-radius: 4px;
             width: 90px;
-            height: 90px;
           }
         }
 
         .info-wrapper {
+          width: 68%;
+          padding: 0;
+
           .username{
             font-size: 18px;
+            margin-bottom: 20px;
+          }
+
+          .ads-count {
+            color: rgba(0, 0, 0, 0.51);
+            font-size: 14px;
+            margin-bottom: 7px;
+          }
+
+          .date {
+            color: rgba(0, 0, 0, 0.51);
+            font-size: 14px;
           }
         }
+      }
+    }
+  }
+
+  .description-wrapper {
+    margin: 15px 30.5% 510px 5%;
+    font-size: 32px;
+
+    .description {
+      margin-top: 10px;
+      font-size: 18px;
+      color: rgba(0, 0, 0, 0.51);
+    }
+  }
+}
+
+@media only screen and (max-width: 1024px) {
+  .ad-page-desktop-wrapper {
+    .picture-info-seller-wrapper {
+      .pic-wrapper {
+        width: 280px;
+        height: 170px;
+
+        img {
+          width: 280px;
+          height: 170px;
+        }
+      }
+
+      .info-wrapper {
+        padding-left: 20px;
+
+        .breed {
+          font-size: 26px;
+        }
+
+        .location {
+          font-size: 16px;
+        }
+
+        .price {
+          font-size: 28px;
+          margin-bottom: 25px;
+        }
+
+      }
+
+      .buttons-seller-info-wrapper {
+        width: 280px;
+
+        .call-button-wrapper {
+          .call-button {
+            height: 35px;
+          }
+        }
+
+        .email-button-wrapper {
+          .email-button {
+            height: 35px;
+          }
+        }
+
+        .seller-info-wrapper {
+          .avatar-wrapper {
+            width: 75px;
+            height: 75px;
+
+            img {
+              width: 75px;
+            }
+          }
+
+          .info-wrapper {
+            .username{
+              font-size: 16px;
+            }
+
+            .ads-count {
+              font-size: 12px;
+            }
+
+            .date {
+              font-size: 12px;
+            }
+          }
+        }
+      }
+    }
+
+    .description-wrapper {
+      margin: 15px 30.5% 510px 5px;
+      font-size: 32px;
+
+      .description {
+        margin-top: 10px;
+        font-size: 18px;
+        color: rgba(0, 0, 0, 0.51);
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 850px) {
+  .ad-page-desktop-wrapper {
+    .picture-info-seller-wrapper {
+      .pic-wrapper {
+        width: 270px;
+        height: 160px;
+
+        img {
+          width: 270px;
+          height: 160px;
+        }
+      }
+
+      .info-wrapper {
+        .breed {
+          font-size: 25px;
+        }
+
+        .location {
+          font-size: 15px;
+        }
+
+        .price {
+          font-size: 27px;
+          margin-bottom: 25px;
+        }
+
+        .date {
+          font-size: 15px;
+        }
+      }
+
+      .buttons-seller-info-wrapper {
+        width: 280px;
+
+        .call-button-wrapper {
+          .call-button {
+            height: 30px;
+          }
+        }
+
+        .email-button-wrapper {
+          .email-button {
+            height: 30px;
+          }
+        }
+
+        .seller-info-wrapper {
+          .avatar-wrapper {
+            width: 70px;
+            height: 70px;
+
+            img {
+              width: 70px;
+            }
+          }
+
+          .info-wrapper {
+            .username{
+              font-size: 15px;
+            }
+
+            .ads-count {
+              font-size: 11px;
+            }
+
+            .date {
+              font-size: 11px;
+            }
+          }
+        }
+      }
+    }
+
+    .description-wrapper {
+      font-size: 25px;
+
+      .description {
+        font-size: 18px;
       }
     }
   }
