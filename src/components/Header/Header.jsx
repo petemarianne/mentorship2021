@@ -35,15 +35,15 @@ const Header = () => {
     };
 
     const handleDropdownOpen = (event) => {
-        setStates({...states, isDropdownOpen: event.currentTarget});
+        setStates(currentStates => ({...currentStates, isDropdownOpen: event.currentTarget}));
     }
 
     const handleDropdownClose = () => {
-        setStates({...states, isDropdownOpen: null});
+        setStates(currentStates => ({...currentStates, isDropdownOpen: null}));
     }
 
     const handleDrawer = (value) => {
-        setStates({...states, isDrawerOpen: value});
+        setStates(currentStates => ({...currentStates, isDrawerOpen: value}));
     }
 
     const handleBreed = (event) => {

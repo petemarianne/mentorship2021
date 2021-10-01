@@ -10,23 +10,23 @@ const Filter = (props) => {
     const [localFilter, setLocalFilter] = useState(filter);
 
     const handleCountry = (event) => {
-        setLocalFilter({...localFilter, country: event.target.value});
+        setLocalFilter(currentFilter => ({...currentFilter, country: event.target.value}));
     }
 
     const handleCity = (event) => {
-        setLocalFilter({...localFilter, city: event.target.value});
+        setLocalFilter(currentFilter => ({...currentFilter, city: event.target.value}));
     }
 
     const handlePriceFrom = (event) => {
-        setLocalFilter({...localFilter, priceFrom: event.target.value});
+        setLocalFilter(currentFilter => ({...currentFilter, priceFrom: event.target.value}));
     }
 
     const handlePriceTo = (event) => {
-        setLocalFilter({...localFilter, priceTo: event.target.value});
+        setLocalFilter(currentFilter => ({...currentFilter, priceTo: event.target.value}));
     }
 
     const handleSelect = (event) => {
-        setLocalFilter({...localFilter, sort: event.target.value});
+        setLocalFilter(currentFilter => ({...currentFilter, sort: event.target.value}));
     }
 
     const setFilter = () => {
