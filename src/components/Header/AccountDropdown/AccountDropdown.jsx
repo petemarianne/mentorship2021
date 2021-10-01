@@ -11,7 +11,7 @@ const AccountDropdown = (props) => {
             open={Boolean(props.isOpen)}
             onClose={props.handleDropdown}
             keepMounted
-            getContentAnchorEl={false}
+            getContentAnchorEl={null}
             anchorOrigin={{
                 vertical: 'bottom',
                 horizontal: 'left'

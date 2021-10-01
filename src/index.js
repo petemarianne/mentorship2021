@@ -4,7 +4,9 @@ import './index.scss';
 import App from './App';
 
 const AppContainer = () => {
-    return <App />;
+    return (
+        <App />
+    );
 };
 
 ReactDOM.render(
