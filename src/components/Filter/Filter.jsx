@@ -40,8 +40,8 @@ const Filter = (props) => {
     }
 
     const resetFilter = () => {
-        setLocalFilter(emptyFilter);
-        setFilterState(emptyFilter);
+        setLocalFilter({...emptyFilter, breed: filter.breed});
+        setFilterState({...emptyFilter, breed: filter.breed});
     }
     return (
         <div className='filter-wrapper'>

@@ -11,6 +11,7 @@ import { filterAds } from '../../utils/filterAds';
 
 const Main = () => {
     const [adsData, setAdsData] = useState([]);
+    const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
     const [page, setPage] = useState(1);
 
@@ -19,6 +20,11 @@ const Main = () => {
     const fetchAds = async () => {
         const adsCollection = await db.collection('dogAds').get();
         setAdsData(adsCollection.docs.map((doc) => {return doc.data();}));
+    };
+
+    const fetchUsers = async () => {
+        const usersCollection = await db.collection('users').get();
+        setUsers(usersCollection.docs.map((doc) => {return doc.data();}));
     };
 
     const screenSize = useMediaQuery('(min-width: 769px)');
@@ -45,11 +51,32 @@ const Main = () => {
         setPage(value);
     };
 
+    const setAdDetails = (id) => {
+        const ad = adsData.filter((item) => {
+            if (item.id === id) {
+                return item;
+            }
+        });
+        localStorage.setItem('currentAd', JSON.stringify(ad[0]));
+        const user = users.filter((item) => {
+            if (item.id === ad[0].sellerID) {
+                return item;
+            }
+        });
+        localStorage.setItem('currentUser', JSON.stringify(user[0]));
+    };
+
     const filteredArray = adsData.filter(item => filterAds(item, filter));
     const adWrapper = filteredArray.sort(comparator).map((item, index) => {
         if (index >= (page - 1) * 10 && index < page * 10) {
             return (
-                <Link to='/ad' style={{ textDecoration: 'none', color: 'black'}} key={index} className={loading ? 'ad-wrapper none' : 'ad-wrapper'}>
+                <Link
+                    to='/ad'
+                    style={{ textDecoration: 'none', color: 'black'}}
+                    key={index}
+                    className={loading ? 'ad-wrapper none' : 'ad-wrapper'}
+                    onClick={() => {setAdDetails(item.id)}}
+                >
                     <div className='pic-wrapper'><img src={item.picture} alt='dog'/></div>
                     <div className='info-wrapper'>
                         <div className='breed'>{item.title}</div>
@@ -85,6 +112,7 @@ const Main = () => {
         fetchAds().then(() => {
             setLoading(false);
         })
+        fetchUsers();
     }, []);
 
     useEffect(() => {
