@@ -51,26 +51,6 @@ const Main = () => {
         setPage(value);
     };
 
-    const filteredArray = adsData.filter(item => filterAds(item, filter));
-    const adWrapper = filteredArray.sort(comparator).map((item, index) => {
-        if (index >= (page - 1) * 10 && index < page * 10) {
-            return (
-                <Link to='/ad' style={{ textDecoration: 'none', color: 'black'}} key={index} className={loading ? 'ad-wrapper none' : 'ad-wrapper'}>
-                    <div className='pic-wrapper'><img src={item.picture} alt='dog'/></div>
-                    <div className='info-wrapper'>
-                        <div className='breed'>{item.title}</div>
-                        <div className='description'>{item.description}</div>
-                        <div className='price'>{item.price}$</div>
-                        <div className='location-date-wrapper'>
-                            <div>{item.city}, {item.country}</div>
-                            <div>{item.date.toDate().toLocaleString('default', {day: 'numeric', month: 'short', hour: 'numeric', minute: 'numeric'}).toLowerCase()}</div>
-                        </div>
-                    </div>
-                </Link>
-            );
-        }
-    });
-
     const setAdDetails = (id) => {
         const ad = adsData.filter((item) => {
             if (item.id === id) {
@@ -85,6 +65,32 @@ const Main = () => {
         });
         localStorage.setItem('currentUser', JSON.stringify(user[0]));
     };
+
+    const filteredArray = adsData.filter(item => filterAds(item, filter));
+    const adWrapper = filteredArray.sort(comparator).map((item, index) => {
+        if (index >= (page - 1) * 10 && index < page * 10) {
+            return (
+                <Link
+                    to='/ad'
+                    style={{ textDecoration: 'none', color: 'black'}}
+                    key={index}
+                    className={loading ? 'ad-wrapper none' : 'ad-wrapper'}
+                    onClick={() => {setAdDetails(item.id)}}
+                >
+                    <div className='pic-wrapper'><img src={item.picture} alt='dog'/></div>
+                    <div className='info-wrapper'>
+                        <div className='breed'>{item.title}</div>
+                        <div className='description'>{item.description}</div>
+                        <div className='price'>{item.price}$</div>
+                        <div className='location-date-wrapper'>
+                            <div>{item.city}, {item.country}</div>
+                            <div>{item.date.toDate().toLocaleString('default', {day: 'numeric', month: 'short', hour: 'numeric', minute: 'numeric'}).toLowerCase()}</div>
+                        </div>
+                    </div>
+                </Link>
+            );
+        }
+    });
 
     const pagination =
         <Stack spacing={2}>

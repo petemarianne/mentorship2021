@@ -1,15 +1,14 @@
-import React from 'react';
-import Layout from '../../components/Layout/Layout';
+import React, { useState } from 'react';
 import { Button, useMediaQuery } from '@material-ui/core';
 import './Ad.scss';
 
 const Ad = () => {
     const screenSize = useMediaQuery('(min-width: 769px)');
-    const ad = JSON.parse(localStorage.getItem('currentAd'));
-    const user = JSON.parse(localStorage.getItem('currentUser'));
+    const [ad] = useState(JSON.parse(localStorage.getItem('currentAd')))
+    const [user] = useState(JSON.parse(localStorage.getItem('currentUser')))
 
     return (
-        <Layout>
+        <>
             {screenSize && (
                 <div className='ad-page-desktop-wrapper'>
                     <div className='picture-info-seller-wrapper'>
@@ -43,7 +42,7 @@ const Ad = () => {
                     </div>
                 </div>
             )}
-        </Layout>
+        </>
     );
 };
 
