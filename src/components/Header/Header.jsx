@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import './Header.scss';
 import { AppBar, Button, InputBase, Toolbar, useMediaQuery, Avatar, IconButton, Drawer, Modal } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -6,12 +6,18 @@ import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import logo from '../../assets/images/logo.svg';
 import avatar from '../../assets/images/dog-owner.jpg';
 import AccountDropdown from './AccountDropdown/AccountDropdown';
-import DrawerMenu from "./DrawerMenu/DrawerMenu";
-import { Link } from "react-router-dom";
+import DrawerMenu from './DrawerMenu/DrawerMenu';
+import { Link } from 'react-router-dom';
 import { AdFormModal } from '../AdFormModal/AdFormModal';
+import { FilterContext } from '../../contexts/filter-context';
 
 const Header = () => {
+    const [breed, setBreed] = useState('');
+
+    const {filter, setFilterState} = useContext(FilterContext);
+
     const screenSize = useMediaQuery('(min-width: 769px)');
+
     const [states, setStates] = useState(
         {
             isDropdownOpen: null,
@@ -29,21 +35,25 @@ const Header = () => {
     };
 
     const handleDropdownOpen = (event) => {
-        setStates({
-            isDropdownOpen: event.currentTarget,
-        });
+        setStates(currentStates => ({...currentStates, isDropdownOpen: event.currentTarget}));
     }
 
     const handleDropdownClose = () => {
-        setStates({
-            isDropdownOpen: null,
-        });
+        setStates(currentStates => ({...currentStates, isDropdownOpen: null}));
     }
 
     const handleDrawer = (value) => {
-        setStates({
-            isDrawerOpen: value,
-        });
+        setStates(currentStates => ({...currentStates, isDrawerOpen: value}));
+    }
+
+    const handleBreed = (event) => {
+        setBreed(event.target.value);
+    }
+
+    const handleEnter = (event) => {
+        if (event.key === 'Enter') {
+            setFilterState({...filter, breed});
+        }
     }
 
     //window.location.href = '/';
@@ -59,7 +69,7 @@ const Header = () => {
                             <div>G &nbsp;SHOP</div>
                         </Link>
                         <div className={'search desktop'}>
-                            <InputBase placeholder='Search for a breed…' fullWidth/>
+                            <InputBase placeholder='Search for a breed…' value={breed} onChange={handleBreed} onKeyDown={handleEnter} fullWidth/>
                         </div>
                         <div className={'toolbar-right-side desktop'}>
                             <div className={'submit-an-ad-button-wrapper'}>
@@ -94,7 +104,7 @@ const Header = () => {
                             <Link className={'logo'} to={'/'} style={{ textDecoration: 'none' }}><img src={logo} alt={'logo'}/></Link>
                         </div>
                         <div className={'search mobile'}>
-                            <InputBase placeholder='Search…' fullWidth/>
+                            <InputBase placeholder='Search…' value={breed} onChange={handleBreed} onKeyDown={handleEnter} fullWidth/>
                         </div>
                     </>
                 )}

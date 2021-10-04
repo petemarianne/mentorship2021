@@ -77,4 +77,17 @@
     margin: 9px 0 15px 25px;
     padding: 0 10px;
   }
+
+  .reset-filters {
+    text-align: right;
+    font-size: 14px;
+    margin: -7px 25px 10px 0;
+    cursor: pointer;
+    color: rgba(0, 0, 0, 0.51);
+  }
+
+  .reset-filters:hover {
+    color: rgba(0, 0, 0, 0.8);
+    transition: color 0.2s ease;
+  }
 }
