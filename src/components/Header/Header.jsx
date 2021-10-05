@@ -1,4 +1,4 @@
-import React, { useContext useState } from 'react';
+import React, { useContext, useState } from 'react';
 import './Header.scss';
 import { AppBar, Button, InputBase, Toolbar, useMediaQuery, Avatar, IconButton, Drawer, Modal } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
