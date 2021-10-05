@@ -522,3 +522,16 @@
     width: 100%;
   }
 }
+
+.modal-picture {
+  width: 640px;
+  border: white 8px solid;
+  border-radius: 0;
+
+  .pic-wrapper {
+    img {
+      width: 100%;
+    }
+  }
+}
+
