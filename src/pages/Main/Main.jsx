@@ -68,7 +68,7 @@ const Main = () => {
     const pagination =
         <Stack spacing={2}>
             <Pagination
-                count={adsData.length % 10 === 0 ? adsData.length / 10 : Math.trunc(adsData.length % 10) + 1}
+                count={adsData.length % 10 === 0 ? adsData.length / 10 : Math.trunc(adsData.length % 10)}
                 page={page}
                 onChange={handleChange}
                 onClick={() => {

@@ -1,4 +1,7 @@
 export const filterAds= (item, filter) => {
+    if (item.status !== 'active') {
+        return false;
+    }
     let result = true;
     if (filter.breed !== '') {
         if (item.title.toLowerCase().indexOf(filter.breed.toLowerCase()) === -1 && item.description.toLowerCase().indexOf(filter.breed.toLowerCase()) === -1) {
