@@ -65,6 +65,12 @@ const Main = () => {
             }
         });
         localStorage.setItem('currentUser', JSON.stringify(user[0]));
+        const loggedInUser = users.filter((item) => {
+            if (item.id === 'seller1') {
+                return item;
+            }
+        });
+        localStorage.setItem('loggedInUser', JSON.stringify(loggedInUser[0]));
     };
 
     const filteredArray = adsData.filter(item => filterAds(item, filter));
