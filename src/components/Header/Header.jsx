@@ -1,10 +1,9 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState } from 'react';
 import './Header.scss';
 import { AppBar, Button, InputBase, Toolbar, useMediaQuery, Avatar, IconButton, Drawer, Modal } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import logo from '../../assets/images/logo.svg';
-//import avatar from '../../assets/images/dog-owner.jpg';
 import AccountDropdown from './AccountDropdown/AccountDropdown';
 import DrawerMenu from './DrawerMenu/DrawerMenu';
 import { Link } from 'react-router-dom';
