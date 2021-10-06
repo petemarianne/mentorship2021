@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { Button, Modal, useMediaQuery } from '@material-ui/core';
+import { Button, Modal } from '@material-ui/core';
 import './Ad.scss';
 import { toDate } from '../../utils/toDate';
+import { useScreenSize } from '../../hooks/useScreenSize';
 
 const Ad = () => {
-    const screenSize = useMediaQuery('(min-width: 769px)');
-    const mobileScreenSize = useMediaQuery('(min-width: 426px)');
+    const {desktop, tablet, mobile} = useScreenSize();
     const [ad] = useState(JSON.parse(localStorage.getItem('currentAd')))
     const [user] = useState(JSON.parse(localStorage.getItem('currentUser')))
     const [open, setOpen] = useState(false);
@@ -42,7 +42,7 @@ const Ad = () => {
 
     return (
         <>
-            {screenSize && (
+            {desktop && (
                 <div className='ad-page-desktop-wrapper'>
                     <div className='picture-info-seller-wrapper'>
                         {pictureJSX}
@@ -73,7 +73,7 @@ const Ad = () => {
                     </Modal>
                 </div>
             )}
-            {!screenSize && mobileScreenSize && (
+            {!desktop && tablet && (
                 <div className='ad-page-tablet-wrapper'>
                     <div className='pic-wrapper-wrapper'>{pictureJSX}</div>
                     <div className='info-wrapper'>
@@ -94,7 +94,7 @@ const Ad = () => {
                     </div>
                 </div>
             )}
-            {!screenSize && !mobileScreenSize && (
+            {mobile && (
                 <div className='ad-page-mobile-wrapper'>
                     <div className='pic-wrapper-wrapper'>{pictureJSX}</div>
                     <div className='info-wrapper'>
