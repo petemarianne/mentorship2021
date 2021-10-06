@@ -73,7 +73,7 @@ const Ad = () => {
                     </Modal>
                 </div>
             )}
-            {!desktop && tablet && (
+            {tablet && (
                 <div className='ad-page-tablet-wrapper'>
                     <div className='pic-wrapper-wrapper'>{pictureJSX}</div>
                     <div className='info-wrapper'>
