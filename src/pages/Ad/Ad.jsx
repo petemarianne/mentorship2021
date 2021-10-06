@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Modal, useMediaQuery } from '@material-ui/core';
 import './Ad.scss';
+import { toDate } from '../../utils/toDate';
 
 const Ad = () => {
     const screenSize = useMediaQuery('(min-width: 769px)');
@@ -25,7 +26,7 @@ const Ad = () => {
                 <div className='info-wrapper'>
                     <div className='username'>{user.name}</div>
                     <div className='ads-count'>Ads: {user.activeAds}</div>
-                    <div className='date'>On Dog Shop since {new Date(user.date.seconds * 1000).toLocaleString('default', {month: 'long',  year: 'numeric'})}</div>
+                    <div className='date'>On Dog Shop since {toDate(user.date).toLocaleString('default', {month: 'long',  year: 'numeric'})}</div>
                 </div>
             </div>;
 
@@ -49,7 +50,7 @@ const Ad = () => {
                             <div className='breed'>{ad.title}</div>
                             <div className='location'>{ad.city}, {ad.country}</div>
                             <div className='price'>{ad.price}$</div>
-                            <div className='date'>published on {new Date(ad.date.seconds * 1000).toLocaleString('default', {day: 'numeric', month: 'long', year: 'numeric', hour: 'numeric', minute: 'numeric'})}</div>
+                            <div className='date'>published on {toDate(user.date).toLocaleString('default', {day: 'numeric', month: 'long', year: 'numeric', hour: 'numeric', minute: 'numeric'})}</div>
                         </div>
                         <div className='buttons-seller-info-wrapper'>
                             {buttonsJSX}
@@ -76,7 +77,7 @@ const Ad = () => {
                 <div className='ad-page-tablet-wrapper'>
                     <div className='pic-wrapper-wrapper'>{pictureJSX}</div>
                     <div className='info-wrapper'>
-                        <div className='date'>{new Date(ad.date.seconds * 1000).toLocaleString('default', {day: 'numeric', month: 'long', year: 'numeric', hour: 'numeric', minute: 'numeric'})}</div>
+                        <div className='date'>{toDate(user.date).toLocaleString('default', {day: 'numeric', month: 'long', year: 'numeric', hour: 'numeric', minute: 'numeric'})}</div>
                         <div className='breed-location-price-buttons-wrapper'>
                             <div className='breed-location-price-wrapper'>
                                 <div className='breed'>{ad.title}</div>
@@ -97,7 +98,7 @@ const Ad = () => {
                 <div className='ad-page-mobile-wrapper'>
                     <div className='pic-wrapper-wrapper'>{pictureJSX}</div>
                     <div className='info-wrapper'>
-                        <div className='date'>{new Date(ad.date.seconds * 1000).toLocaleString('default', {day: 'numeric', month: 'long', year: 'numeric', hour: 'numeric', minute: 'numeric'})}</div>
+                        <div className='date'>{toDate(user.date).toLocaleString('default', {day: 'numeric', month: 'long', year: 'numeric', hour: 'numeric', minute: 'numeric'})}</div>
                         <div className='breed-location-price-wrapper'>
                             <div className='breed-location-wrapper'>
                                 <div className='breed'>{ad.title}</div>
