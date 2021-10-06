@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import './Header.scss';
-import { AppBar, Button, InputBase, Toolbar, useMediaQuery, Avatar, IconButton, Drawer, Modal } from '@material-ui/core';
+import { AppBar, Button, InputBase, Toolbar, Avatar, IconButton, Drawer, Modal } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import logo from '../../assets/images/logo.svg';
@@ -10,13 +10,14 @@ import DrawerMenu from './DrawerMenu/DrawerMenu';
 import { Link } from 'react-router-dom';
 import { AdFormModal } from '../AdFormModal/AdFormModal';
 import { FilterContext } from '../../contexts/filter-context';
+import { useScreenSize } from '../../hooks/useScreenSize';
 
 const Header = () => {
     const [breed, setBreed] = useState('');
 
     const {filter, setFilterState} = useContext(FilterContext);
 
-    const screenSize = useMediaQuery('(min-width: 769px)');
+    const {desktop} = useScreenSize();
 
     const [states, setStates] = useState(
         {
@@ -61,7 +62,7 @@ const Header = () => {
     return (
         <AppBar color='inherit' position='static' className={'header-wrapper'} elevation={0}>
             <Toolbar className={'toolbar'}>
-                {screenSize && (
+                {desktop && (
                     <>
                         <Link className={'toolbar-left-side desktop'} to={'/'} style={{ textDecoration: 'none' }}>
                             <div>D</div>
@@ -82,7 +83,7 @@ const Header = () => {
                         </div>
                     </>
                 )}
-                {!screenSize && (
+                {!desktop && (
                     <>
                         <div className={'toolbar-left-side mobile'}>
                             <IconButton

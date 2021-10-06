@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import './Main.scss';
-import { useMediaQuery, CircularProgress } from '@material-ui/core';
+import { CircularProgress } from '@material-ui/core';
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 import { Link } from 'react-router-dom';
@@ -8,6 +8,7 @@ import { db } from '../../firebase';
 import Filter from '../../components/Filter/Filter'
 import { FilterContext } from '../../contexts/filter-context'
 import { filterAds } from '../../utils/filterAds';
+import { useScreenSize } from '../../hooks/useScreenSize';
 
 const Main = () => {
     const [adsData, setAdsData] = useState([]);
@@ -27,7 +28,7 @@ const Main = () => {
         setUsers(usersCollection.docs.map((doc) => {return doc.data();}));
     };
 
-    const screenSize = useMediaQuery('(min-width: 769px)');
+    const {desktop} = useScreenSize();
 
     const comparator = (item1, item2) => {
         if (item1.price === item2.price) {
@@ -125,7 +126,7 @@ const Main = () => {
 
     return (
         <>
-            {screenSize && (
+            {desktop && (
                 <div className='main-page-desktop-wrapper'>
                     <Filter isMenu={false}/>
                     <div className='feed-wrapper'>
@@ -136,7 +137,7 @@ const Main = () => {
                     </div>
                 </div>
             )}
-            {!screenSize && (
+            {!desktop && (
                 <div className='main-page-mobile-wrapper'>
                     {loadingJSX}
                     {!loading && adsData.length !== 0 && filteredArray.length === 0 ? <div className={'nothing-found'}>Nothing was found for your search!</div> : <></>}
