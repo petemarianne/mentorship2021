@@ -1,10 +1,10 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import './Header.scss';
 import { AppBar, Button, InputBase, Toolbar, useMediaQuery, Avatar, IconButton, Drawer, Modal } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import logo from '../../assets/images/logo.svg';
-import avatar from '../../assets/images/dog-owner.jpg';
+//import avatar from '../../assets/images/dog-owner.jpg';
 import AccountDropdown from './AccountDropdown/AccountDropdown';
 import DrawerMenu from './DrawerMenu/DrawerMenu';
 import { Link } from 'react-router-dom';
@@ -56,6 +56,8 @@ const Header = () => {
         }
     }
 
+    const [loggedInUser] = useState(JSON.parse(localStorage.getItem('loggedInUser')))
+
     //window.location.href = '/';
 
     return (
@@ -76,7 +78,7 @@ const Header = () => {
                                 <Button color='primary' variant='contained' className={'submit-an-ad-button'} onClick={handleOpen}>Submit an ad</Button>
                             </div>
                             <Button onClick={handleDropdownOpen}>
-                                <Avatar className='avatar-header' src={avatar}/>
+                                <Avatar className='avatar-header' src={loggedInUser.avatar}/>
                                 <ArrowDropDownIcon className='icons-triangle icons-color' />
                             </Button>
                         </div>
@@ -99,7 +101,7 @@ const Header = () => {
                                 open={states.isDrawerOpen}
                                 onClose={() => handleDrawer(false)}
                             >
-                                <DrawerMenu avatar={avatar} handleDrawer={() => handleDrawer(false)} handleOpen={handleOpen}/>
+                                <DrawerMenu avatar={loggedInUser.avatar} handleDrawer={() => handleDrawer(false)} handleOpen={handleOpen}/>
                             </Drawer>
                             <Link className={'logo'} to={'/'} style={{ textDecoration: 'none' }}><img src={logo} alt={'logo'}/></Link>
                         </div>
