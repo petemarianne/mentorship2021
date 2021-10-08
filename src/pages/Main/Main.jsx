@@ -16,7 +16,7 @@ const Main = () => {
     const [loading, setLoading] = useState(true);
     const [page, setPage] = useState(1);
 
-    const {filter} = useContext(FilterContext);
+    const {filter, setFilterState} = useContext(FilterContext);
 
     const fetchAds = async () => {
         const adsCollection = await db.collection('dogAds').get();
@@ -115,6 +115,10 @@ const Main = () => {
     const loadingJSX = <div className='loading-wrapper'><CircularProgress className={loading ? 'loading' : 'loading done'}/></div>;
 
     useEffect(() => {
+        if (JSON.parse(localStorage.getItem('search'))) {
+            setFilterState(currentFilter => ({...currentFilter, breed: JSON.parse(localStorage.getItem('search')).breed}))
+        }
+        localStorage.setItem('search', JSON.stringify({breed: ''}));
         setLoading(true);
         fetchAds().then(() => {
             setLoading(false);

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import './Header.scss';
 import { AppBar, Button, InputBase, Toolbar, Avatar, IconButton, Drawer, Modal } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -8,13 +8,10 @@ import AccountDropdown from './AccountDropdown/AccountDropdown';
 import DrawerMenu from './DrawerMenu/DrawerMenu';
 import { Link } from 'react-router-dom';
 import { AdFormModal } from '../AdFormModal/AdFormModal';
-import { FilterContext } from '../../contexts/filter-context';
 import { useScreenSize } from '../../hooks/useScreenSize';
 
 const Header = () => {
     const [breed, setBreed] = useState('');
-
-    const {filter, setFilterState} = useContext(FilterContext);
 
     const {desktop} = useScreenSize();
 
@@ -52,11 +49,16 @@ const Header = () => {
 
     const handleEnter = (event) => {
         if (event.key === 'Enter') {
-            setFilterState({...filter, breed});
+            localStorage.setItem('search', JSON.stringify({breed: breed}));
+            window.location.href = '/';
         }
     }
 
-    const [loggedInUser] = useState(JSON.parse(localStorage.getItem('loggedInUser')))
+    const [loggedInUser] = useState(JSON.parse(localStorage.getItem('loggedInUser')));
+
+    useEffect(() => {
+        setBreed(JSON.parse(localStorage.getItem('search')).breed);
+    }, [])
 
     //window.location.href = '/';
 
