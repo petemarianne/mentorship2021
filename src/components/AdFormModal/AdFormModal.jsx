@@ -4,16 +4,16 @@ import './AdFormModal.scss';
 import {Button, CircularProgress, IconButton, InputBase} from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import { app, db } from '../../firebase';
-import { generateID } from '../../utils/generateID';
 import { toDate } from '../../utils/toDate';
 import { validateAd } from '../../utils/validateAd';
+import { v4 as uuidv4 } from 'uuid';
 
 export const AdFormModal = ({handleClose}) => {
     const [loading, setLoading] = useState(false);
     const [adsData, setAdsData] = useState([]);
     const [drag, setDrag] = useState(false);
     const [uploaded, setUploaded] = useState(false);
-    const [validate, setValidate] = useState(false);
+    const [validate, setValidate] = useState(true);
     const [file, setFile] = useState({});
     const [fields, setFields] = useState(
         {
@@ -65,7 +65,7 @@ export const AdFormModal = ({handleClose}) => {
         const fileRef = storageRef.child(file.name);
         await fileRef.put(file);
         const fileUrl = await fileRef.getDownloadURL();
-        await db.collection('dogAds').doc(generateID()).set({
+        await db.collection('dogAds').doc(uuidv4()).set({
             ...fields,
             picture: fileUrl,
             date: new Date(),
