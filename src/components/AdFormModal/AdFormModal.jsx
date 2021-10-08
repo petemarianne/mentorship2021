@@ -1,14 +1,39 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import './AdFormModal.scss';
-import {Button, IconButton, InputBase} from '@material-ui/core';
-import CloseIcon from "@material-ui/icons/Close";
-
+import {Button, CircularProgress, IconButton, InputBase} from '@material-ui/core';
+import CloseIcon from '@material-ui/icons/Close';
+import { app, db } from '../../firebase';
+import { generateID } from '../../utils/generateID';
+import { toDate } from '../../utils/toDate';
+import { validateAd } from '../../utils/validateAd';
 
 export const AdFormModal = ({handleClose}) => {
+    const [loading, setLoading] = useState(false);
+    const [adsData, setAdsData] = useState([]);
     const [drag, setDrag] = useState(false);
     const [uploaded, setUploaded] = useState(false);
+    const [validate, setValidate] = useState(false);
     const [file, setFile] = useState({});
+    const [fields, setFields] = useState(
+        {
+            title: '',
+            country: '',
+            city: '',
+            description: '',
+            price: '',
+        }
+    )
+    const [loggedInUser] = useState(JSON.parse(localStorage.getItem('loggedInUser')));
+
+    const fetchAds = async () => {
+        const adsCollection = await db.collection('dogAds').get();
+        setAdsData(adsCollection.docs.map((doc) => {return doc.data();}));
+    };
+
+    useEffect(() => {
+        fetchAds();
+    }, []);
 
     const dragStartHandle = (event) => {
         event.preventDefault();
@@ -26,7 +51,6 @@ export const AdFormModal = ({handleClose}) => {
         setFile(file);
         setDrag(false);
         setUploaded(true);
-        //console.log(file);
     }
 
     const onFileChange = async (event) => {
@@ -34,8 +58,52 @@ export const AdFormModal = ({handleClose}) => {
         setFile(file);
         setDrag(false);
         setUploaded(true);
-        //console.log(file);
     };
+
+    const publish = async () => {
+        const storageRef = app.storage().ref();
+        const fileRef = storageRef.child(file.name);
+        await fileRef.put(file);
+        const fileUrl = await fileRef.getDownloadURL();
+        await db.collection('dogAds').doc(generateID()).set({
+            ...fields,
+            picture: fileUrl,
+            date: new Date(),
+            status: 'active',
+            sellerID: loggedInUser.id,
+            id: 'id' + (adsData.length + 1),
+        });
+        await db.collection('users').doc(loggedInUser.name).set({
+            ...loggedInUser,
+            activeAds: loggedInUser.activeAds + 1,
+            date: toDate(loggedInUser.date),
+        });
+        localStorage.setItem('loggedInUser', JSON.stringify({
+            ...loggedInUser,
+            activeAds: loggedInUser.activeAds + 1,
+        }));
+        handleClose();
+    };
+
+    const handleTitle = (event) => {
+        setFields({...fields, title: event.target.value});
+    }
+
+    const handleCountry = (event) => {
+        setFields({...fields, country: event.target.value});
+    }
+
+    const handleCity = (event) => {
+        setFields({...fields, city: event.target.value});
+    }
+
+    const handleDescription = (event) => {
+        setFields({...fields, description: event.target.value});
+    }
+
+    const handlePrice = (event) => {
+        setFields({...fields, price: event.target.value});
+    }
 
     const uploadedJSX =
         <>
@@ -69,33 +137,47 @@ export const AdFormModal = ({handleClose}) => {
             <div className='modal-header'>NEW AD FORM</div>
             <div className='filter-name'>Title</div>
             <div className='input'>
-                <InputBase fullWidth/>
+                <InputBase value={fields.title} onChange={handleTitle} fullWidth/>
             </div>
             <div className='location-input'>
                 <div>
                     <div className='filter-name country'>Country</div>
                     <div className='input country'>
-                        <InputBase fullWidth/>
+                        <InputBase value={fields.country} onChange={handleCountry} fullWidth/>
                     </div>
                 </div>
                 <div>
                     <div className='filter-name city'>City</div>
                     <div className='input city'>
-                        <InputBase fullWidth/>
+                        <InputBase value={fields.city} onChange={handleCity} fullWidth/>
                     </div>
                 </div>
             </div>
             <div className='filter-name'>Description</div>
             <div className='input description'>
-                <InputBase maxRows={7} multiline fullWidth/>
+                <InputBase value={fields.description} onChange={handleDescription} maxRows={7} multiline fullWidth/>
             </div>
             <div className='filter-name'>Price</div>
             <div className='price-input-picture-button-wrapper'>
                 <div className='price-input-button-wrapper'>
                     <div className='input price'>
-                        <InputBase fullWidth/>
+                        <InputBase value={fields.price} onChange={handlePrice} fullWidth/>
                     </div>
-                    <Button className='publish-button' variant='contained' color='primary'>Publish</Button>
+                    {validate ? null : <div className='validate-attention'>Fill in all the fields!</div>}
+                    <Button
+                        className='publish-button'
+                        variant='contained'
+                        color='primary'
+                        onClick={() => {
+                            if (validateAd(file, fields)) {
+                                setLoading(true);
+                                publish().then(() => {setLoading(false)});
+                            } else {
+                                setValidate(false)
+                            }
+                        }}>
+                        {!loading ? 'Publish' : <CircularProgress color='inherit' size='25px' />}
+                    </Button>
                 </div>
                 <div onDragStart={dragStartHandle}
                      onDragLeave={dragLeaveHandle}

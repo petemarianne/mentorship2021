@@ -66,6 +66,13 @@
         width: 100%;
       }
 
+      .validate-attention {
+        font-size: 11px;
+        color: #d00000;
+        padding-left: 20px;
+        margin-top: 30px;
+        margin-bottom: -39px;
+      }
 
       .publish-button {
         width: 130px;
@@ -127,6 +134,11 @@
     .price-input-picture-button-wrapper {
       .price-input-button-wrapper {
         width: 60px;
+
+        .validate-attention {
+          font-size: 6px;
+          padding-left: 11px;
+        }
 
         .publish-button {
           width: 85px;
