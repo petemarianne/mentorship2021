@@ -60,8 +60,6 @@ const Header = () => {
         setBreed(JSON.parse(localStorage.getItem('search')).breed);
     }, [])
 
-    //window.location.href = '/';
-
     return (
         <AppBar color='inherit' position='static' className={'header-wrapper'} elevation={0}>
             <Toolbar className={'toolbar'}>
