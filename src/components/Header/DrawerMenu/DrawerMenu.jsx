@@ -17,10 +17,10 @@ const DrawerMenu = (props) => {
             </div>
             <Divider/>
             <div className='drawer-button-wrapper'>
-                <Button className='submit-button' variant='contained' color='primary' onClick={props.handleOpen}>Submit an ad</Button>
+                <Button className='submit-button' variant='contained' color='primary' onClick={() => {props.handleDrawer(); props.handleOpen();}}>Submit an ad</Button>
             </div>
             <Divider className='drawer-divider'/>
-            <Button className='my-account-button' variant='contained' color='secondary'  component={Link} to={'/profile'}>My profile</Button>
+            <Button className='my-account-button' variant='contained' color='secondary' component={Link} to={'/profile'}>My profile</Button>
             <Divider style={{backgroundColor: 'transparent'}} />
             <Button className='logout-button' variant='contained' color='secondary' onClick={props.handleLogoutModal}>Logout</Button>
             <Divider className='drawer-divider'/>
