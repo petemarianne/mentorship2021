@@ -1,7 +1,7 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import './AdFormModal.scss';
-import {Button, CircularProgress, IconButton, InputBase} from '@material-ui/core';
+import { Button, CircularProgress, IconButton, InputBase } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import { app, db } from '../../firebase';
 import { toDate } from '../../utils/toDate';

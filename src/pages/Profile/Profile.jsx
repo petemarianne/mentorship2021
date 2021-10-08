@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './Profile.scss';
 import {
-    Button,
+    IconButton,
     Table,
     TableBody,
     TableCell,
@@ -12,6 +12,8 @@ import {
 import { db } from '../../firebase';
 import { useScreenSize } from '../../hooks/useScreenSize';
 import { toDate } from '../../utils/toDate';
+import { Archive, Unarchive } from '@material-ui/icons';
+import SellIcon from '@mui/icons-material/Sell';
 
 const Profile = () => {
     const [adsData, setAdsData] = useState([]);
@@ -38,12 +40,12 @@ const Profile = () => {
 
     const columns = [
         { id: 'title', label: 'Title', minWidth: 50, align: 'center' },
-        { id: 'publication-date', label: 'Publication date', minWidth: 130, align: 'center'},
-        { id: 'sale-date', label: 'Sale date', minWidth: 130, align: 'center'},
-        { id: 'closing-date', label: 'Closing date', minWidth: 130, align: 'center'},
+        { id: 'publication-date', label: 'Publication date', minWidth: 50, align: 'center'},
+        { id: 'sale-date', label: 'Sale date', minWidth: 50, align: 'center'},
+        { id: 'closing-date', label: 'Closing date', minWidth: 50, align: 'center'},
         { id: 'status', label: 'Status', minWidth: 40, align: 'center'},
-        { id: 'price', label: 'Price', minWidth: 80, align: 'center'},
-        { id: 'action', label: 'Action', minWidth: 290, align: 'center'},
+        { id: 'price', label: 'Price', minWidth: 40, align: 'center'},
+        { id: 'action', label: 'Action', minWidth: 80, align: 'center'},
     ];
 
     const dateCell = (date) => {
@@ -104,11 +106,17 @@ const Profile = () => {
                                         <TableCell size='medium' align='center'>{row.price}</TableCell>
                                         <TableCell size='medium' align='center'>
                                             {row.status === 'closed' ?
-                                                <Button className='table-button' variant='contained' color='primary'>Open</Button> :
+                                                <IconButton aria-label='lose' size='small' color='#d27a3d'>
+                                                    <Unarchive fontSize='small'/>
+                                                </IconButton> :
                                                 row.status === 'active' ?
                                                     <>
-                                                        <Button className='table-button' variant='contained' color='primary'>Sold</Button>
-                                                        <Button className='table-button' variant='outlined' color='primary' style={{marginLeft: '15px'}}>Close</Button>
+                                                        <IconButton aria-label='lose' size='small' color='#d27a3d'>
+                                                            <SellIcon fontSize='small'/>
+                                                        </IconButton>
+                                                        <IconButton aria-label='lose' size='small' color='#d27a3d'>
+                                                            <Archive fontSize='small'/>
+                                                        </IconButton>
                                                     </> :
                                                     <></>
                                             }
