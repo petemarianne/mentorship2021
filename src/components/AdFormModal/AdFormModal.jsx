@@ -86,23 +86,23 @@ export const AdFormModal = ({handleClose}) => {
     };
 
     const handleTitle = (event) => {
-        setFields({...fields, title: event.target.value});
+        setFields(current => ({...current, title: event.target.value}));
     }
 
     const handleCountry = (event) => {
-        setFields({...fields, country: event.target.value});
+        setFields(current => ({...current, country: event.target.value}));
     }
 
     const handleCity = (event) => {
-        setFields({...fields, city: event.target.value});
+        setFields(current => ({...current, city: event.target.value}));
     }
 
     const handleDescription = (event) => {
-        setFields({...fields, description: event.target.value});
+        setFields(current => ({...current, description: event.target.value}));
     }
 
     const handlePrice = (event) => {
-        setFields({...fields, price: event.target.value});
+        setFields(current => ({...current, price: event.target.value}));
     }
 
     const uploadedJSX =
