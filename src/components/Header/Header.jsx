@@ -6,12 +6,13 @@ import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import logo from '../../assets/images/logo.svg';
 import AccountDropdown from './AccountDropdown/AccountDropdown';
 import DrawerMenu from './DrawerMenu/DrawerMenu';
-import { Link } from 'react-router-dom';
+import { Link, Redirect} from 'react-router-dom';
 import { AdFormModal } from '../AdFormModal/AdFormModal';
 import { useScreenSize } from '../../hooks/useScreenSize';
 
 const Header = () => {
     const [breed, setBreed] = useState('');
+    const [redirect, setRedirect] = useState(false);
 
     const {desktop} = useScreenSize();
 
@@ -50,7 +51,13 @@ const Header = () => {
     const handleEnter = (event) => {
         if (event.key === 'Enter') {
             localStorage.setItem('search', JSON.stringify({breed: breed}));
-            window.location.href = '/';
+            setRedirect(true);
+        }
+    }
+
+    const renderRedirect = () => {
+        if (redirect) {
+            return <Redirect to='/' />
         }
     }
 
@@ -121,6 +128,7 @@ const Header = () => {
                         <AdFormModal handleClose={handleClose}/>
                     </div>
                 </Modal>
+                {renderRedirect()}
             </Toolbar>
         </AppBar>
     );
