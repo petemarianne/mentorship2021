@@ -34,18 +34,18 @@ const Main = () => {
         if (item1.price === item2.price) {
             return item2.date - item1.date;
         }
-            switch (filter.sort) {
-                case 'dateDown':
-                    return item2.date - item1.date;
-                case 'dateUp':
-                    return item1.date - item2.date;
-                case 'priceDown':
-                    return item2.price - item1.price;
-                case 'priceUp':
-                    return item1.price - item2.price;
-                default:
-                    return item2.date - item1.date;
-            }
+        switch (filter.sort) {
+            case 'dateDown':
+                return item2.date - item1.date;
+            case 'dateUp':
+                return item1.date - item2.date;
+            case 'priceDown':
+                return item2.price - item1.price;
+            case 'priceUp':
+                return item1.price - item2.price;
+            default:
+                return item2.date - item1.date;
+        }
     }
 
     const handleChange = (event, value) => {
@@ -75,7 +75,8 @@ const Main = () => {
 
     const filteredArray = adsData.filter(item => filterAds(item, filter));
     const adWrapper = filteredArray.sort(comparator).map((item, index) => {
-        if (index >= (page - 1) * 10 && index < page * 10) {
+        console.log(index);
+        if (index < filteredArray.length && index >= (page - 1) * 10 && index < page * 10) {
             return (
                 <Link
                     to='/ad'
