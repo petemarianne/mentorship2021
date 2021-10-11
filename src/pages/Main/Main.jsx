@@ -75,7 +75,6 @@ const Main = () => {
 
     const filteredArray = adsData.filter(item => filterAds(item, filter));
     const adWrapper = filteredArray.sort(comparator).map((item, index) => {
-        console.log(index);
         if (index < filteredArray.length && index >= (page - 1) * 10 && index < page * 10) {
             return (
                 <Link
@@ -103,7 +102,7 @@ const Main = () => {
     const pagination =
         <Stack spacing={2}>
             <Pagination
-                count={adsData.length % 10 === 0 ? adsData.length / 10 : Math.trunc(adsData.length % 10)}
+                count={filteredArray.length % 10 === 0 ? filteredArray.length / 10 : Math.trunc(filteredArray.length / 10) + 1}
                 page={page}
                 onChange={handleChange}
                 onClick={() => {
