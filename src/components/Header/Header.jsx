@@ -6,13 +6,14 @@ import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import logo from '../../assets/images/logo.svg';
 import AccountDropdown from './AccountDropdown/AccountDropdown';
 import DrawerMenu from './DrawerMenu/DrawerMenu';
-import { Link, Redirect} from 'react-router-dom';
+import { Link, Redirect, useLocation } from 'react-router-dom';
 import { AdFormModal } from '../AdFormModal/AdFormModal';
 import { useScreenSize } from '../../hooks/useScreenSize';
 
 const Header = () => {
     const [breed, setBreed] = useState('');
     const [redirect, setRedirect] = useState(false);
+    const currentPathname = useLocation().pathname;
 
     const {desktop} = useScreenSize();
 
@@ -56,8 +57,8 @@ const Header = () => {
     }
 
     const renderRedirect = () => {
-        if (redirect) {
-            return <Redirect to='/' />
+        if (redirect && currentPathname !== '/') {
+            return <Redirect to='/' />;
         }
     }
 
