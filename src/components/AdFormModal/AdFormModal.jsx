@@ -1,7 +1,7 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import './AdFormModal.scss';
-import {Button, CircularProgress, IconButton, InputBase} from '@material-ui/core';
+import { Button, CircularProgress, IconButton, InputBase } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import { app, db } from '../../firebase';
 import { toDate } from '../../utils/toDate';
@@ -135,59 +135,63 @@ export const AdFormModal = ({handleClose}) => {
                 </IconButton>
             </div>
             <div className='modal-header'>NEW AD FORM</div>
-            <div className='filter-name'>Title</div>
-            <div className='input'>
-                <InputBase value={fields.title} onChange={handleTitle} fullWidth/>
-            </div>
-            <div className='location-input'>
-                <div>
-                    <div className='filter-name country'>Country</div>
-                    <div className='input country'>
-                        <InputBase value={fields.country} onChange={handleCountry} fullWidth/>
+            <form onSubmit={(event) => {
+                event.preventDefault();
+                if (validateAd(file, fields)) {
+                    setLoading(true);
+                    publish().then(() => {setLoading(false)});
+                } else {
+                    setValidate(false)
+                }
+            }}>
+                <div className='filter-name'>Title</div>
+                <div className='input'>
+                    <InputBase value={fields.title} onChange={handleTitle} fullWidth/>
+                </div>
+                <div className='location-input'>
+                    <div>
+                        <div className='filter-name country'>Country</div>
+                        <div className='input country'>
+                            <InputBase value={fields.country} onChange={handleCountry} fullWidth/>
+                        </div>
+                    </div>
+                    <div>
+                        <div className='filter-name city'>City</div>
+                        <div className='input city'>
+                            <InputBase value={fields.city} onChange={handleCity} fullWidth/>
+                        </div>
                     </div>
                 </div>
-                <div>
-                    <div className='filter-name city'>City</div>
-                    <div className='input city'>
-                        <InputBase value={fields.city} onChange={handleCity} fullWidth/>
+                <div className='filter-name'>Description</div>
+                <div className='input description'>
+                    <InputBase value={fields.description} onChange={handleDescription} maxRows={7} multiline fullWidth/>
+                </div>
+                <div className='filter-name'>Price</div>
+                <div className='price-input-picture-button-wrapper'>
+                    <div className='price-input-button-wrapper'>
+                        <div className='input price'>
+                            <InputBase value={fields.price} onChange={handlePrice} fullWidth/>
+                        </div>
+                        {validate ? null : <div className='validate-attention'>Fill in all the fields!</div>}
+                        <Button
+                            type='submit'
+                            className='publish-button'
+                            variant='contained'
+                            color='primary'
+                        >
+                            {!loading ? 'Publish' : <CircularProgress color='inherit' size='25px' />}
+                        </Button>
+                    </div>
+                    <div onDragStart={dragStartHandle}
+                         onDragLeave={dragLeaveHandle}
+                         onDragOver={dragStartHandle}
+                         onDrop={drag ? onDropHandler : null}
+                         className='drag-and-drop-wrapper'
+                         style={drag ? {padding: '55px 0'} : null}>
+                        {drag ?  dropJSX : uploaded ? uploadedJSX : dragJSX}
                     </div>
                 </div>
-            </div>
-            <div className='filter-name'>Description</div>
-            <div className='input description'>
-                <InputBase value={fields.description} onChange={handleDescription} maxRows={7} multiline fullWidth/>
-            </div>
-            <div className='filter-name'>Price</div>
-            <div className='price-input-picture-button-wrapper'>
-                <div className='price-input-button-wrapper'>
-                    <div className='input price'>
-                        <InputBase value={fields.price} onChange={handlePrice} fullWidth/>
-                    </div>
-                    {validate ? null : <div className='validate-attention'>Fill in all the fields!</div>}
-                    <Button
-                        className='publish-button'
-                        variant='contained'
-                        color='primary'
-                        onClick={() => {
-                            if (validateAd(file, fields)) {
-                                setLoading(true);
-                                publish().then(() => {setLoading(false)});
-                            } else {
-                                setValidate(false)
-                            }
-                        }}>
-                        {!loading ? 'Publish' : <CircularProgress color='inherit' size='25px' />}
-                    </Button>
-                </div>
-                <div onDragStart={dragStartHandle}
-                     onDragLeave={dragLeaveHandle}
-                     onDragOver={dragStartHandle}
-                     onDrop={drag ? onDropHandler : null}
-                     className='drag-and-drop-wrapper'
-                     style={drag ? {padding: '55px 0'} : null}>
-                    {drag ?  dropJSX : uploaded ? uploadedJSX : dragJSX}
-                </div>
-            </div>
+            </form>
         </div>
     );
 };

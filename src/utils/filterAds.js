@@ -1,4 +1,4 @@
-export const filterAds= (item, filter) => {
+export const filterAds = (item, filter) => {
     if (item.status !== 'active') {
         return false;
     }

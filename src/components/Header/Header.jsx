@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import './Header.scss';
 import { AppBar, Button, InputBase, Toolbar, Avatar, IconButton, Drawer, Modal } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -6,13 +6,15 @@ import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import logo from '../../assets/images/logo.svg';
 import AccountDropdown from './AccountDropdown/AccountDropdown';
 import DrawerMenu from './DrawerMenu/DrawerMenu';
-import { Link } from 'react-router-dom';
+import { Link, Redirect, useLocation } from 'react-router-dom';
 import { AdFormModal } from '../AdFormModal/AdFormModal';
-import { FilterContext } from '../../contexts/filter-context';
 import { useScreenSize } from '../../hooks/useScreenSize';
+import { FilterContext } from '../../contexts/filter-context';
 
 const Header = () => {
     const [breed, setBreed] = useState('');
+    const [redirect, setRedirect] = useState(false);
+    const currentPathname = useLocation().pathname;
 
     const {filter, setFilterState} = useContext(FilterContext);
 
@@ -52,13 +54,27 @@ const Header = () => {
 
     const handleEnter = (event) => {
         if (event.key === 'Enter') {
+            localStorage.setItem('search', JSON.stringify({breed: breed}));
             setFilterState({...filter, breed});
+            if (currentPathname !== '/') {
+                setRedirect(true);
+            } else {
+                setRedirect(false);
+            }
         }
     }
 
-    const [loggedInUser] = useState(JSON.parse(localStorage.getItem('loggedInUser')))
+    const renderRedirect = () => {
+        if (redirect) {
+            return <Redirect to='/' />;
+        }
+    }
 
-    //window.location.href = '/';
+    const [loggedInUser] = useState(JSON.parse(localStorage.getItem('loggedInUser')));
+
+    useEffect(() => {
+        setBreed(JSON.parse(localStorage.getItem('search')).breed);
+    }, [])
 
     return (
         <AppBar color='inherit' position='static' className={'header-wrapper'} elevation={0}>
@@ -121,6 +137,7 @@ const Header = () => {
                         <AdFormModal handleClose={handleClose}/>
                     </div>
                 </Modal>
+                {renderRedirect()}
             </Toolbar>
         </AppBar>
     );

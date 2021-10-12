@@ -16,7 +16,7 @@ const Main = () => {
     const [loading, setLoading] = useState(true);
     const [page, setPage] = useState(1);
 
-    const {filter} = useContext(FilterContext);
+    const {filter, setFilterState} = useContext(FilterContext);
 
     const fetchAds = async () => {
         const adsCollection = await db.collection('dogAds').get();
@@ -34,18 +34,18 @@ const Main = () => {
         if (item1.price === item2.price) {
             return item2.date - item1.date;
         }
-            switch (filter.sort) {
-                case 'dateDown':
-                    return item2.date - item1.date;
-                case 'dateUp':
-                    return item1.date - item2.date;
-                case 'priceDown':
-                    return item2.price - item1.price;
-                case 'priceUp':
-                    return item1.price - item2.price;
-                default:
-                    return item2.date - item1.date;
-            }
+        switch (filter.sort) {
+            case 'dateDown':
+                return item2.date - item1.date;
+            case 'dateUp':
+                return item1.date - item2.date;
+            case 'priceDown':
+                return item2.price - item1.price;
+            case 'priceUp':
+                return item1.price - item2.price;
+            default:
+                return item2.date - item1.date;
+        }
     }
 
     const handleChange = (event, value) => {
@@ -75,7 +75,7 @@ const Main = () => {
 
     const filteredArray = adsData.filter(item => filterAds(item, filter));
     const adWrapper = filteredArray.sort(comparator).map((item, index) => {
-        if (index >= (page - 1) * 10 && index < page * 10) {
+        if (index < filteredArray.length && index >= (page - 1) * 10 && index < page * 10) {
             return (
                 <Link
                     to='/ad'
@@ -102,7 +102,7 @@ const Main = () => {
     const pagination =
         <Stack spacing={2}>
             <Pagination
-                count={adsData.length % 10 === 0 ? adsData.length / 10 : Math.trunc(adsData.length % 10)}
+                count={filteredArray.length % 10 === 0 ? filteredArray.length / 10 : Math.trunc(filteredArray.length / 10) + 1}
                 page={page}
                 onChange={handleChange}
                 onClick={() => {
@@ -115,6 +115,10 @@ const Main = () => {
     const loadingJSX = <div className='loading-wrapper'><CircularProgress className={loading ? 'loading' : 'loading done'}/></div>;
 
     useEffect(() => {
+        if (JSON.parse(localStorage.getItem('search'))) {
+            setFilterState(currentFilter => ({...currentFilter, breed: JSON.parse(localStorage.getItem('search')).breed}))
+        }
+        localStorage.setItem('search', JSON.stringify({breed: ''}));
         setLoading(true);
         fetchAds().then(() => {
             setLoading(false);

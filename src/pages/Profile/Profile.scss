@@ -1,4 +1,6 @@
 .profile-page {
+  margin-bottom: 200px;
+
   .profile-info {
     display: flex;
     justify-content: left;
@@ -75,20 +77,28 @@
       margin: 30px 0 30px 20px;
     }
   }
-}
 
-.MuiTableContainer-root {
-  border-top: 1px solid #e0e0e0;
-  border-right: 1px solid #e0e0e0;
-  border-left: 1px solid #e0e0e0;
-  margin-bottom: 70px;
-}
+  .MuiTableContainer-root {
+    border-top: 1px solid #e0e0e0;
+    border-right: 1px solid #e0e0e0;
+    border-left: 1px solid #e0e0e0;
+    margin-bottom: 70px;
+  }
 
-.MuiTableCell-stickyHeader {
-  background-color: white !important;
-}
+  .MuiTableCell-stickyHeader {
+    background-color: white !important;
+  }
 
-.table-button {
-  height: 25px;
-  width: 125px;
+  .MuiIconButton-root {
+    color: #d27a3d !important;
+  }
+
+  .MuiSvgIcon-fontSizeSmall {
+    font-size: 30px;
+  }
+
+  .table-button {
+    height: 25px;
+    width: 125px;
+  }
 }
