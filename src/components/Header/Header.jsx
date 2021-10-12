@@ -58,6 +58,8 @@ const Header = () => {
             setFilterState({...filter, breed});
             if (currentPathname !== '/') {
                 setRedirect(true);
+            } else {
+                setRedirect(false);
             }
         }
     }
