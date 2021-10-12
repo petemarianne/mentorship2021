@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import './Header.scss';
 import { AppBar, Button, InputBase, Toolbar, Avatar, IconButton, Drawer, Modal } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -9,11 +9,14 @@ import DrawerMenu from './DrawerMenu/DrawerMenu';
 import { Link, Redirect, useLocation } from 'react-router-dom';
 import { AdFormModal } from '../AdFormModal/AdFormModal';
 import { useScreenSize } from '../../hooks/useScreenSize';
+import { FilterContext } from '../../contexts/filter-context';
 
 const Header = () => {
     const [breed, setBreed] = useState('');
     const [redirect, setRedirect] = useState(false);
     const currentPathname = useLocation().pathname;
+
+    const {filter, setFilterState} = useContext(FilterContext);
 
     const {desktop} = useScreenSize();
 
@@ -52,12 +55,15 @@ const Header = () => {
     const handleEnter = (event) => {
         if (event.key === 'Enter') {
             localStorage.setItem('search', JSON.stringify({breed: breed}));
-            setRedirect(true);
+            setFilterState({...filter, breed});
+            if (currentPathname !== '/') {
+                setRedirect(true);
+            }
         }
     }
 
     const renderRedirect = () => {
-        if (redirect && currentPathname !== '/') {
+        if (redirect) {
             return <Redirect to='/' />;
         }
     }
