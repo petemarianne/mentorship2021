@@ -77,21 +77,21 @@ const Header = () => {
     }, [])
 
     return (
-        <AppBar color='inherit' position='static' className={'header-wrapper'} elevation={0}>
-            <Toolbar className={'toolbar'}>
+        <AppBar color='inherit' position='static' className='header-wrapper' elevation={0}>
+            <Toolbar className='toolbar'>
                 {desktop && (
                     <>
-                        <Link className={'toolbar-left-side desktop'} to={'/'} style={{ textDecoration: 'none' }}>
+                        <Link className='toolbar-left-side desktop' to='/' style={{ textDecoration: 'none' }}>
                             <div>D</div>
-                            <div className={'logo'}><img src={logo} alt={'logo'}/></div>
+                            <div className='logo'><img src={logo} alt='logo'/></div>
                             <div>G &nbsp;SHOP</div>
                         </Link>
-                        <div className={'search desktop'}>
+                        <div className='search desktop'>
                             <InputBase placeholder='Search for a breed…' value={breed} onChange={handleBreed} onKeyDown={handleEnter} fullWidth/>
                         </div>
-                        <div className={'toolbar-right-side desktop'}>
-                            <div className={'submit-an-ad-button-wrapper'}>
-                                <Button color='primary' variant='contained' className={'submit-an-ad-button'} onClick={handleOpen}>Submit an ad</Button>
+                        <div className='toolbar-right-side desktop'>
+                            <div className='submit-an-ad-button-wrapper'>
+                                <Button color='primary' variant='contained' className='submit-an-ad-button' onClick={handleOpen}>Submit an ad</Button>
                             </div>
                             <Button onClick={handleDropdownOpen}>
                                 <Avatar className='avatar-header' src={loggedInUser.avatar}/>
@@ -102,26 +102,26 @@ const Header = () => {
                 )}
                 {!desktop && (
                     <>
-                        <div className={'toolbar-left-side mobile'}>
+                        <div className='toolbar-left-side mobile'>
                             <IconButton
                                 edge='start'
                                 aria-haspopup='true'
-                                className={'menu-button'}
+                                className='menu-button'
                                 onClick={() => handleDrawer(true)}
                             >
                                 <MenuIcon fontSize='large' className='menu-icon' />
                             </IconButton>
                             <Drawer
                                 elevation={2}
-                                anchor={'left'}
+                                anchor='left'
                                 open={states.isDrawerOpen}
                                 onClose={() => handleDrawer(false)}
                             >
                                 <DrawerMenu avatar={loggedInUser.avatar} handleDrawer={() => handleDrawer(false)} handleOpen={handleOpen}/>
                             </Drawer>
-                            <Link className={'logo'} to={'/'} style={{ textDecoration: 'none' }}><img src={logo} alt={'logo'}/></Link>
+                            <Link className='logo' to='/' style={{ textDecoration: 'none' }}><img src={logo} alt='logo'/></Link>
                         </div>
-                        <div className={'search mobile'}>
+                        <div className='search mobile'>
                             <InputBase placeholder='Search…' value={breed} onChange={handleBreed} onKeyDown={handleEnter} fullWidth/>
                         </div>
                     </>
