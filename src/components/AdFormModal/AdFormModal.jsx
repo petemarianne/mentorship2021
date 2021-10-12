@@ -174,6 +174,7 @@ export const AdFormModal = ({handleClose}) => {
                         </div>
                         {validate ? null : <div className='validate-attention'>Fill in all the fields!</div>}
                         <Button
+                            type='submit'
                             className='publish-button'
                             variant='contained'
                             color='primary'
