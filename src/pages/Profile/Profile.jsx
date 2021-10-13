@@ -6,7 +6,8 @@ import {
     TableBody,
     TableCell,
     TableContainer,
-    TableHead, TablePagination,
+    TableHead,
+    TablePagination,
     TableRow
 } from '@material-ui/core';
 import { db } from '../../firebase';
@@ -130,7 +131,12 @@ const Profile = ({ myProfile }) => {
                         <div className='name'>{user.name}</div>
                         <div className='phone'>Phone number: {user.phone}</div>
                         <div className='email'>Email: {user.email}</div>
-                        <div className='date'>Date of registration: {userDate.toLocaleString('default', {day: 'numeric', month: 'long', year: 'numeric'})}</div>
+                        <div className='date'>
+                            Date of registration: {userDate.toLocaleString('default', {
+                            day: 'numeric',
+                            month: 'long',
+                            year: 'numeric'})}
+                        </div>
                     </div>
                 </div>
             )}
@@ -140,81 +146,91 @@ const Profile = ({ myProfile }) => {
                     <div className='name'>{user.name}</div>
                     <div className='phone'>Phone number: {user.phone}</div>
                     <div className='email'>Email: {user.email}</div>
-                    <div className='date'>Date of registration: {userDate.toLocaleString('default', {day: 'numeric', month: 'long', year: 'numeric'})}</div>
+                    <div className='date'>Date of registration: {userDate.toLocaleString('default', {
+                        day: 'numeric',
+                        month: 'long',
+                        year: 'numeric'})}
+                    </div>
                 </div>
             )}
             <TableContainer>
-                    <Table stickyHeader aria-label='sticky table'>
-                        <TableHead>
-                            <TableRow>
-                                {columns.map((column) => {
-                                    return <TableCell key={column.id} align={column.align}
-                                                      style={{minWidth: column.minWidth}}>{column.label}</TableCell>;
-                                })}
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {
-                                adsData.slice(page * 5, page * 5 + 5).map((row, index) => {
-                                    return (
-                                        <TableRow role='checkbox' tabIndex={-1} key={row.id}>
-                                            <TableCell size='medium' align='center'>{row.title}</TableCell>
-                                            {dateCell(row.date)}
-                                            {dateCell(row.saleDate)}
-                                            {dateCell(row.closingDate)}
-                                            <TableCell size='medium' align='center'>{row.status}</TableCell>
-                                            <TableCell size='medium' align='center'>{row.price}</TableCell>
-                                            {myProfile ?
-                                                <TableCell size='medium' align='center'>
-                                                    {row.status === 'closed' ?
-                                                        <IconButton
-                                                            aria-label='lose'
-                                                            size='small'
-                                                            color='#d27a3d'
-                                                            onClick={() => {
-                                                                activate(row).then(() => setRerender(cur => {
-                                                                    setRerender(cur + 1)
-                                                                }));
-                                                            }}
-                                                        >
-                                                            <Unarchive fontSize='small'/>
-                                                        </IconButton> :
-                                                        row.status === 'active' ?
-                                                            <>
-                                                                <IconButton
-                                                                    aria-label='lose'
-                                                                    size='small'
-                                                                    color='#d27a3d'
-                                                                    onClick={() => {
-                                                                        sell(row).then(() => setRerender(cur => {
-                                                                            setRerender(cur + 1)
-                                                                        }));
-                                                                    }}
-                                                                >
-                                                                    <SellIcon fontSize='small'/>
-                                                                </IconButton>
-                                                                <IconButton
-                                                                    aria-label='lose'
-                                                                    size='small'
-                                                                    color='#d27a3d'
-                                                                    onClick={() => {
-                                                                        close(row).then(() => setRerender(cur => {
-                                                                            setRerender(cur + 1)
-                                                                        }));
-                                                                    }}
-                                                                >
-                                                                    <Archive fontSize='small'/>
-                                                                </IconButton>
-                                                            </> :
-                                                            <></>
-                                                    }
-                                                </TableCell> : <></>
-                                            }
-                                        </TableRow>
-                                        );
-                                })}
-                        </TableBody>
-                    </Table>
+                <Table stickyHeader aria-label='sticky table'>
+                    <TableHead>
+                        <TableRow>
+                            {columns.map((column) => {
+                                return (
+                                    <TableCell
+                                        key={column.id}
+                                        align={column.align}
+                                        style={{minWidth: column.minWidth}}
+                                    >
+                                        {column.label}
+                                    </TableCell>
+                                );
+                            })}
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {
+                            adsData.slice(page * 5, page * 5 + 5).map((row) => {
+                                return (
+                                    <TableRow role='checkbox' tabIndex={-1} key={row.id}>
+                                        <TableCell size='medium' align='center'>{row.title}</TableCell>
+                                        {dateCell(row.date)}
+                                        {dateCell(row.saleDate)}
+                                        {dateCell(row.closingDate)}
+                                        <TableCell size='medium' align='center'>{row.status}</TableCell>
+                                        <TableCell size='medium' align='center'>{row.price}</TableCell>
+                                        {myProfile ?
+                                            <TableCell size='medium' align='center'>
+                                                {row.status === 'closed' ?
+                                                    <IconButton
+                                                        aria-label='lose'
+                                                        size='small'
+                                                        color='#d27a3d'
+                                                        onClick={() => {
+                                                            activate(row).then(() => setRerender(cur => {
+                                                                setRerender(cur + 1)
+                                                            }));
+                                                        }}
+                                                    >
+                                                        <Unarchive fontSize='small'/>
+                                                    </IconButton> :
+                                                    row.status === 'active' ?
+                                                        <>
+                                                            <IconButton
+                                                                aria-label='lose'
+                                                                size='small'
+                                                                color='#d27a3d'
+                                                                onClick={() => {
+                                                                    sell(row).then(() => setRerender(cur => {
+                                                                        setRerender(cur + 1)
+                                                                    }));
+                                                                }}
+                                                            >
+                                                                <SellIcon fontSize='small'/>
+                                                            </IconButton>
+                                                            <IconButton
+                                                                aria-label='lose'
+                                                                size='small'
+                                                                color='#d27a3d'
+                                                                onClick={() => {
+                                                                    close(row).then(() => setRerender(cur => {
+                                                                        setRerender(cur + 1)
+                                                                    }));
+                                                                }}
+                                                            >
+                                                                <Archive fontSize='small'/>
+                                                            </IconButton>
+                                                        </> : <></>
+                                                }
+                                            </TableCell> : <></>
+                                        }
+                                    </TableRow>
+                                );
+                            })}
+                    </TableBody>
+                </Table>
             </TableContainer>
             <TablePagination
                 rowsPerPageOptions={[5]}

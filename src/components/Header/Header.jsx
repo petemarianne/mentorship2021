@@ -10,7 +10,7 @@ import { Link, Redirect, useLocation } from 'react-router-dom';
 import { AdFormModal } from '../AdFormModal/AdFormModal';
 import { useScreenSize } from '../../hooks/useScreenSize';
 import { FilterContext } from '../../contexts/filter-context';
-import {db} from "../../firebase";
+import { db } from '../../firebase';
 
 const Header = () => {
     const [breed, setBreed] = useState('');
