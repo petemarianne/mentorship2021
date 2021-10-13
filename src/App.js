@@ -7,6 +7,7 @@ import './styles/buttons.scss';
 import Profile from './pages/Profile/Profile';
 import Ad from './pages/Ad/Ad';
 import Layout from './components/Layout/Layout';
+import MyProfile from './pages/MyProfile/MyProfile';
 
 const App = () => {
     return (
@@ -15,8 +16,9 @@ const App = () => {
                 <Layout>
                     <Switch>
                         <Route path='/' exact><Main /></Route>
-                        <Route path='/ad'><Ad /></Route>
-                        <Route path='/profile'><Profile /></Route>
+                        <Route path='/ad:id'><Ad /></Route>
+                        <Route path='/myprofile'><MyProfile /></Route>
+                        <Route path='/profile:id'><Profile /></Route>
                         <Route path='*' render={() => <Page404 />} />
                     </Switch>
                 </Layout>

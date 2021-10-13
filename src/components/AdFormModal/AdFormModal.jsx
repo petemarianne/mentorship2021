@@ -11,6 +11,7 @@ import { v4 as uuidv4 } from 'uuid';
 export const AdFormModal = ({handleClose}) => {
     const [loading, setLoading] = useState(false);
     const [adsData, setAdsData] = useState([]);
+    const [user, setUser] = useState({});
     const [drag, setDrag] = useState(false);
     const [uploaded, setUploaded] = useState(false);
     const [validate, setValidate] = useState(true);
@@ -24,16 +25,21 @@ export const AdFormModal = ({handleClose}) => {
             price: '',
         }
     )
-    const [loggedInUser] = useState(JSON.parse(localStorage.getItem('loggedInUser')));
 
     const fetchAds = async () => {
         const adsCollection = await db.collection('dogAds').get();
         setAdsData(adsCollection.docs.map((doc) => {return doc.data();}));
     };
 
+    const fetchUser = async () => {
+        const usersCollection = await db.collection('users').where('id','==','seller1').get();
+        setUser(usersCollection.docs.map((doc) => {return doc.data();})[0]);
+    };
+
     useEffect(() => {
         fetchAds();
-    }, []);
+        fetchUser();
+    });
 
     const dragStartHandle = (event) => {
         event.preventDefault();
@@ -70,17 +76,17 @@ export const AdFormModal = ({handleClose}) => {
             picture: fileUrl,
             date: new Date(),
             status: 'active',
-            sellerID: loggedInUser.id,
-            id: 'id' + (adsData.length + 1),
+            sellerID: user.id,
+            id: 'ad' + (adsData.length + 1),
         });
-        await db.collection('users').doc(loggedInUser.name).set({
-            ...loggedInUser,
-            activeAds: loggedInUser.activeAds + 1,
-            date: toDate(loggedInUser.date),
+        await db.collection('users').doc(user.name).set({
+            ...user,
+            activeAds: user.activeAds + 1,
+            date: toDate(user.date),
         });
         localStorage.setItem('loggedInUser', JSON.stringify({
-            ...loggedInUser,
-            activeAds: loggedInUser.activeAds + 1,
+            ...user,
+            activeAds: user.activeAds + 1,
         }));
         handleClose();
     };

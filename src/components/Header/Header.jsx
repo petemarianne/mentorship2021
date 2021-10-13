@@ -10,6 +10,7 @@ import { Link, Redirect, useLocation } from 'react-router-dom';
 import { AdFormModal } from '../AdFormModal/AdFormModal';
 import { useScreenSize } from '../../hooks/useScreenSize';
 import { FilterContext } from '../../contexts/filter-context';
+import {db} from "../../firebase";
 
 const Header = () => {
     const [breed, setBreed] = useState('');
@@ -70,10 +71,25 @@ const Header = () => {
         }
     }
 
-    const [loggedInUser] = useState(JSON.parse(localStorage.getItem('loggedInUser')));
+    const fetchLoggedInUser = async () => {
+        const usersCollection = await db.collection('users').where('id','==','seller1').get();
+        const user = usersCollection.docs.map((doc) => {return doc.data();})[0];
+        return Promise.resolve(user);
+    };
+
+    const [loggedInUser, setLoggedInUser] = useState({});
 
     useEffect(() => {
+        if (!JSON.parse(localStorage.getItem('search'))) {
+            localStorage.setItem('search',JSON.stringify({breed: ''}));
+        }
+        if (JSON.parse(localStorage.getItem('search')).breed !== '') {
+            localStorage.setItem('search',JSON.stringify({breed: ''}));
+        }
         setBreed(JSON.parse(localStorage.getItem('search')).breed);
+        fetchLoggedInUser().then((response) => {
+            setLoggedInUser(response);
+        })
     }, [])
 
     return (

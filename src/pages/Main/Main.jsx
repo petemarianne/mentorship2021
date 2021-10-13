@@ -12,7 +12,6 @@ import { useScreenSize } from '../../hooks/useScreenSize';
 
 const Main = () => {
     const [adsData, setAdsData] = useState([]);
-    const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
     const [page, setPage] = useState(1);
 
@@ -21,11 +20,6 @@ const Main = () => {
     const fetchAds = async () => {
         const adsCollection = await db.collection('dogAds').get();
         setAdsData(adsCollection.docs.map((doc) => {return doc.data();}));
-    };
-
-    const fetchUsers = async () => {
-        const usersCollection = await db.collection('users').get();
-        setUsers(usersCollection.docs.map((doc) => {return doc.data();}));
     };
 
     const {desktop} = useScreenSize();
@@ -52,37 +46,15 @@ const Main = () => {
         setPage(value);
     };
 
-    const setAdDetails = (id) => {
-        const ad = adsData.filter((item) => {
-            if (item.id === id) {
-                return item;
-            }
-        });
-        localStorage.setItem('currentAd', JSON.stringify(ad[0]));
-        const user = users.filter((item) => {
-            if (item.id === ad[0].sellerID) {
-                return item;
-            }
-        });
-        localStorage.setItem('currentUser', JSON.stringify(user[0]));
-        const loggedInUser = users.filter((item) => {
-            if (item.id === 'seller1') {
-                return item;
-            }
-        });
-        localStorage.setItem('loggedInUser', JSON.stringify(loggedInUser[0]));
-    };
-
     const filteredArray = adsData.filter(item => filterAds(item, filter));
     const adWrapper = filteredArray.sort(comparator).map((item, index) => {
         if (index < filteredArray.length && index >= (page - 1) * 10 && index < page * 10) {
             return (
                 <Link
-                    to='/ad'
+                    to={`/ad${item.id.substring(2)}`}
                     style={{ textDecoration: 'none', color: 'black'}}
                     key={index}
                     className={loading ? 'ad-wrapper none' : 'ad-wrapper'}
-                    onClick={() => {setAdDetails(item.id)}}
                 >
                     <div className='pic-wrapper'><img src={item.picture} alt='dog'/></div>
                     <div className='info-wrapper'>
@@ -123,7 +95,6 @@ const Main = () => {
         fetchAds().then(() => {
             setLoading(false);
         })
-        fetchUsers();
     }, []);
 
     useEffect(() => {
