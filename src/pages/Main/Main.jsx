@@ -68,6 +68,8 @@ const Main = () => {
                     </div>
                 </Link>
             );
+        } else {
+            return <React.Fragment key={`empty${index}`}/>;
         }
     });
 
@@ -95,7 +97,7 @@ const Main = () => {
         fetchAds().then(() => {
             setLoading(false);
         })
-    }, []);
+    }, [setFilterState]);
 
     useEffect(() => {
         setLoading(true);

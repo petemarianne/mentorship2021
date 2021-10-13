@@ -48,7 +48,7 @@ const Ad = () => {
         setOpen(false);
     };
 
-    const pictureJSX = <div className='pic-wrapper' onClick={handleOpen}><img src={ad.picture} alt={'Ad picture'}/></div>;
+    const pictureJSX = <div className='pic-wrapper' onClick={handleOpen}><img src={ad.picture} alt={'ad'}/></div>;
 
     const sellerInfoJSX =
             <Link className='seller-info-wrapper' to={userID === '1' ? '/myprofile' : `/profile${userID}`} style={{ color: 'black', textDecoration: 'none' }}>

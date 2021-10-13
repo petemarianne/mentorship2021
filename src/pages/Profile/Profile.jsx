@@ -49,6 +49,7 @@ const Profile = ({ myProfile }) => {
                 setAdsData(response2);
             })
         })
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [rerender]);
 
     const {desktop} = useScreenSize();
@@ -187,7 +188,7 @@ const Profile = ({ myProfile }) => {
                                                     <IconButton
                                                         aria-label='lose'
                                                         size='small'
-                                                        color='#d27a3d'
+                                                        color='primary'
                                                         onClick={() => {
                                                             activate(row).then(() => setRerender(cur => {
                                                                 setRerender(cur + 1)
@@ -201,7 +202,7 @@ const Profile = ({ myProfile }) => {
                                                             <IconButton
                                                                 aria-label='lose'
                                                                 size='small'
-                                                                color='#d27a3d'
+                                                                color='primary'
                                                                 onClick={() => {
                                                                     sell(row).then(() => setRerender(cur => {
                                                                         setRerender(cur + 1)
@@ -213,7 +214,7 @@ const Profile = ({ myProfile }) => {
                                                             <IconButton
                                                                 aria-label='lose'
                                                                 size='small'
-                                                                color='#d27a3d'
+                                                                color='primary'
                                                                 onClick={() => {
                                                                     close(row).then(() => setRerender(cur => {
                                                                         setRerender(cur + 1)
