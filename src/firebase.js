@@ -1,3 +1,4 @@
+//es-lint disable
 import firebase from 'firebase';
 import 'firebase/storage';
 
@@ -11,4 +12,4 @@ export const app = firebase.initializeApp({
     appId: "1:55519712783:web:edf84e3daf99f48633f57a"
 });
 
-export const db = app.firestore()
+export const db = app.firestore();
