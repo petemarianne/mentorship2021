@@ -39,7 +39,7 @@ export const AdFormModal = ({handleClose}) => {
     useEffect(() => {
         fetchAds();
         fetchUser();
-    });
+    }, []);
 
     const dragStartHandle = (event) => {
         event.preventDefault();
