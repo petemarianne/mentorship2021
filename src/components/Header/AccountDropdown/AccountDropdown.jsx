@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Menu, MenuItem } from '@material-ui/core';
-import {Link} from "react-router-dom";
+import { Link } from 'react-router-dom';
 
 const AccountDropdown = (props) => {
     return (
@@ -20,7 +20,7 @@ const AccountDropdown = (props) => {
                 vertical: 'top',
                 horizontal: 'center'
             }}>
-            <MenuItem onClick={props.handleDropdown} component={Link} to={'/profile'}>My profile</MenuItem>
+            <MenuItem onClick={props.handleDropdown} component={Link} to={'/myprofile'}>My profile</MenuItem>
             <MenuItem onClick={props.handleLogout}>Logout</MenuItem>
         </Menu>
     );
@@ -29,7 +29,7 @@ const AccountDropdown = (props) => {
 AccountDropdown.propTypes = {
     isOpen: PropTypes.any,
     handleDropdown: PropTypes.func,
-    handleLogout: PropTypes.func
+    handleLogout: PropTypes.func,
 };
 
 export default AccountDropdown;
