@@ -1,4 +1,3 @@
-//es-lint disable
 import firebase from 'firebase';
 import 'firebase/storage';
 

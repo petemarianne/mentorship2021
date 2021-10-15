@@ -223,9 +223,9 @@ const Profile = ({ myProfile }) => {
                                                             >
                                                                 <Archive fontSize='small'/>
                                                             </IconButton>
-                                                        </> : <></>
+                                                        </> : null
                                                 }
-                                            </TableCell> : <></>
+                                            </TableCell> : null
                                         }
                                     </TableRow>
                                 );
