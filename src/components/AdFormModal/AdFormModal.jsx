@@ -136,7 +136,7 @@ export const AdFormModal = ({handleClose}) => {
     return (
         <div className='new-ad-modal'>
             <div className='close-icon-button-wrapper'>
-                <IconButton aria-label='lose' size='medium' onClick={handleClose}>
+                <IconButton id='modal-close-button' aria-label='lose' size='medium' onClick={handleClose}>
                     <CloseIcon fontSize='medium'/>
                 </IconButton>
             </div>
@@ -184,6 +184,7 @@ export const AdFormModal = ({handleClose}) => {
                             className='publish-button'
                             variant='contained'
                             color='primary'
+                            data-testid='publish-button'
                         >
                             {!loading ? 'Publish' : <CircularProgress color='inherit' size='25px' />}
                         </Button>
