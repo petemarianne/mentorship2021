@@ -7,7 +7,6 @@ import { app, db } from '../../firebase';
 import { toDate } from '../../utils/toDate';
 import { validateAd } from '../../utils/validateAd';
 import { v4 as uuidv4 } from 'uuid';
-import DrugAndDropArea from './DrugAndDropArea/DrugAndDropArea';
 
 export const AdFormModal = ({handleClose}) => {
     const [loading, setLoading] = useState(false);
@@ -15,6 +14,8 @@ export const AdFormModal = ({handleClose}) => {
     const [user, setUser] = useState({});
     const [validate, setValidate] = useState(true);
     const [file, setFile] = useState({});
+    const [drag, setDrag] = useState(false);
+    const [uploaded, setUploaded] = useState(false);
     const [fields, setFields] = useState(
         {
             title: '',
@@ -39,6 +40,31 @@ export const AdFormModal = ({handleClose}) => {
         fetchAds();
         fetchUser();
     }, []);
+
+    const dragStartHandle = (event) => {
+        event.preventDefault();
+        setDrag(true);
+    }
+
+    const dragLeaveHandle = (event) => {
+        event.preventDefault();
+        setDrag(false);
+    }
+
+    const onDropHandler = (event) => {
+        event.preventDefault();
+        const file = event.dataTransfer.files[0];
+        setFile(file);
+        setDrag(false);
+        setUploaded(true);
+    }
+
+    const onFileChange = async (event) => {
+        const file = event.target.files[0];
+        setFile(file);
+        setDrag(false);
+        setUploaded(true);
+    };
 
     const publish = async () => {
         const storageRef = app.storage().ref();
@@ -84,6 +110,28 @@ export const AdFormModal = ({handleClose}) => {
     const handlePrice = (event) => {
         setFields(current => ({...current, price: event.target.value}));
     }
+
+    const uploadedJSX =
+        <>
+            <div>Uploaded!</div>
+            <div className='file-name'>{file.name}</div>
+            <Button variant='contained' color='primary' component='label' className='re-upload-file-button'>
+                Upload Another File
+                <input data-testid='upload-another-file' type='file' onChange={onFileChange} hidden/>
+            </Button>
+        </>;
+
+    const dragJSX =
+        <>
+            <div>Drag a picture!</div>
+            <div>or</div>
+            <Button variant='contained' color='primary' component='label' className='upload-file-button' data-testid='upload-button'>
+                Upload File
+                <input type='file' onChange={onFileChange} data-testid='upload-file' hidden/>
+            </Button>
+        </>;
+
+    const dropJSX = <div>Drop a picture!</div>;
 
     return (
         <div className='new-ad-modal'>
@@ -141,7 +189,16 @@ export const AdFormModal = ({handleClose}) => {
                             {!loading ? 'Publish' : <CircularProgress color='inherit' size='25px' data-testid='loading'/>}
                         </Button>
                     </div>
-                    <DrugAndDropArea file={file} setFile={setFile}/>
+                    <div onDragStart={dragStartHandle}
+                         onDragLeave={dragLeaveHandle}
+                         onDragOver={dragStartHandle}
+                         onDrop={drag ? onDropHandler : null}
+                         className='drag-and-drop-wrapper'
+                         style={drag ? {padding: '55px 0'} : null}
+                         data-testid='drug-and-drop-area'
+                    >
+                        {drag ?  dropJSX : uploaded ? uploadedJSX : dragJSX}
+                    </div>
                 </div>
             </form>
         </div>
