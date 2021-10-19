@@ -7,13 +7,12 @@ import { app, db } from '../../firebase';
 import { toDate } from '../../utils/toDate';
 import { validateAd } from '../../utils/validateAd';
 import { v4 as uuidv4 } from 'uuid';
+import DrugAndDropArea from './DrugAndDropArea/DrugAndDropArea';
 
 export const AdFormModal = ({handleClose}) => {
     const [loading, setLoading] = useState(false);
     const [adsData, setAdsData] = useState([]);
     const [user, setUser] = useState({});
-    const [drag, setDrag] = useState(false);
-    const [uploaded, setUploaded] = useState(false);
     const [validate, setValidate] = useState(true);
     const [file, setFile] = useState({});
     const [fields, setFields] = useState(
@@ -40,31 +39,6 @@ export const AdFormModal = ({handleClose}) => {
         fetchAds();
         fetchUser();
     }, []);
-
-    const dragStartHandle = (event) => {
-        event.preventDefault();
-        setDrag(true);
-    }
-
-    const dragLeaveHandle = (event) => {
-        event.preventDefault();
-        setDrag(false);
-    }
-
-    const onDropHandler = (event) => {
-        event.preventDefault();
-        const file = event.dataTransfer.files[0];
-        setFile(file);
-        setDrag(false);
-        setUploaded(true);
-    }
-
-    const onFileChange = async (event) => {
-        const file = event.target.files[0];
-        setFile(file);
-        setDrag(false);
-        setUploaded(true);
-    };
 
     const publish = async () => {
         const storageRef = app.storage().ref();
@@ -111,32 +85,10 @@ export const AdFormModal = ({handleClose}) => {
         setFields(current => ({...current, price: event.target.value}));
     }
 
-    const uploadedJSX =
-        <>
-            <div>Uploaded!</div>
-            <div className='file-name'>{file.name}</div>
-            <Button variant='contained' color='primary' component='label' className='re-upload-file-button'>
-                Upload Another File
-                <input type='file' onChange={onFileChange} hidden/>
-            </Button>
-        </>;
-
-    const dragJSX =
-        <>
-            <div>Drag a picture!</div>
-            <div>or</div>
-            <Button variant='contained' color='primary' component='label' className='upload-file-button'>
-                Upload File
-                <input type='file' onChange={onFileChange} hidden/>
-            </Button>
-        </>;
-
-    const dropJSX = <div>Drop a picture!</div>;
-
     return (
         <div className='new-ad-modal'>
             <div className='close-icon-button-wrapper'>
-                <IconButton id='modal-close-button' aria-label='lose' size='medium' onClick={handleClose}>
+                <IconButton id='modal-close-button' aria-label='lose' size='medium' onClick={handleClose} data-testid='close-button'>
                     <CloseIcon fontSize='medium'/>
                 </IconButton>
             </div>
@@ -149,36 +101,36 @@ export const AdFormModal = ({handleClose}) => {
                 } else {
                     setValidate(false)
                 }
-            }}>
+            }} data-testid='form'>
                 <div className='filter-name'>Title</div>
                 <div className='input'>
-                    <InputBase value={fields.title} onChange={handleTitle} fullWidth/>
+                    <InputBase value={fields.title} onChange={handleTitle} data-testid='text-input' fullWidth/>
                 </div>
                 <div className='location-input'>
                     <div>
                         <div className='filter-name country'>Country</div>
                         <div className='input country'>
-                            <InputBase value={fields.country} onChange={handleCountry} fullWidth/>
+                            <InputBase value={fields.country} onChange={handleCountry} data-testid='text-input' fullWidth/>
                         </div>
                     </div>
                     <div>
                         <div className='filter-name city'>City</div>
                         <div className='input city'>
-                            <InputBase value={fields.city} onChange={handleCity} fullWidth/>
+                            <InputBase value={fields.city} onChange={handleCity} data-testid='text-input' fullWidth/>
                         </div>
                     </div>
                 </div>
                 <div className='filter-name'>Description</div>
                 <div className='input description'>
-                    <InputBase value={fields.description} onChange={handleDescription} maxRows={7} multiline fullWidth/>
+                    <InputBase value={fields.description} onChange={handleDescription} maxRows={7} data-testid='text-input' multiline fullWidth/>
                 </div>
                 <div className='filter-name'>Price</div>
                 <div className='price-input-picture-button-wrapper'>
                     <div className='price-input-button-wrapper'>
                         <div className='input price'>
-                            <InputBase value={fields.price} onChange={handlePrice} fullWidth/>
+                            <InputBase value={fields.price} onChange={handlePrice} data-testid='text-input' fullWidth/>
                         </div>
-                        {validate ? null : <div className='validate-attention'>Fill in all the fields!</div>}
+                        {validate ? null : <div className='validate-attention' data-testid='validate'>Fill in all the fields!</div>}
                         <Button
                             type='submit'
                             className='publish-button'
@@ -186,17 +138,10 @@ export const AdFormModal = ({handleClose}) => {
                             color='primary'
                             data-testid='publish-button'
                         >
-                            {!loading ? 'Publish' : <CircularProgress color='inherit' size='25px' />}
+                            {!loading ? 'Publish' : <CircularProgress color='inherit' size='25px' data-testid='loading'/>}
                         </Button>
                     </div>
-                    <div onDragStart={dragStartHandle}
-                         onDragLeave={dragLeaveHandle}
-                         onDragOver={dragStartHandle}
-                         onDrop={drag ? onDropHandler : null}
-                         className='drag-and-drop-wrapper'
-                         style={drag ? {padding: '55px 0'} : null}>
-                        {drag ?  dropJSX : uploaded ? uploadedJSX : dragJSX}
-                    </div>
+                    <DrugAndDropArea file={file} setFile={setFile}/>
                 </div>
             </form>
         </div>

@@ -1,0 +1,47 @@
+.drag-and-drop-wrapper {
+  width: 100%;
+  border: #d27a3d 1px dashed;
+  margin: -15px 25px 15px 20px;
+  text-align: center;
+  color: #d27a3d;
+  padding: 35px 0;
+
+  .upload-file-button {
+    font-size: 12px;
+    margin-top: 5px;
+    height: 25px;
+    width: 120px;
+  }
+
+  .file-name {
+    width: 200px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    margin-left: 18px;
+  }
+
+  .re-upload-file-button {
+    font-size: 10px;
+    margin-top: 5px;
+    height: 25px;
+    width: 150px;
+  }
+}
+
+@media screen and (max-width: 480px){
+  .drag-and-drop-wrapper {
+    .file-name {
+      width: 110px;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      margin-left: 18px;
+    }
+
+    .re-upload-file-button {
+      font-size: 6px;
+      margin-top: 5px;
+      height: 25px;
+      width: 100px;
+    }
+  }
+}
