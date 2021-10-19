@@ -42,7 +42,7 @@ describe('New ad form modal component:', () => {
         screen.getAllByTestId('text-input').map((item) => {
             userEvent.type(item, 'test');
         })
-        userEvent.upload(screen.getByTestId('upload-file'), [new File([], 'img'),]);
+        userEvent.upload(screen.getByLabelText('Upload File'), [new File([], 'img'),]);
         userEvent.click(screen.getByText('Publish'));
         await waitFor(() => expect(screen.getByTestId('loading')).toBeInTheDocument());
     })
@@ -102,11 +102,11 @@ describe('New ad form modal component:', () => {
 
     test('Upload file', () => {
         render(<AdFormModal />);
-        userEvent.upload(screen.getByTestId('upload-file'), [new File([], 'img'),]);
+        userEvent.upload(screen.getByLabelText('Upload File'), [new File([], 'img'),]);
         expect(screen.getByText('Uploaded!')).toBeInTheDocument();
         expect(screen.getByText('img')).toBeInTheDocument();
         expect(screen.getByText('Upload Another File')).toBeInTheDocument();
-        userEvent.upload(screen.getByTestId('upload-another-file'), [new File([], 'img1'),]);
+        userEvent.upload(screen.getByLabelText('Upload Another File'), [new File([], 'img1'),]);
         expect(screen.getByText('Uploaded!')).toBeInTheDocument();
         expect(screen.getByText('img1')).toBeInTheDocument();
         expect(screen.getByText('Upload Another File')).toBeInTheDocument();

@@ -127,7 +127,7 @@ export const AdFormModal = ({handleClose}) => {
             <div>or</div>
             <Button variant='contained' color='primary' component='label' className='upload-file-button' data-testid='upload-button'>
                 Upload File
-                <input type='file' onChange={onFileChange} data-testid='upload-file' hidden/>
+                <input type='file' onChange={onFileChange} hidden/>
             </Button>
         </>;
 
