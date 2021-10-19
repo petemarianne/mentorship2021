@@ -143,21 +143,21 @@
         .publish-button {
           width: 85px;
         }
-      }
 
-      .drag-and-drop-wrapper {
-        .file-name {
-          width: 110px;
-          text-overflow: ellipsis;
-          overflow: hidden;
-          margin-left: 18px;
-        }
+        .drag-and-drop-wrapper {
+          .file-name {
+            width: 110px;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            margin-left: 18px;
+          }
 
-        .re-upload-file-button {
-          font-size: 6px;
-          margin-top: 5px;
-          height: 25px;
-          width: 100px;
+          .re-upload-file-button {
+            font-size: 6px;
+            margin-top: 5px;
+            height: 25px;
+            width: 100px;
+          }
         }
       }
     }

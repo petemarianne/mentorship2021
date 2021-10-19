@@ -12,10 +12,10 @@ export const AdFormModal = ({handleClose}) => {
     const [loading, setLoading] = useState(false);
     const [adsData, setAdsData] = useState([]);
     const [user, setUser] = useState({});
-    const [drag, setDrag] = useState(false);
-    const [uploaded, setUploaded] = useState(false);
     const [validate, setValidate] = useState(true);
     const [file, setFile] = useState({});
+    const [drag, setDrag] = useState(false);
+    const [uploaded, setUploaded] = useState(false);
     const [fields, setFields] = useState(
         {
             title: '',
@@ -123,7 +123,7 @@ export const AdFormModal = ({handleClose}) => {
             <div className='file-name'>{file.name}</div>
             <Button variant='contained' color='primary' component='label' className='re-upload-file-button'>
                 Upload Another File
-                <input type='file' onChange={onFileChange} hidden/>
+                <input data-testid='upload-another-file' type='file' onChange={onFileChange} hidden/>
             </Button>
         </>;
 
@@ -131,7 +131,7 @@ export const AdFormModal = ({handleClose}) => {
         <>
             <div>Drag a picture!</div>
             <div>or</div>
-            <Button variant='contained' color='primary' component='label' className='upload-file-button'>
+            <Button variant='contained' color='primary' component='label' className='upload-file-button' data-testid='upload-button'>
                 Upload File
                 <input type='file' onChange={onFileChange} hidden/>
             </Button>
@@ -142,7 +142,7 @@ export const AdFormModal = ({handleClose}) => {
     return (
         <div className='new-ad-modal'>
             <div className='close-icon-button-wrapper'>
-                <IconButton aria-label='lose' size='medium' onClick={handleClose}>
+                <IconButton id='modal-close-button' aria-label='lose' size='medium' onClick={handleClose} data-testid='close-button'>
                     <CloseIcon fontSize='medium'/>
                 </IconButton>
             </div>
@@ -155,43 +155,44 @@ export const AdFormModal = ({handleClose}) => {
                 } else {
                     setValidate(false)
                 }
-            }}>
+            }} data-testid='form'>
                 <div className='filter-name'>Title</div>
                 <div className='input'>
-                    <InputBase value={fields.title} onChange={handleTitle} fullWidth/>
+                    <InputBase value={fields.title} onChange={handleTitle} data-testid='text-input' fullWidth/>
                 </div>
                 <div className='location-input'>
                     <div>
                         <div className='filter-name country'>Country</div>
                         <div className='input country'>
-                            <InputBase value={fields.country} onChange={handleCountry} fullWidth/>
+                            <InputBase value={fields.country} onChange={handleCountry} data-testid='text-input' fullWidth/>
                         </div>
                     </div>
                     <div>
                         <div className='filter-name city'>City</div>
                         <div className='input city'>
-                            <InputBase value={fields.city} onChange={handleCity} fullWidth/>
+                            <InputBase value={fields.city} onChange={handleCity} data-testid='text-input' fullWidth/>
                         </div>
                     </div>
                 </div>
                 <div className='filter-name'>Description</div>
                 <div className='input description'>
-                    <InputBase value={fields.description} onChange={handleDescription} maxRows={7} multiline fullWidth/>
+                    <InputBase value={fields.description} onChange={handleDescription} maxRows={7} data-testid='text-input' multiline fullWidth/>
                 </div>
                 <div className='filter-name'>Price</div>
                 <div className='price-input-picture-button-wrapper'>
                     <div className='price-input-button-wrapper'>
                         <div className='input price'>
-                            <InputBase value={fields.price} onChange={handlePrice} fullWidth/>
+                            <InputBase value={fields.price} onChange={handlePrice} data-testid='text-input' fullWidth/>
                         </div>
-                        {validate ? null : <div className='validate-attention'>Fill in all the fields!</div>}
+                        {validate ? null : <div className='validate-attention' data-testid='validate'>Fill in all the fields!</div>}
                         <Button
                             type='submit'
                             className='publish-button'
                             variant='contained'
                             color='primary'
+                            data-testid='publish-button'
                         >
-                            {!loading ? 'Publish' : <CircularProgress color='inherit' size='25px' />}
+                            {!loading ? 'Publish' : <CircularProgress color='inherit' size='25px' data-testid='loading'/>}
                         </Button>
                     </div>
                     <div onDragStart={dragStartHandle}
@@ -199,7 +200,9 @@ export const AdFormModal = ({handleClose}) => {
                          onDragOver={dragStartHandle}
                          onDrop={drag ? onDropHandler : null}
                          className='drag-and-drop-wrapper'
-                         style={drag ? {padding: '55px 0'} : null}>
+                         style={drag ? {padding: '55px 0'} : null}
+                         data-testid='drug-and-drop-area'
+                    >
                         {drag ?  dropJSX : uploaded ? uploadedJSX : dragJSX}
                     </div>
                 </div>
