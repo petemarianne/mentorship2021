@@ -28,6 +28,7 @@ export const AdFormModal = ({handleClose}) => {
 
     const fetchAds = async () => {
         const adsCollection = await db.collection('dogAds').get();
+        const tmp = await db.collection('dogAds');
         setAdsData(adsCollection.docs.map((doc) => {return doc.data();}));
     };
 
@@ -84,10 +85,6 @@ export const AdFormModal = ({handleClose}) => {
             activeAds: user.activeAds + 1,
             date: toDate(user.date),
         });
-        localStorage.setItem('loggedInUser', JSON.stringify({
-            ...user,
-            activeAds: user.activeAds + 1,
-        }));
         handleClose();
     };
 
