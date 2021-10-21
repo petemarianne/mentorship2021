@@ -90,10 +90,6 @@ export const AdFormModal = ({handleClose}) => {
             activeAds: user.activeAds + 1,
             date: toDate(user.date),
         });
-        localStorage.setItem('loggedInUser', JSON.stringify({
-            ...user,
-            activeAds: user.activeAds + 1,
-        }));
         handleClose();
     };
 

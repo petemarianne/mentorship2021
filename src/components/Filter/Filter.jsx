@@ -43,42 +43,79 @@ const Filter = (props) => {
         setLocalFilter({...emptyFilter, breed: filter.breed});
         setFilterState({...emptyFilter, breed: filter.breed});
     }
+
     return (
         <div className='filter-wrapper'>
             <div className='filter-name'>Country</div>
             {props.Divider}
             <div className='search large'>
-                <InputBase id='countryInput' value={localFilter.country} onChange={handleCountry} onKeyDown={handleEnter} fullWidth/>
+                <InputBase
+                    value={localFilter.country}
+                    onChange={handleCountry}
+                    onKeyDown={handleEnter}
+                    fullWidth
+                    data-testid='input-country'
+                />
             </div>
             <div className='filter-name'>City</div>
             {props.Divider}
             <div className='search'>
-                <InputBase value={localFilter.city} onChange={handleCity} onKeyDown={handleEnter} fullWidth/>
+                <InputBase
+                    value={localFilter.city}
+                    onChange={handleCity}
+                    onKeyDown={handleEnter}
+                    fullWidth
+                    data-testid='input'
+                />
             </div>
             <div className='filter-name'>Price</div>
             {props.Divider}
             {!props.isMenu ?
                 <div className='price-filter'>
-                    <InputBase value={localFilter.priceFrom} onChange={handlePriceFrom} onKeyDown={handleEnter}
-                               className='price-search' fullWidth/>
-                    <InputBase value={localFilter.priceTo} onChange={handlePriceTo} onKeyDown={handleEnter}
-                               className='price-search' fullWidth/>
+                    <InputBase
+                        value={localFilter.priceFrom}
+                        onChange={handlePriceFrom}
+                        onKeyDown={handleEnter}
+                        className='price-search'
+                        fullWidth
+                        data-testid='input'
+                    />
+                    <InputBase
+                        value={localFilter.priceTo}
+                        onChange={handlePriceTo}
+                        onKeyDown={handleEnter}
+                        className='price-search'
+                        fullWidth
+                        data-testid='input'
+                    />
                 </div>
                 :
                 <div className='price-filter-wrapper'>
-                <InputBase className='left-search' value={localFilter.priceFrom} onChange={handlePriceFrom} fullWidth/>
-                <InputBase className='right-search' value={localFilter.priceTo} onChange={handlePriceTo} fullWidth/>
+                <InputBase
+                    className='left-search'
+                    value={localFilter.priceFrom}
+                    onChange={handlePriceFrom}
+                    fullWidth
+                    data-testid='input'
+                />
+                <InputBase
+                    className='right-search'
+                    value={localFilter.priceTo}
+                    onChange={handlePriceTo}
+                    fullWidth
+                    data-testid='input'
+                />
                 </div>
             }
             {props.Divider}
             <div className='filter-name'>Sort by</div>
             {props.Divider}
             <div className='filter-select-wrapper'>
-                <select className='filter-select' onChange={handleSelect} onKeyDown={handleEnter} value={localFilter.sort}>
-                    <option value='dateDown'>Date ↓</option>
-                    <option value='dateUp'>Date ↑</option>
-                    <option value='priceDown'>Price ↓</option>
-                    <option value='priceUp'>Price ↑</option>
+                <select className='filter-select' onChange={handleSelect} onKeyDown={handleEnter} value={localFilter.sort} data-testid='select'>
+                    <option value='dateDown' data-testid="val1">Date ↓</option>
+                    <option value='dateUp' data-testid="val2">Date ↑</option>
+                    <option value='priceDown' data-testid="val3">Price ↓</option>
+                    <option value='priceUp' data-testid="val4">Price ↑</option>
                 </select>
             </div>
             {props.Divider}
