@@ -28,18 +28,23 @@ export const AdFormModal = ({handleClose}) => {
 
     const fetchAds = async () => {
         const adsCollection = await db.collection('dogAds').get();
-        const tmp = await db.collection('dogAds');
-        setAdsData(adsCollection.docs.map((doc) => {return doc.data();}));
+        const ads = adsCollection.docs.map((doc) => {return doc.data();});
+        return Promise.resolve(ads);
     };
 
     const fetchUser = async () => {
         const usersCollection = await db.collection('users').where('id','==','seller1').get();
-        setUser(usersCollection.docs.map((doc) => {return doc.data();})[0]);
+        const user = usersCollection.docs.map((doc) => {return doc.data();})[0];
+        return Promise.resolve(user);
     };
 
     useEffect(() => {
-        fetchAds();
-        fetchUser();
+        fetchAds().then((response) => {
+            setAdsData(response);
+        });
+        fetchUser().then((response) => {
+            setUser(response);
+        });
     }, []);
 
     const dragStartHandle = (event) => {
