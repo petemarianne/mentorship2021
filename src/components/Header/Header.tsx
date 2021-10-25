@@ -12,48 +12,44 @@ import { useScreenSize } from '../../hooks/useScreenSize';
 import { FilterContext } from '../../contexts/filter-context';
 import { db } from '../../firebase';
 
-const Header = () => {
-    const [breed, setBreed] = useState('');
-    const [redirect, setRedirect] = useState(false);
-    const currentPathname = useLocation().pathname;
+const Header: React.FC = (): JSX.Element => {
+    const [breed, setBreed] = useState<string>('');
+    const [redirect, setRedirect] = useState<boolean>(false);
+    const [isDropdownOpen, setIsDropdownOpen] = useState<any>(null);
+    const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
+    const currentPathname: string = useLocation().pathname;
 
     const {filter, setFilterState} = useContext(FilterContext);
 
     const {desktop} = useScreenSize();
 
-    const [states, setStates] = useState(
-        {
-            isDropdownOpen: null,
-            isDrawerOpen: false,
-        }
-    );
-    const [open, setOpen] = useState(false);
+    const [open, setOpen] = useState<boolean>(false);
 
-    const handleOpen = () => {
+    const handleOpen = (): void => {
         setOpen(true);
     };
 
-    const handleClose = () => {
+    const handleClose = (): void => {
         setOpen(false);
     };
 
-    const handleDropdownOpen = (event) => {
-        setStates(currentStates => ({...currentStates, isDropdownOpen: event.currentTarget}));
+    const handleDropdownOpen = (event: React.MouseEvent): void => {
+        setIsDropdownOpen(event.currentTarget);
     }
 
-    const handleDropdownClose = () => {
-        setStates(currentStates => ({...currentStates, isDropdownOpen: null}));
+    const handleDropdownClose = (): void => {
+        setIsDropdownOpen(null);
     }
 
-    const handleDrawer = (value) => {
-        setStates(currentStates => ({...currentStates, isDrawerOpen: value}));
+    const handleDrawer = (value: boolean): void => {
+        setIsDrawerOpen(value);
     }
 
-    const handleBreed = (event) => {
+    const handleBreed = (event: React.ChangeEvent<HTMLInputElement>): void => {
         setBreed(event.target.value);
     }
 
-    const handleEnter = (event) => {
+    const handleEnter = (event: React.KeyboardEvent): void => {
         if (event.key === 'Enter') {
             localStorage.setItem('search', JSON.stringify({breed: breed}));
             setFilterState({...filter, breed});
@@ -65,30 +61,31 @@ const Header = () => {
         }
     }
 
-    const renderRedirect = () => {
+    const renderRedirect = (): JSX.Element => {
         if (redirect) {
             return <Redirect to='/' />;
         }
+        return <React.Fragment />;
     }
 
-    const fetchLoggedInUser = async () => {
+    const fetchLoggedInUsersAvatar = async (): Promise<string> => {
         const usersCollection = await db.collection('users').where('id','==','seller1').get();
         const user = usersCollection.docs.map((doc) => {return doc.data();})[0];
-        return Promise.resolve(user);
+        return Promise.resolve(user.avatar);
     };
 
-    const [loggedInUser, setLoggedInUser] = useState({});
+    const [loggedInUsersAvatar, setLoggedInUsersAvatar] = useState<string>('');
 
     useEffect(() => {
-        if (!JSON.parse(localStorage.getItem('search'))) {
+        if (!JSON.parse(localStorage.getItem('search') as string)) {
             localStorage.setItem('search',JSON.stringify({breed: ''}));
         }
-        if (JSON.parse(localStorage.getItem('search')).breed !== '') {
+        if (JSON.parse(localStorage.getItem('search') as string).breed !== '') {
             localStorage.setItem('search',JSON.stringify({breed: ''}));
         }
-        setBreed(JSON.parse(localStorage.getItem('search')).breed);
-        fetchLoggedInUser().then((response) => {
-            setLoggedInUser(response);
+        setBreed(JSON.parse(localStorage.getItem('search') as string).breed);
+        fetchLoggedInUsersAvatar().then((response) => {
+            setLoggedInUsersAvatar(response);
         })
     }, [])
 
@@ -110,7 +107,7 @@ const Header = () => {
                                 <Button color='primary' variant='contained' className='submit-an-ad-button' onClick={handleOpen}>Submit an ad</Button>
                             </div>
                             <Button onClick={handleDropdownOpen}>
-                                <Avatar className='avatar-header' src={loggedInUser.avatar}/>
+                                <Avatar className='avatar-header' src={loggedInUsersAvatar}/>
                                 <ArrowDropDownIcon className='icons-triangle icons-color' />
                             </Button>
                         </div>
@@ -130,10 +127,10 @@ const Header = () => {
                             <Drawer
                                 elevation={2}
                                 anchor='left'
-                                open={states.isDrawerOpen}
+                                open={isDrawerOpen}
                                 onClose={() => handleDrawer(false)}
                             >
-                                <DrawerMenu avatar={loggedInUser.avatar} handleDrawer={() => handleDrawer(false)} handleOpen={handleOpen}/>
+                                <DrawerMenu avatar={loggedInUsersAvatar} handleDrawer={handleDrawer} handleOpen={handleOpen}/>
                             </Drawer>
                             <Link className='logo' to='/' style={{ textDecoration: 'none' }}><img src={logo} alt='logo'/></Link>
                         </div>
@@ -142,7 +139,7 @@ const Header = () => {
                         </div>
                     </>
                 )}
-                <AccountDropdown isOpen={states.isDropdownOpen} handleDropdown={handleDropdownClose} />
+                <AccountDropdown isOpen={isDropdownOpen} handleDropdown={handleDropdownClose} />
                 <Modal
                     open={open}
                     onClose={handleClose}
