@@ -65,7 +65,7 @@ const Header: React.FC = (): JSX.Element => {
         if (redirect) {
             return <Redirect to='/' />;
         }
-        return <React.Fragment />;
+        return <></>;
     }
 
     const fetchLoggedInUsersAvatar = async (): Promise<string> => {
