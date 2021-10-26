@@ -1,45 +1,51 @@
 import React, { useContext, useState } from 'react';
 import './Filter.scss';
 import { Button, InputBase } from '@material-ui/core';
-import PropTypes from 'prop-types';
 import { emptyFilter, FilterContext } from '../../contexts/filter-context';
+import { Filter as FilterInterface } from '../../interfaces/Filter';
 
-const Filter = (props) => {
+interface FilterProps {
+    handleDrawer?: (value: boolean) => void,
+    Divider?: JSX.Element,
+    isMenu: boolean,
+};
+
+const Filter: React.FC<FilterProps> = (props): JSX.Element => {
     const {filter, setFilterState} = useContext(FilterContext);
 
-    const [localFilter, setLocalFilter] = useState(filter);
+    const [localFilter, setLocalFilter] = useState<FilterInterface>(filter);
 
-    const handleCountry = (event) => {
+    const handleCountry = (event: React.ChangeEvent<HTMLInputElement>): void => {
         setLocalFilter(currentFilter => ({...currentFilter, country: event.target.value}));
     }
 
-    const handleCity = (event) => {
+    const handleCity = (event: React.ChangeEvent<HTMLInputElement>): void => {
         setLocalFilter(currentFilter => ({...currentFilter, city: event.target.value}));
     }
 
-    const handlePriceFrom = (event) => {
+    const handlePriceFrom = (event: React.ChangeEvent<HTMLInputElement>): void => {
         setLocalFilter(currentFilter => ({...currentFilter, priceFrom: event.target.value}));
     }
 
-    const handlePriceTo = (event) => {
+    const handlePriceTo = (event: React.ChangeEvent<HTMLInputElement>): void => {
         setLocalFilter(currentFilter => ({...currentFilter, priceTo: event.target.value}));
     }
 
-    const handleSelect = (event) => {
+    const handleSelect = (event: React.ChangeEvent<HTMLSelectElement>): void => {
         setLocalFilter(currentFilter => ({...currentFilter, sort: event.target.value}));
     }
 
-    const setFilter = () => {
+    const setFilter = (): void => {
         setFilterState({...localFilter, breed: filter.breed});
     }
 
-    const handleEnter = (event) => {
+    const handleEnter = (event:  React.KeyboardEvent): void => {
         if (event.key === 'Enter') {
             setFilter();
         }
     }
 
-    const resetFilter = () => {
+    const resetFilter = (): void => {
         setLocalFilter({...emptyFilter, breed: filter.breed});
         setFilterState({...emptyFilter, breed: filter.breed});
     }
@@ -124,7 +130,7 @@ const Filter = (props) => {
                 onClick={() => {
                     resetFilter();
                     if (props.isMenu) {
-                        props.handleDrawer();
+                        props.handleDrawer!(false);
                     }
                 }}
             >Reset filters</div>
@@ -134,17 +140,11 @@ const Filter = (props) => {
                 </div>
                 :
                 <div className='drawer-button-wrapper'>
-                    <Button className='submit-button' variant='contained' color='primary' onClick={() => {setFilter(); props.handleDrawer();}}>Show result</Button>
+                    <Button className='submit-button' variant='contained' color='primary' onClick={() => {setFilter(); props.handleDrawer!(false);}}>Show result</Button>
                 </div>
             }
         </div>
     )
 }
-
-Filter.propTypes = {
-    handleDrawer: PropTypes.func,
-    Divider: PropTypes.any,
-    isMenu: PropTypes.bool,
-};
 
 export default Filter;
