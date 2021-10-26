@@ -21,7 +21,7 @@ const Main: React.FC = (): JSX.Element => {
 
     const fetchAds = async () => {
         const adsCollection = await db.collection('dogAds').get();
-        return Promise.resolve(adsCollection.docs.map((doc) => {return {
+        return adsCollection.docs.map((doc) => {return {
             id: doc.data().id,
             title: doc.data().title,
             description: doc.data().description,
@@ -32,7 +32,7 @@ const Main: React.FC = (): JSX.Element => {
             sellerID: doc.data().sellerID,
             status: doc.data().status,
             price: doc.data().price,
-        };}))
+        };});
     };
 
     const {desktop} = useScreenSize();
