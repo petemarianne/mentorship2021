@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
 import './AdFormModal.scss';
 import { Button, CircularProgress, IconButton, InputBase } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
@@ -7,16 +6,44 @@ import { app, db } from '../../firebase';
 import { toDate } from '../../utils/toDate';
 import { validateAd } from '../../utils/validateAd';
 import { v4 as uuidv4 } from 'uuid';
+import { Ad } from '../../interfaces/Ad';
+import { User } from '../../interfaces/User';
+import { fetchAds } from '../../utils/fetchAds';
+import { fetchUser } from '../../utils/fetchUser';
+import firebase from 'firebase';
 
-export const AdFormModal = ({handleClose}) => {
-    const [loading, setLoading] = useState(false);
-    const [adsData, setAdsData] = useState([]);
-    const [user, setUser] = useState({});
-    const [validate, setValidate] = useState(true);
-    const [file, setFile] = useState({});
-    const [drag, setDrag] = useState(false);
-    const [uploaded, setUploaded] = useState(false);
-    const [fields, setFields] = useState(
+interface AdFormModalProps {
+    handleClose: () => void,
+};
+
+interface Fields {
+    title: string,
+    country: string,
+    city: string,
+    description: string,
+    price: string,
+};
+
+const AdFormModal: React.FC<AdFormModalProps> = (props): JSX.Element => {
+    const [loading, setLoading] = useState<boolean>(false);
+    const [adsData, setAdsData] = useState<Ad[]>([]);
+    const [user, setUser] = useState<User>({
+        activeAds: 0,
+        avatar: '',
+        date: {
+            seconds: 0,
+            nanoseconds: 0,
+        },
+        email: '',
+        id: '',
+        name: '',
+        phone: '',
+    });
+    const [validate, setValidate] = useState<boolean>(true);
+    const [file, setFile] = useState<File>(new File([],''));
+    const [drag, setDrag] = useState<boolean>(false);
+    const [uploaded, setUploaded] = useState<boolean>(false);
+    const [fields, setFields] = useState<Fields>(
         {
             title: '',
             country: '',
@@ -26,57 +53,47 @@ export const AdFormModal = ({handleClose}) => {
         }
     )
 
-    const fetchAds = async () => {
-        const adsCollection = await db.collection('dogAds').get();
-        const ads = adsCollection.docs.map((doc) => {return doc.data();});
-        return Promise.resolve(ads);
-    };
-
-    const fetchUser = async () => {
-        const usersCollection = await db.collection('users').where('id','==','seller1').get();
-        const user = usersCollection.docs.map((doc) => {return doc.data();})[0];
-        return Promise.resolve(user);
-    };
-
     useEffect(() => {
         fetchAds().then((response) => {
             setAdsData(response);
         });
-        fetchUser().then((response) => {
+        fetchUser(1).then((response) => {
             setUser(response);
         });
     }, []);
 
-    const dragStartHandle = (event) => {
+    const dragStartHandle = (event: React.DragEvent<HTMLDivElement>): void => {
         event.preventDefault();
         setDrag(true);
     }
 
-    const dragLeaveHandle = (event) => {
+    const dragLeaveHandle = (event: React.DragEvent<HTMLDivElement>): void => {
         event.preventDefault();
         setDrag(false);
     }
 
-    const onDropHandler = (event) => {
+    const onDropHandler = (event: React.DragEvent<HTMLDivElement>): void => {
         event.preventDefault();
-        const file = event.dataTransfer.files[0];
+        const file: File = event.dataTransfer.files[0];
         setFile(file);
         setDrag(false);
         setUploaded(true);
     }
 
-    const onFileChange = async (event) => {
-        const file = event.target.files[0];
-        setFile(file);
-        setDrag(false);
-        setUploaded(true);
+    const onFileChange = async (event: React.ChangeEvent<HTMLInputElement>): Promise<void> => {
+        const file: File | null = event.target.files ? event.target.files[0] : null;
+        if (file) {
+            setFile(file);
+            setDrag(false);
+            setUploaded(true);
+        }
     };
 
-    const publish = async () => {
-        const storageRef = app.storage().ref();
-        const fileRef = storageRef.child(file.name);
+    const publish = async (): Promise<void> => {
+        const storageRef: firebase.storage.Reference = app.storage().ref();
+        const fileRef: firebase.storage.Reference = storageRef.child(file.name);
         await fileRef.put(file);
-        const fileUrl = await fileRef.getDownloadURL();
+        const fileUrl: string = await fileRef.getDownloadURL();
         await db.collection('dogAds').doc(uuidv4()).set({
             ...fields,
             picture: fileUrl,
@@ -90,30 +107,30 @@ export const AdFormModal = ({handleClose}) => {
             activeAds: user.activeAds + 1,
             date: toDate(user.date),
         });
-        handleClose();
+        props.handleClose();
     };
 
-    const handleTitle = (event) => {
+    const handleTitle = (event: React.ChangeEvent<HTMLInputElement>): void => {
         setFields(current => ({...current, title: event.target.value}));
-    }
+    };
 
-    const handleCountry = (event) => {
+    const handleCountry = (event: React.ChangeEvent<HTMLInputElement>): void => {
         setFields(current => ({...current, country: event.target.value}));
-    }
+    };
 
-    const handleCity = (event) => {
+    const handleCity = (event: React.ChangeEvent<HTMLInputElement>): void => {
         setFields(current => ({...current, city: event.target.value}));
-    }
+    };
 
-    const handleDescription = (event) => {
+    const handleDescription = (event: React.ChangeEvent<HTMLInputElement>): void => {
         setFields(current => ({...current, description: event.target.value}));
-    }
+    };
 
-    const handlePrice = (event) => {
+    const handlePrice = (event: React.ChangeEvent<HTMLInputElement>): void => {
         setFields(current => ({...current, price: event.target.value}));
-    }
+    };
 
-    const uploadedJSX =
+    const uploadedJSX: JSX.Element =
         <>
             <div>Uploaded!</div>
             <div className='file-name'>{file.name}</div>
@@ -123,7 +140,7 @@ export const AdFormModal = ({handleClose}) => {
             </Button>
         </>;
 
-    const dragJSX =
+    const dragJSX: JSX.Element =
         <>
             <div>Drag a picture!</div>
             <div>or</div>
@@ -133,12 +150,12 @@ export const AdFormModal = ({handleClose}) => {
             </Button>
         </>;
 
-    const dropJSX = <div>Drop a picture!</div>;
+    const dropJSX: JSX.Element = <div>Drop a picture!</div>;
 
     return (
         <div className='new-ad-modal'>
             <div className='close-icon-button-wrapper'>
-                <IconButton id='modal-close-button' aria-label='lose' size='medium' onClick={handleClose} data-testid='close-button'>
+                <IconButton id='modal-close-button' aria-label='lose' size='medium' onClick={props.handleClose} data-testid='close-button'>
                     <CloseIcon fontSize='medium'/>
                 </IconButton>
             </div>
@@ -194,9 +211,9 @@ export const AdFormModal = ({handleClose}) => {
                     <div onDragStart={dragStartHandle}
                          onDragLeave={dragLeaveHandle}
                          onDragOver={dragStartHandle}
-                         onDrop={drag ? onDropHandler : null}
+                         onDrop={drag ? onDropHandler : undefined}
                          className='drag-and-drop-wrapper'
-                         style={drag ? {padding: '55px 0'} : null}
+                         style={drag ? {padding: '55px 0'} : undefined}
                          data-testid='drug-and-drop-area'
                     >
                         {drag ?  dropJSX : uploaded ? uploadedJSX : dragJSX}
@@ -207,6 +224,4 @@ export const AdFormModal = ({handleClose}) => {
     );
 };
 
-AdFormModal.propTypes = {
-    handleClose: PropTypes.func,
-};
+export default AdFormModal;

@@ -7,7 +7,7 @@ export interface Ad {
     date: {
         seconds: number,
         nanoseconds: number
-    }, ///?????
+    },
     picture: string,
     sellerID: string,
     status: string,

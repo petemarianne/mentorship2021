@@ -7,7 +7,7 @@ import logo from '../../assets/images/logo.svg';
 import AccountDropdown from './AccountDropdown/AccountDropdown';
 import DrawerMenu from './DrawerMenu/DrawerMenu';
 import { Link, Redirect, useLocation } from 'react-router-dom';
-import { AdFormModal } from '../AdFormModal/AdFormModal';
+import AdFormModal from '../AdFormModal/AdFormModal';
 import { useScreenSize } from '../../hooks/useScreenSize';
 import { FilterContext } from '../../contexts/filter-context';
 import { db } from '../../firebase';

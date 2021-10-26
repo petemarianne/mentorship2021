@@ -1,7 +1,10 @@
 export interface User {
     activeAds: number,
     avatar: string,
-    date: Date,
+    date: {
+        seconds: number,
+        nanoseconds: number
+    },
     email: string,
     id: string,
     name: string,
