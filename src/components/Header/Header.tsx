@@ -15,7 +15,7 @@ import { db } from '../../firebase';
 const Header: React.FC = (): JSX.Element => {
     const [breed, setBreed] = useState<string>('');
     const [redirect, setRedirect] = useState<boolean>(false);
-    const [isDropdownOpen, setIsDropdownOpen] = useState<any>(null);
+    const [isDropdownOpen, setIsDropdownOpen] = useState<Element | null>(null);
     const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
     const currentPathname: string = useLocation().pathname;
 
