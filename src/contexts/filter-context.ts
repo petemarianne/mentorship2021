@@ -1,4 +1,4 @@
-import { createContext } from 'react';
+import React, { createContext } from 'react';
 import { Filter } from '../interfaces/Filter';
 
 export const emptyFilter: Filter = {
@@ -12,7 +12,7 @@ export const emptyFilter: Filter = {
 
 interface DefaultFilter {
     filter: Filter,
-    setFilterState: (filter: Filter) => void,
+    setFilterState:  React.Dispatch<React.SetStateAction<Filter>>,
 };
 
 const defaultFilter: DefaultFilter = {
