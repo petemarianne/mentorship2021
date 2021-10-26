@@ -19,7 +19,7 @@ const Main: React.FC = (): JSX.Element => {
 
     const {filter, setFilterState} = useContext(FilterContext);
 
-    const fetchAds = async () => {
+    const fetchAds = async (): Promise<Ad[]> => {
         const adsCollection = await db.collection('dogAds').get();
         return adsCollection.docs.map((doc) => {return {
             id: doc.data().id,
