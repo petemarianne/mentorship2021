@@ -4,11 +4,7 @@ import Footer from '../Footer/Footer';
 import Header from '../Header/Header';
 import { emptyFilter, FilterContext } from '../../contexts/filter-context';
 
-interface LayoutProps {
-    children: any,
-}
-
-const Layout: React.FC<LayoutProps> = ({ children }): JSX.Element => {
+const Layout: React.FC = ({ children }): JSX.Element => {
     const [filterState, setFilterState] = useState(emptyFilter);
 
     return (

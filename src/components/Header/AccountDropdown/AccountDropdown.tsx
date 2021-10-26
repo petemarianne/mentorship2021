@@ -3,7 +3,7 @@ import { Menu, MenuItem } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 
 interface AccountDropdownProps {
-    isOpen: any,
+    isOpen: Element | null,
     handleDropdown: () => void,
 };
 
