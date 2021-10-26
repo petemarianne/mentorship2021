@@ -1,9 +1,13 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Menu, MenuItem } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 
-const AccountDropdown = (props) => {
+interface AccountDropdownProps {
+    isOpen: Element | null,
+    handleDropdown: () => void,
+};
+
+const AccountDropdown: React.FC<AccountDropdownProps> = (props): JSX.Element => {
     return (
         <Menu
             elevation={2}
@@ -21,15 +25,9 @@ const AccountDropdown = (props) => {
                 horizontal: 'center'
             }}>
             <MenuItem onClick={props.handleDropdown} component={Link} to={'/myprofile'}>My profile</MenuItem>
-            <MenuItem onClick={props.handleLogout}>Logout</MenuItem>
+            <MenuItem>Logout</MenuItem>
         </Menu>
     );
-};
-
-AccountDropdown.propTypes = {
-    isOpen: PropTypes.any,
-    handleDropdown: PropTypes.func,
-    handleLogout: PropTypes.func,
 };
 
 export default AccountDropdown;

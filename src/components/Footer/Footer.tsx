@@ -1,7 +1,7 @@
 import React from 'react';
 import './Footer.scss';
 
-const Footer = () => {
+const Footer: React.FC = (): JSX.Element => {
     return (
         <div className='footer-wrapper'>
             <div className='footer-line'>&copy; “Dog Shop”, 2021</div>
