@@ -5,44 +5,57 @@ import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 import { Link } from 'react-router-dom';
 import { db } from '../../firebase';
-import Filter from '../../components/Filter/Filter';
-import { FilterContext } from '../../contexts/filter-context.ts';
+import Filter from '../../components/Filter/Filter.jsx';
+import { FilterContext } from '../../contexts/filter-context';
 import { filterAds } from '../../utils/filterAds';
 import { useScreenSize } from '../../hooks/useScreenSize';
+import { Ad } from '../../interfaces/Ad';
+import { toDate } from '../../utils/toDate';
 
-const Main = () => {
-    const [adsData, setAdsData] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [page, setPage] = useState(1);
+const Main: React.FC = (): JSX.Element => {
+    const [adsData, setAdsData] = useState<Ad[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [page, setPage] = useState<number>(1);
 
     const {filter, setFilterState} = useContext(FilterContext);
 
     const fetchAds = async () => {
         const adsCollection = await db.collection('dogAds').get();
-        setAdsData(adsCollection.docs.map((doc) => {return doc.data();}));
+        return Promise.resolve(adsCollection.docs.map((doc) => {return {
+            id: doc.data().id,
+            title: doc.data().title,
+            description: doc.data().description,
+            city: doc.data().city,
+            country: doc.data().country,
+            date: doc.data().date,
+            picture: doc.data().picture,
+            sellerID: doc.data().sellerID,
+            status: doc.data().status,
+            price: doc.data().price,
+        };}))
     };
 
     const {desktop} = useScreenSize();
 
-    const comparator = (item1, item2) => {
+    const comparator = (item1: Ad, item2: Ad): number => {
         if (item1.price === item2.price) {
-            return item2.date - item1.date;
+            return item2.date.seconds - item1.date.seconds;
         }
         switch (filter.sort) {
             case 'dateDown':
-                return item2.date - item1.date;
+                return item2.date.seconds - item1.date.seconds;
             case 'dateUp':
-                return item1.date - item2.date;
+                return item1.date.seconds - item2.date.seconds;
             case 'priceDown':
                 return item2.price - item1.price;
             case 'priceUp':
                 return item1.price - item2.price;
             default:
-                return item2.date - item1.date;
+                return item2.date.seconds - item1.date.seconds;
         }
     }
 
-    const handleChange = (event, value) => {
+    const handleChange = (event: React.ChangeEvent<any>, value: number): void => { ///???????
         setPage(value);
     };
 
@@ -63,7 +76,7 @@ const Main = () => {
                         <div className='price'>{item.price}$</div>
                         <div className='location-date-wrapper'>
                             <div>{item.city}, {item.country}</div>
-                            <div>{item.date.toDate().toLocaleString('default', {day: 'numeric', month: 'short', hour: 'numeric', minute: 'numeric'}).toLowerCase()}</div>
+                            <div>{toDate(item.date).toLocaleString('default', {day: 'numeric', month: 'short', hour: 'numeric', minute: 'numeric'}).toLowerCase()}</div>
                         </div>
                     </div>
                 </Link>
@@ -89,12 +102,18 @@ const Main = () => {
     const loadingJSX = <div className='loading-wrapper'><CircularProgress className={loading ? 'loading' : 'loading done'}/></div>;
 
     useEffect(() => {
-        if (JSON.parse(localStorage.getItem('search'))) {
-            setFilterState(currentFilter => ({...currentFilter, breed: JSON.parse(localStorage.getItem('search')).breed}))
+        if (JSON.parse(localStorage.getItem('search') as string)) {
+            const breed: string = JSON.parse(localStorage.getItem('search') as string).breed;
+            // @ts-ignore
+            setFilterState((currentFilter) => ({
+                ...currentFilter,
+                breed,
+            }))
         }
         localStorage.setItem('search', JSON.stringify({breed: ''}));
         setLoading(true);
-        fetchAds().then(() => {
+        fetchAds().then((response) => {
+            setAdsData(response);
             setLoading(false);
         })
     }, [setFilterState]);

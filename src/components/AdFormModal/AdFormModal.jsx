@@ -4,7 +4,7 @@ import './AdFormModal.scss';
 import { Button, CircularProgress, IconButton, InputBase } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import { app, db } from '../../firebase';
-import { toDate } from '../../utils/toDate';
+import { toDate } from '../../utils/toDate.ts';
 import { validateAd } from '../../utils/validateAd';
 import { v4 as uuidv4 } from 'uuid';
 

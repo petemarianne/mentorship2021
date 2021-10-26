@@ -12,7 +12,7 @@ import {
 } from '@material-ui/core';
 import { db } from '../../firebase';
 import { useScreenSize } from '../../hooks/useScreenSize';
-import { toDate } from '../../utils/toDate';
+import { toDate } from '../../utils/toDate.ts';
 import { Archive, Unarchive } from '@material-ui/icons';
 import SellIcon from '@mui/icons-material/Sell';
 import { useParams } from 'react-router-dom';

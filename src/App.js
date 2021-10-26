@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import Main from './pages/Main/Main';
+import Main from './pages/Main/Main.tsx';
 import Page404 from './pages/Page404/Page404';
 import './App.scss';
 import './styles/buttons.scss';
