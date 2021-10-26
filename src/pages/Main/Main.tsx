@@ -55,7 +55,7 @@ const Main: React.FC = (): JSX.Element => {
         }
     }
 
-    const handleChange = (event: React.ChangeEvent<any>, value: number): void => { ///???????
+    const handleChange = (event: React.ChangeEvent<unknown>, value: number): void => {
         setPage(value);
     };
 
@@ -104,7 +104,6 @@ const Main: React.FC = (): JSX.Element => {
     useEffect(() => {
         if (JSON.parse(localStorage.getItem('search') as string)) {
             const breed: string = JSON.parse(localStorage.getItem('search') as string).breed;
-            // @ts-ignore
             setFilterState((currentFilter) => ({
                 ...currentFilter,
                 breed,
