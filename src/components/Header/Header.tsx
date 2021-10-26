@@ -35,19 +35,19 @@ const Header: React.FC = (): JSX.Element => {
 
     const handleDropdownOpen = (event: React.MouseEvent): void => {
         setIsDropdownOpen(event.currentTarget);
-    }
+    };
 
     const handleDropdownClose = (): void => {
         setIsDropdownOpen(null);
-    }
+    };
 
     const handleDrawer = (value: boolean): void => {
         setIsDrawerOpen(value);
-    }
+    };
 
     const handleBreed = (event: React.ChangeEvent<HTMLInputElement>): void => {
         setBreed(event.target.value);
-    }
+    };
 
     const handleEnter = (event: React.KeyboardEvent): void => {
         if (event.key === 'Enter') {
@@ -59,19 +59,19 @@ const Header: React.FC = (): JSX.Element => {
                 setRedirect(false);
             }
         }
-    }
+    };
 
     const renderRedirect = (): JSX.Element => {
         if (redirect) {
             return <Redirect to='/' />;
         }
         return <></>;
-    }
+    };
 
     const fetchLoggedInUsersAvatar = async (): Promise<string> => {
         const usersCollection = await db.collection('users').where('id','==','seller1').get();
         const user = usersCollection.docs.map((doc) => {return doc.data();})[0];
-        return Promise.resolve(user.avatar);
+        return user.avatar;
     };
 
     const [loggedInUsersAvatar, setLoggedInUsersAvatar] = useState<string>('');
