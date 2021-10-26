@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Modal } from '@material-ui/core';
 import './Ad.scss';
-import { toDate } from '../../utils/toDate.ts';
+import { toDate } from '../../utils/toDate';
 import { useScreenSize } from '../../hooks/useScreenSize';
 import { Link, useParams } from 'react-router-dom';
 import { db } from '../../firebase';

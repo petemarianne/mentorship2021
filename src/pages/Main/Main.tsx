@@ -5,7 +5,7 @@ import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 import { Link } from 'react-router-dom';
 import { db } from '../../firebase';
-import Filter from '../../components/Filter/Filter.jsx';
+import Filter from '../../components/Filter/Filter';
 import { FilterContext } from '../../contexts/filter-context';
 import { filterAds } from '../../utils/filterAds';
 import { useScreenSize } from '../../hooks/useScreenSize';
@@ -59,8 +59,8 @@ const Main: React.FC = (): JSX.Element => {
         setPage(value);
     };
 
-    const filteredArray = adsData.filter(item => filterAds(item, filter));
-    const adWrapper = filteredArray.sort(comparator).map((item, index) => {
+    const filteredArray: Ad[] = adsData.filter(item => filterAds(item, filter));
+    const adWrapper: JSX.Element[] = filteredArray.sort(comparator).map((item, index) => {
         if (index < filteredArray.length && index >= (page - 1) * 10 && index < page * 10) {
             return (
                 <Link
@@ -86,7 +86,7 @@ const Main: React.FC = (): JSX.Element => {
         }
     });
 
-    const pagination =
+    const pagination: JSX.Element =
         <Stack spacing={2}>
             <Pagination
                 count={filteredArray.length % 10 === 0 ? filteredArray.length / 10 : Math.trunc(filteredArray.length / 10) + 1}
@@ -99,7 +99,7 @@ const Main: React.FC = (): JSX.Element => {
                 className={filteredArray.length <= 10 || loading ? 'pagination-wrapper none' : 'pagination-wrapper'}/>
         </Stack>;
 
-    const loadingJSX = <div className='loading-wrapper'><CircularProgress className={loading ? 'loading' : 'loading done'}/></div>;
+    const loadingJSX: JSX.Element = <div className='loading-wrapper'><CircularProgress className={loading ? 'loading' : 'loading done'}/></div>;
 
     useEffect(() => {
         if (JSON.parse(localStorage.getItem('search') as string)) {
