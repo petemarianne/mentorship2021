@@ -6,7 +6,7 @@ import './App.scss';
 import './styles/buttons.scss';
 import Profile from './pages/Profile/Profile';
 import Ad from './pages/Ad/Ad';
-import Layout from './components/Layout/Layout.tsx';
+import Layout from './components/Layout/Layout';
 import MyProfile from './pages/MyProfile/MyProfile';
 
 const App = () => {

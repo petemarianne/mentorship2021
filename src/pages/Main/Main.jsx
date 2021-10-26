@@ -6,7 +6,7 @@ import Stack from '@mui/material/Stack';
 import { Link } from 'react-router-dom';
 import { db } from '../../firebase';
 import Filter from '../../components/Filter/Filter';
-import { FilterContext } from '../../contexts/filter-context.ts';
+import { FilterContext } from '../../contexts/filter-context';
 import { filterAds } from '../../utils/filterAds';
 import { useScreenSize } from '../../hooks/useScreenSize';
 
