@@ -1,7 +1,7 @@
 import React from 'react';
 import Profile from '../Profile/Profile';
 
-const MyProfile = () => {
+const MyProfile: React.FC = (): JSX.Element => {
     return <Profile myProfile={true} />;
 }
 
