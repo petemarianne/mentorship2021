@@ -79,17 +79,19 @@ const AdFormModal: React.FC<AdFormModalProps> = (props): JSX.Element => {
 
     const publish = async (): Promise<void> => {
         const storageRef: firebase.storage.Reference = app.storage().ref();
-        const fileRef: firebase.storage.Reference = storageRef.child(file?.name as string);
-        file && await fileRef.put(file);
-        const fileUrl: string = await fileRef.getDownloadURL();
-        await db.collection('dogAds').doc(uuidv4()).set({
-            ...fields,
-            picture: fileUrl,
-            date: new Date(),
-            status: 'active',
-            sellerID: user.id,
-            id: 'ad' + (adsData.length + 1),
-        });
+        if (file) {
+            const fileRef: firebase.storage.Reference = storageRef.child(file.name);
+            await fileRef.put(file);
+            const fileUrl: string = await fileRef.getDownloadURL();
+            await db.collection('dogAds').doc(uuidv4()).set({
+                ...fields,
+                picture: fileUrl,
+                date: new Date(),
+                status: 'active',
+                sellerID: user.id,
+                id: 'ad' + (adsData.length + 1),
+            });
+        }
         await db.collection('users').doc(user.name).set({
             ...user,
             activeAds: user.activeAds + 1,
