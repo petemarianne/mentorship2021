@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.scss';
 import App from './App';
 
-const AppContainer = () => {
+const AppContainer: React.FC = (): JSX.Element => {
     return (
         <App />
     );
