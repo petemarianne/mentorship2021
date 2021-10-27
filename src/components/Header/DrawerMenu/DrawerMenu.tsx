@@ -7,27 +7,27 @@ import Filter from '../../Filter/Filter';
 
 interface DrawerMenuProps {
     avatar: string,
-    handleDrawer: (value: boolean) => void,
+    closeMenu: (value: boolean) => void,
     handleOpen: () => void,
 };
 
 const DrawerMenu: React.FC<DrawerMenuProps> = (props): JSX.Element => {
     const filterProps = {
-        handleDrawer: props.handleDrawer,
+        closeMenu: props.closeMenu,
         Divider: <Divider style={{backgroundColor: 'transparent'}}/>,
     };
 
     return (
         <div className='drawer-wrapper'>
             <div className='drawer-icons'>
-                <Button onClick={() => props.handleDrawer(false)}>
+                <Button onClick={() => props.closeMenu(false)}>
                     <CloseIcon fontSize='large'/>
                 </Button>
                 <Avatar className='avatar-drawer' src={props.avatar} alt='avatar'/>
             </div>
             <Divider/>
             <div className='drawer-button-wrapper'>
-                <Button className='submit-button' variant='contained' color='primary' onClick={() => {props.handleDrawer(false); props.handleOpen();}}>Submit an ad</Button>
+                <Button className='submit-button' variant='contained' color='primary' onClick={() => {props.closeMenu(false); props.handleOpen();}}>Submit an ad</Button>
             </div>
             <Divider className='drawer-divider'/>
             <Button className='my-account-button' variant='contained' color='secondary' component={Link} to={'/profile'}>My profile</Button>
@@ -35,7 +35,7 @@ const DrawerMenu: React.FC<DrawerMenuProps> = (props): JSX.Element => {
             <Button className='logout-button' variant='contained' color='secondary'>Logout</Button>
             <Divider className='drawer-divider'/>
             <Filter
-                filterProps={filterProps}
+                slideView={filterProps}
             />
         </div>
     );

@@ -5,8 +5,8 @@ import { emptyFilter, FilterContext } from '../../contexts/filter-context';
 import { Filter as FilterInterface } from '../../interfaces/Filter';
 
 interface FilterProps {
-    filterProps?: {
-        handleDrawer: (value: boolean) => void,
+    slideView?: {
+        closeMenu: (value: boolean) => void,
         Divider: JSX.Element,
     }
 };
@@ -54,7 +54,7 @@ const Filter: React.FC<FilterProps> = (props): JSX.Element => {
     return (
         <div className='filter-wrapper'>
             <div className='filter-name'>Country</div>
-            {props.filterProps?.Divider}
+            {props.slideView?.Divider}
             <div className='search large'>
                 <InputBase
                     value={localFilter.country}
@@ -65,7 +65,7 @@ const Filter: React.FC<FilterProps> = (props): JSX.Element => {
                 />
             </div>
             <div className='filter-name'>City</div>
-            {props.filterProps?.Divider}
+            {props.slideView?.Divider}
             <div className='search'>
                 <InputBase
                     value={localFilter.city}
@@ -76,8 +76,8 @@ const Filter: React.FC<FilterProps> = (props): JSX.Element => {
                 />
             </div>
             <div className='filter-name'>Price</div>
-            {props.filterProps?.Divider}
-            {!props.filterProps ?
+            {props.slideView?.Divider}
+            {!props.slideView ?
                 <div className='price-filter'>
                     <InputBase
                         value={localFilter.priceFrom}
@@ -114,9 +114,9 @@ const Filter: React.FC<FilterProps> = (props): JSX.Element => {
                     />
                 </div>
             }
-            {props.filterProps?.Divider}
+            {props.slideView?.Divider}
             <div className='filter-name'>Sort by</div>
-            {props.filterProps?.Divider}
+            {props.slideView?.Divider}
             <div className='filter-select-wrapper'>
                 <select className='filter-select' onChange={handleSelect} onKeyDown={handleEnter} value={localFilter.sort} data-testid='select'>
                     <option value='dateDown' data-testid="val1">Date ↓</option>
@@ -125,21 +125,21 @@ const Filter: React.FC<FilterProps> = (props): JSX.Element => {
                     <option value='priceUp' data-testid="val4">Price ↑</option>
                 </select>
             </div>
-            {props.filterProps?.Divider}
+            {props.slideView?.Divider}
             <div
                 className='reset-filters'
                 onClick={() => {
                     resetFilter();
-                    props.filterProps?.handleDrawer(false);
+                    props.slideView?.closeMenu(false);
                 }}
             >Reset filters</div>
-            {!props.filterProps ?
+            {!props.slideView ?
                 <div className='filter-button-wrapper'>
                     <Button className='filter-button' variant='contained' color='primary' onClick={() => {setFilter();}}>Show result</Button>
                 </div>
                 :
                 <div className='drawer-button-wrapper'>
-                    <Button className='submit-button' variant='contained' color='primary' onClick={() => {setFilter(); props.filterProps?.handleDrawer(false);}}>Show result</Button>
+                    <Button className='submit-button' variant='contained' color='primary' onClick={() => {setFilter(); props.slideView?.closeMenu(false);}}>Show result</Button>
                 </div>
             }
         </div>
