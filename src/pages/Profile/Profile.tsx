@@ -6,7 +6,7 @@ import { Archive, Unarchive } from '@material-ui/icons';
 import SellIcon from '@mui/icons-material/Sell';
 import { useParams } from 'react-router-dom';
 import { fetchUsersAds, fetchUser, closeAd, sellAd, activateAd, toDate } from '../../utils';
-import { Ad, User } from '../../interfaces';
+import { Ad, NumericDate, User } from '../../interfaces';
 
 interface ProfileProps {
     myProfile?: boolean,
@@ -63,7 +63,7 @@ export const Profile: React.FC<ProfileProps> = (props): JSX.Element => {
         columns.push({ id: 'action', label: 'Action', minWidth: 80, align: 'center'});
     }
 
-    const dateCell = (date: {seconds: number, nanoseconds: number} | undefined): JSX.Element => {
+    const dateCell = (date: NumericDate | undefined): JSX.Element => {
             return date ?
                 <TableCell size='medium' align='center'>
                     {toDate(date).toLocaleString('default', {
