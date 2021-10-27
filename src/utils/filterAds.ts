@@ -1,5 +1,4 @@
-import { Ad } from '../interfaces/Ad';
-import { Filter } from '../interfaces/Filter';
+import { Ad, Filter } from '../interfaces';
 
 export const filterAds = (item: Ad, filter: Filter): boolean => {
     if (item.status !== 'active') {

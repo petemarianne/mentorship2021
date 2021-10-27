@@ -1,5 +1,5 @@
 import { db } from '../firebase';
-import { User } from '../interfaces/User';
+import { User } from '../interfaces';
 
 export const fetchUser = async (id: number): Promise<User> => {
     const usersCollection = await db.collection('users').where('id','==',`seller${id}`).get();
