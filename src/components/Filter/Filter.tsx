@@ -5,9 +5,10 @@ import { emptyFilter, FilterContext } from '../../contexts/filter-context';
 import { Filter as FilterInterface } from '../../interfaces/Filter';
 
 interface FilterProps {
-    handleDrawer?: (value: boolean) => void,
-    Divider?: JSX.Element,
-    isMenu: boolean,
+    filterProps?: {
+        handleDrawer: (value: boolean) => void,
+        Divider: JSX.Element,
+    }
 };
 
 const Filter: React.FC<FilterProps> = (props): JSX.Element => {
@@ -53,7 +54,7 @@ const Filter: React.FC<FilterProps> = (props): JSX.Element => {
     return (
         <div className='filter-wrapper'>
             <div className='filter-name'>Country</div>
-            {props.Divider}
+            {props.filterProps?.Divider}
             <div className='search large'>
                 <InputBase
                     value={localFilter.country}
@@ -64,7 +65,7 @@ const Filter: React.FC<FilterProps> = (props): JSX.Element => {
                 />
             </div>
             <div className='filter-name'>City</div>
-            {props.Divider}
+            {props.filterProps?.Divider}
             <div className='search'>
                 <InputBase
                     value={localFilter.city}
@@ -75,8 +76,8 @@ const Filter: React.FC<FilterProps> = (props): JSX.Element => {
                 />
             </div>
             <div className='filter-name'>Price</div>
-            {props.Divider}
-            {!props.isMenu ?
+            {props.filterProps?.Divider}
+            {!props.filterProps ?
                 <div className='price-filter'>
                     <InputBase
                         value={localFilter.priceFrom}
@@ -97,25 +98,25 @@ const Filter: React.FC<FilterProps> = (props): JSX.Element => {
                 </div>
                 :
                 <div className='price-filter-wrapper'>
-                <InputBase
-                    className='left-search'
-                    value={localFilter.priceFrom}
-                    onChange={handlePriceFrom}
-                    fullWidth
-                    data-testid='input'
-                />
-                <InputBase
-                    className='right-search'
-                    value={localFilter.priceTo}
-                    onChange={handlePriceTo}
-                    fullWidth
-                    data-testid='input'
-                />
+                    <InputBase
+                        className='left-search'
+                        value={localFilter.priceFrom}
+                        onChange={handlePriceFrom}
+                        fullWidth
+                        data-testid='input'
+                    />
+                    <InputBase
+                        className='right-search'
+                        value={localFilter.priceTo}
+                        onChange={handlePriceTo}
+                        fullWidth
+                        data-testid='input'
+                    />
                 </div>
             }
-            {props.Divider}
+            {props.filterProps?.Divider}
             <div className='filter-name'>Sort by</div>
-            {props.Divider}
+            {props.filterProps?.Divider}
             <div className='filter-select-wrapper'>
                 <select className='filter-select' onChange={handleSelect} onKeyDown={handleEnter} value={localFilter.sort} data-testid='select'>
                     <option value='dateDown' data-testid="val1">Date ↓</option>
@@ -124,23 +125,21 @@ const Filter: React.FC<FilterProps> = (props): JSX.Element => {
                     <option value='priceUp' data-testid="val4">Price ↑</option>
                 </select>
             </div>
-            {props.Divider}
+            {props.filterProps?.Divider}
             <div
                 className='reset-filters'
                 onClick={() => {
                     resetFilter();
-                    if (props.isMenu) {
-                        props.handleDrawer!(false);
-                    }
+                    props.filterProps?.handleDrawer(false);
                 }}
             >Reset filters</div>
-            {!props.isMenu ?
+            {!props.filterProps ?
                 <div className='filter-button-wrapper'>
                     <Button className='filter-button' variant='contained' color='primary' onClick={() => {setFilter();}}>Show result</Button>
                 </div>
                 :
                 <div className='drawer-button-wrapper'>
-                    <Button className='submit-button' variant='contained' color='primary' onClick={() => {setFilter(); props.handleDrawer!(false);}}>Show result</Button>
+                    <Button className='submit-button' variant='contained' color='primary' onClick={() => {setFilter(); props.filterProps?.handleDrawer(false);}}>Show result</Button>
                 </div>
             }
         </div>

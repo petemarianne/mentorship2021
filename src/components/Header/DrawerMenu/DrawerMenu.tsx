@@ -12,6 +12,11 @@ interface DrawerMenuProps {
 };
 
 const DrawerMenu: React.FC<DrawerMenuProps> = (props): JSX.Element => {
+    const filterProps = {
+        handleDrawer: props.handleDrawer,
+        Divider: <Divider style={{backgroundColor: 'transparent'}}/>,
+    };
+
     return (
         <div className='drawer-wrapper'>
             <div className='drawer-icons'>
@@ -30,9 +35,7 @@ const DrawerMenu: React.FC<DrawerMenuProps> = (props): JSX.Element => {
             <Button className='logout-button' variant='contained' color='secondary'>Logout</Button>
             <Divider className='drawer-divider'/>
             <Filter
-                handleDrawer={props.handleDrawer}
-                Divider={<Divider style={{backgroundColor: 'transparent'}}/>}
-                isMenu={true}
+                filterProps={filterProps}
             />
         </div>
     );

@@ -28,7 +28,7 @@ const AdFormModal: React.FC<AdFormModalProps> = (props): JSX.Element => {
         phone: '',
     });
     const [validate, setValidate] = useState<boolean>(true);
-    const [file, setFile] = useState<File>(new File([],''));
+    const [file, setFile] = useState<File>();
     const [drag, setDrag] = useState<boolean>(false);
     const [uploaded, setUploaded] = useState<boolean>(false);
     const [fields, setFields] = useState<Fields>(
@@ -79,8 +79,8 @@ const AdFormModal: React.FC<AdFormModalProps> = (props): JSX.Element => {
 
     const publish = async (): Promise<void> => {
         const storageRef: firebase.storage.Reference = app.storage().ref();
-        const fileRef: firebase.storage.Reference = storageRef.child(file.name);
-        await fileRef.put(file);
+        const fileRef: firebase.storage.Reference = storageRef.child(file?.name as string);
+        file && await fileRef.put(file);
         const fileUrl: string = await fileRef.getDownloadURL();
         await db.collection('dogAds').doc(uuidv4()).set({
             ...fields,
@@ -121,7 +121,7 @@ const AdFormModal: React.FC<AdFormModalProps> = (props): JSX.Element => {
     const uploadedJSX: JSX.Element =
         <>
             <div>Uploaded!</div>
-            <div className='file-name'>{file.name}</div>
+            <div className='file-name'>{file?.name}</div>
             <Button variant='contained' color='primary' component='label' className='re-upload-file-button'>
                 Upload Another File
                 <input data-testid='upload-another-file' type='file' onChange={onFileChange} hidden/>

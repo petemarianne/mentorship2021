@@ -111,7 +111,7 @@ export const Main: React.FC = (): JSX.Element => {
         <>
             {desktop && (
                 <div className='main-page-desktop-wrapper'>
-                    <Filter isMenu={false}/>
+                    <Filter />
                     <div className='feed-wrapper'>
                         {loadingJSX}
                         {!loading && adsData.length !== 0 && filteredArray.length === 0 ? <div className={'nothing-found'}>Nothing was found for your search!</div> : <></>}
