@@ -1,4 +1,4 @@
-import { Fields } from '../interfaces/Fields';
+import { Fields } from '../interfaces';
 
 export const validateAd = (file: File, fields: Fields) => {
     for (let key in fields) {

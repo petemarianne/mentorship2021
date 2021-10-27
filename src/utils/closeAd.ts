@@ -1,5 +1,4 @@
-import { Ad } from '../interfaces/Ad';
-import { User } from '../interfaces/User';
+import { Ad, User } from '../interfaces';
 import { db } from '../firebase';
 
 export const closeAd = async (ad: Ad, user: User): Promise<void> => {
