@@ -136,10 +136,8 @@ export const Profile: React.FC<ProfileProps> = (props): JSX.Element => {
                                     <TableRow role='checkbox' tabIndex={-1} key={row.id}>
                                         <TableCell size='medium' align='center'>{row.title}</TableCell>
                                         {dateCell(row.date)}
-                                        {// @ts-ignore
-                                            dateCell(row.saleDate)}
-                                        {// @ts-ignore
-                                            dateCell(row.closingDate)}
+                                        {dateCell(row.saleDate)}
+                                        {dateCell(row.closingDate)}
                                         <TableCell size='medium' align='center'>{row.status}</TableCell>
                                         <TableCell size='medium' align='center'>{row.price}</TableCell>
                                         {props.myProfile ?
@@ -150,10 +148,9 @@ export const Profile: React.FC<ProfileProps> = (props): JSX.Element => {
                                                         size='small'
                                                         color='primary'
                                                         onClick={() => {
-                                                            // @ts-ignore
-                                                            activateAd(row, user).then(() => setRerender(cur => {
-                                                                setRerender(cur + 1)
-                                                            }));
+                                                            activateAd(row, user).then(() => {
+                                                                setRerender(cur => (cur + 1));
+                                                            });
                                                         }}
                                                     >
                                                         <Unarchive fontSize='small'/>
@@ -165,10 +162,9 @@ export const Profile: React.FC<ProfileProps> = (props): JSX.Element => {
                                                                 size='small'
                                                                 color='primary'
                                                                 onClick={() => {
-                                                                    // @ts-ignore
-                                                                    sellAd(row, user).then(() => setRerender(cur => {
-                                                                        setRerender(cur + 1)
-                                                                    }));
+                                                                    sellAd(row, user).then(() => {
+                                                                        setRerender(cur => (cur + 1));
+                                                                    });
                                                                 }}
                                                             >
                                                                 <SellIcon fontSize='small'/>
@@ -178,10 +174,9 @@ export const Profile: React.FC<ProfileProps> = (props): JSX.Element => {
                                                                 size='small'
                                                                 color='primary'
                                                                 onClick={() => {
-                                                                    // @ts-ignore
-                                                                    closeAd(row, user).then(() => setRerender(cur => {
-                                                                        setRerender(cur + 1)
-                                                                    }));
+                                                                    closeAd(row, user).then(() => {
+                                                                        setRerender(cur => (cur + 1));
+                                                                    });
                                                                 }}
                                                             >
                                                                 <Archive fontSize='small'/>
