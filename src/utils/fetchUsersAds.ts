@@ -1,5 +1,5 @@
 import { db } from '../firebase';
-import { Ad } from '../interfaces/Ad';
+import { Ad } from '../interfaces';
 
 export const fetchUsersAds = async (id: string): Promise<Ad[]> => {
     const adsCollection = await db.collection('dogAds').where('sellerID','==', id).get();

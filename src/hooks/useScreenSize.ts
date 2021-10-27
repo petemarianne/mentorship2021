@@ -1,7 +1,13 @@
 import { useMediaQuery } from '@material-ui/core';
 
-export const useScreenSize = () => {
-    const desktop = useMediaQuery('(min-width: 769px)');
+interface ScreenSize {
+    desktop: boolean,
+    tablet: boolean,
+    mobile: boolean,
+}
+
+export const useScreenSize = (): ScreenSize => {
+    const desktop: boolean = useMediaQuery('(min-width: 769px)');
         return {
             desktop,
             tablet: useMediaQuery('(min-width: 426px)') && !desktop,
