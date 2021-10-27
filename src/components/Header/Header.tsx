@@ -130,7 +130,7 @@ const Header: React.FC = (): JSX.Element => {
                                 open={isDrawerOpen}
                                 onClose={() => handleDrawer(false)}
                             >
-                                <DrawerMenu avatar={loggedInUsersAvatar} closeMenu={handleDrawer} handleOpen={handleOpen}/>
+                                <DrawerMenu avatar={loggedInUsersAvatar} closeMenu={() => handleDrawer(false)} handleOpen={handleOpen}/>
                             </Drawer>
                             <Link className='logo' to='/' style={{ textDecoration: 'none' }}><img src={logo} alt='logo'/></Link>
                         </div>

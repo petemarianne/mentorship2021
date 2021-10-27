@@ -7,7 +7,7 @@ import Filter from '../../Filter/Filter';
 
 interface DrawerMenuProps {
     avatar: string,
-    closeMenu: (value: boolean) => void,
+    closeMenu: () => void,
     handleOpen: () => void,
 };
 
@@ -20,14 +20,14 @@ const DrawerMenu: React.FC<DrawerMenuProps> = (props): JSX.Element => {
     return (
         <div className='drawer-wrapper'>
             <div className='drawer-icons'>
-                <Button onClick={() => props.closeMenu(false)}>
+                <Button onClick={() => props.closeMenu()}>
                     <CloseIcon fontSize='large'/>
                 </Button>
                 <Avatar className='avatar-drawer' src={props.avatar} alt='avatar'/>
             </div>
             <Divider/>
             <div className='drawer-button-wrapper'>
-                <Button className='submit-button' variant='contained' color='primary' onClick={() => {props.closeMenu(false); props.handleOpen();}}>Submit an ad</Button>
+                <Button className='submit-button' variant='contained' color='primary' onClick={() => {props.closeMenu(); props.handleOpen();}}>Submit an ad</Button>
             </div>
             <Divider className='drawer-divider'/>
             <Button className='my-account-button' variant='contained' color='secondary' component={Link} to={'/profile'}>My profile</Button>

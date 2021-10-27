@@ -6,7 +6,7 @@ import { Filter as FilterInterface } from '../../interfaces/Filter';
 
 interface FilterProps {
     slideView?: {
-        closeMenu: (value: boolean) => void,
+        closeMenu: () => void,
         Divider: JSX.Element,
     }
 };
@@ -130,7 +130,7 @@ const Filter: React.FC<FilterProps> = (props): JSX.Element => {
                 className='reset-filters'
                 onClick={() => {
                     resetFilter();
-                    props.slideView?.closeMenu(false);
+                    props.slideView?.closeMenu();
                 }}
             >Reset filters</div>
             {!props.slideView ?
@@ -139,7 +139,7 @@ const Filter: React.FC<FilterProps> = (props): JSX.Element => {
                 </div>
                 :
                 <div className='drawer-button-wrapper'>
-                    <Button className='submit-button' variant='contained' color='primary' onClick={() => {setFilter(); props.slideView?.closeMenu(false);}}>Show result</Button>
+                    <Button className='submit-button' variant='contained' color='primary' onClick={() => {setFilter(); props.slideView?.closeMenu();}}>Show result</Button>
                 </div>
             }
         </div>
