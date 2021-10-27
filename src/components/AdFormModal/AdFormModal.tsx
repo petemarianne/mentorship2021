@@ -3,25 +3,13 @@ import './AdFormModal.scss';
 import { Button, CircularProgress, IconButton, InputBase } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import { app, db } from '../../firebase';
-import { toDate } from '../../utils/toDate';
-import { validateAd } from '../../utils/validateAd';
+import { toDate,  validateAd, fetchAds, fetchUser } from '../../utils';
 import { v4 as uuidv4 } from 'uuid';
-import { Ad } from '../../interfaces/Ad';
-import { User } from '../../interfaces/User';
-import { fetchAds } from '../../utils/fetchAds';
-import { fetchUser } from '../../utils/fetchUser';
+import { Ad, User, Fields } from '../../interfaces';
 import firebase from 'firebase';
 
 interface AdFormModalProps {
     handleClose: () => void,
-};
-
-interface Fields {
-    title: string,
-    country: string,
-    city: string,
-    description: string,
-    price: string,
 };
 
 const AdFormModal: React.FC<AdFormModalProps> = (props): JSX.Element => {

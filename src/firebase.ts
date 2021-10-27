@@ -1,7 +1,7 @@
 import firebase from 'firebase';
 import 'firebase/storage';
 
-export const app = firebase.initializeApp({
+export const app: firebase.app.App = firebase.initializeApp({
     apiKey: "AIzaSyBmZoEYgK4Wz80IxGfCsWIGqQscTZ01wEc",
     authDomain: "dog-shop-8c56c.firebaseapp.com",
     projectId: "dog-shop-8c56c",
@@ -11,4 +11,4 @@ export const app = firebase.initializeApp({
     appId: "1:55519712783:web:edf84e3daf99f48633f57a"
 });
 
-export const db = app.firestore();
+export const db: firebase.firestore.Firestore = app.firestore();

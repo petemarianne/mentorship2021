@@ -4,15 +4,13 @@ import { CircularProgress } from '@material-ui/core';
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 import { Link } from 'react-router-dom';
-import { fetchAds } from '../../utils/fetchAds';
+import { fetchAds, filterAds, toDate } from '../../utils';
 import Filter from '../../components/Filter/Filter';
 import { FilterContext } from '../../contexts/filter-context';
-import { filterAds } from '../../utils/filterAds';
 import { useScreenSize } from '../../hooks/useScreenSize';
-import { Ad } from '../../interfaces/Ad';
-import { toDate } from '../../utils/toDate';
+import { Ad } from '../../interfaces';
 
-const Main: React.FC = (): JSX.Element => {
+export const Main: React.FC = (): JSX.Element => {
     const [adsData, setAdsData] = useState<Ad[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [page, setPage] = useState<number>(1);
@@ -133,5 +131,3 @@ const Main: React.FC = (): JSX.Element => {
         </>
     );
 };
-
-export default Main;

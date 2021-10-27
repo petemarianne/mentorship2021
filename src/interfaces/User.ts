@@ -1,10 +1,9 @@
+import { NumericDate } from './NumericDate';
+
 export interface User {
     activeAds: number,
     avatar: string,
-    date: {
-        seconds: number,
-        nanoseconds: number
-    },
+    date: NumericDate,
     email: string,
     id: string,
     name: string,
