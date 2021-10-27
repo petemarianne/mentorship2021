@@ -1,8 +1,8 @@
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-import Page404 from './Page404';
+import { Page404 } from './Page404';
 import { Route, MemoryRouter } from 'react-router-dom';
-import React from "react";
+import React from 'react';
 
 test('Page 404 renders:', () => {
     render(
