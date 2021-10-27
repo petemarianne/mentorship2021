@@ -1,28 +1,28 @@
-import {fireEvent, render, screen} from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import Filter from './Filter';
 import userEvent from '@testing-library/user-event';
 import { Divider } from '@material-ui/core';
 import React from 'react';
-import {FilterContext} from "../../contexts/filter-context";
+import { emptyFilter, FilterContext } from '../../contexts/filter-context';
+import {Filter as FilterInterface} from '../../interfaces/Filter';
 
 describe('Filter component:', () => {
 
     const handleDrawer = jest.fn();
     const setFilterState = jest.fn();
+    const filterProps = {
+        handleDrawer: handleDrawer,
+        Divider: <Divider style={{backgroundColor: 'transparent'}} data-testid='divider'/>,
+    };
+    const filter: FilterInterface = emptyFilter;
 
     test('Desktop component renders', () => {
         render(<Filter />);
     });
 
     test('Mobile component renders', () => {
-        render(
-            <Filter
-                handleDrawer={handleDrawer}
-                Divider={<Divider style={{backgroundColor: 'transparent'}}/>}
-                isMenu={true}
-            />
-        );
+        render(<Filter filterProps={filterProps}/>);
     });
 
     test('Text renders', () => {
@@ -40,24 +40,12 @@ describe('Filter component:', () => {
     });
 
     test('Mobile button renders', () => {
-        render(
-            <Filter
-                handleDrawer={handleDrawer}
-                Divider={<Divider style={{backgroundColor: 'transparent'}}/>}
-                isMenu={true}
-            />
-        );
+        render(<Filter filterProps={filterProps}/>);
         expect(screen.getByText('Show result')).toBeInTheDocument();
     });
 
     test('Dividers render', () => {
-        render(
-            <Filter
-                handleDrawer={handleDrawer}
-                Divider={<Divider style={{backgroundColor: 'transparent'}}  data-testid='divider'/>}
-                isMenu={true}
-            />
-        );
+        render(<Filter filterProps={filterProps}/>);
         screen.getAllByTestId('divider').map((item, index) => {
             expect(item).toBeInTheDocument();
             expect(index).toBeLessThanOrEqual(5);
@@ -73,13 +61,7 @@ describe('Filter component:', () => {
     });
 
     test('Inputs render in mobile', () => {
-        render(
-            <Filter
-                handleDrawer={handleDrawer}
-                Divider={<Divider style={{backgroundColor: 'transparent'}}  data-testid='divider'/>}
-                isMenu={true}
-            />
-        );
+        render(<Filter filterProps={filterProps}/>);
         screen.getAllByTestId('input').map((item, index) => {
             expect(item).toBeInTheDocument();
             expect(index).toBeLessThanOrEqual(4);
@@ -99,13 +81,7 @@ describe('Filter component:', () => {
     });
 
     test('Handle drawer', () => {
-        render(
-            <Filter
-                handleDrawer={handleDrawer}
-                Divider={<Divider style={{backgroundColor: 'transparent'}}  data-testid='divider'/>}
-                isMenu={true}
-            />
-        );
+        render(<Filter filterProps={filterProps}/>);
         userEvent.click(screen.getByText('Show result'));
         expect(handleDrawer).toBeCalled();
         userEvent.click(screen.getByText('Reset filters'));
@@ -114,7 +90,7 @@ describe('Filter component:', () => {
 
     test('Set filter', () => {
         render(
-            <FilterContext.Provider value={{filter: {}, setFilterState}}>
+            <FilterContext.Provider value={{filter, setFilterState}}>
                 <Filter />
             </FilterContext.Provider>
         )

@@ -3,8 +3,6 @@ import '@testing-library/jest-dom/extend-expect';
 import AdFormModal from './AdFormModal';
 import userEvent from '@testing-library/user-event';
 
-jest.mock('../../firebase');
-
 describe('New ad form modal component:', () => {
     const handleClose = jest.fn();
 
@@ -30,12 +28,12 @@ describe('New ad form modal component:', () => {
     })
 
     test('Publish button renders', () => {
-        const button = screen.getByTestId('publish-button');
+        const button: HTMLElement = screen.getByTestId('publish-button');
         expect(button).toBeInTheDocument();
         expect(screen.getByText('Publish')).toBeInTheDocument();
     })
 
-    /*test('Submit form', () => {
+    test('Submit form', () => {
         userEvent.click(screen.getByText('Publish'));
         expect(screen.getByTestId('validate')).toBeInTheDocument();
         expect(screen.getByText('Fill in all the fields!')).toBeInTheDocument();
@@ -45,7 +43,7 @@ describe('New ad form modal component:', () => {
         userEvent.upload(screen.getByLabelText('Upload File'), [new File([], 'img'),]);
         userEvent.click(screen.getByText('Publish'));
         expect(screen.getByTestId('loading')).toBeInTheDocument();
-    })*/
+    })
 
     test('Text inputs renders', () => {
         screen.getAllByTestId('text-input').map((item, index) => {
@@ -63,7 +61,7 @@ describe('New ad form modal component:', () => {
     })
 
     test('Drag start, over and leave', () => {
-        const area = screen.getByTestId('drug-and-drop-area');
+        const area: HTMLElement = screen.getByTestId('drug-and-drop-area');
         fireEvent.dragStart(area);
         expect(screen.getByText('Drop a picture!')).toBeInTheDocument();
         fireEvent.dragLeave(area);
