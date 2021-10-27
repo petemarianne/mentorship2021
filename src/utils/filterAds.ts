@@ -1,13 +1,16 @@
-export const filterAds = (item, filter) => {
+import { Ad } from '../interfaces/Ad';
+import { Filter } from '../interfaces/Filter';
+
+export const filterAds = (item: Ad, filter: Filter): boolean => {
     if (item.status !== 'active') {
         return false;
     }
-    let result = true;
+    let result: boolean = true;
     if (filter.breed !== '') {
         if (item.title.toLowerCase().indexOf(filter.breed.toLowerCase()) === -1 && item.description.toLowerCase().indexOf(filter.breed.toLowerCase()) === -1) {
             return false;
         } else {
-            result = item.title.toLowerCase().indexOf(filter.breed.toLowerCase()) || item.description.toLowerCase().indexOf(filter.breed.toLowerCase());
+            result = !!(item.title.toLowerCase().indexOf(filter.breed.toLowerCase()) || item.description.toLowerCase().indexOf(filter.breed.toLowerCase()));
         }
     }
     if (filter.country !== '') {
@@ -23,4 +26,4 @@ export const filterAds = (item, filter) => {
         result = result && Number(filter.priceTo) >= Number(item.price);
     }
     return result;
-}
+};

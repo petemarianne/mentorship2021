@@ -1,5 +1,5 @@
 import React, { createContext } from 'react';
-import { Filter } from '../interfaces/Filter';
+import { Filter } from '../interfaces';
 
 export const emptyFilter: Filter = {
     breed: '',

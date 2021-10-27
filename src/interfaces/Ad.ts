@@ -11,5 +11,14 @@ export interface Ad {
     picture: string,
     sellerID: string,
     status: string,
-    price: number
+    price: number,
+    docID?: string,
+    saleDate?: {
+        seconds: number,
+        nanoseconds: number
+    },
+    closingDate?: {
+        seconds: number,
+        nanoseconds: number
+    },
 }

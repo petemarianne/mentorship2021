@@ -1,13 +1,9 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import Main from './pages/Main/Main';
-import Page404 from './pages/Page404/Page404';
 import './App.scss';
 import './styles/buttons.scss';
-import Profile from './pages/Profile/Profile';
-import Ad from './pages/Ad/Ad';
 import Layout from './components/Layout/Layout';
-import MyProfile from './pages/MyProfile/MyProfile';
+import { Main, Ad, Profile, MyProfile, Page404 } from './pages';
 
 const App = () => {
     return (

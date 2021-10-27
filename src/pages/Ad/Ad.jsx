@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Modal } from '@material-ui/core';
 import './Ad.scss';
-import { toDate } from '../../utils/toDate';
+import { toDate } from '../../utils';
 import { useScreenSize } from '../../hooks/useScreenSize';
 import { Link, useParams } from 'react-router-dom';
 import { db } from '../../firebase';
 
-const Ad = () => {
+export const Ad = () => {
     const {desktop, tablet, mobile} = useScreenSize();
     const [ad, setAd] = useState({});
     const [user, setUser] = useState({});
@@ -145,5 +145,3 @@ const Ad = () => {
         </>
     );
 };
-
-export default Ad;
