@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { Button } from '@material-ui/core';
 import { useLocation } from 'react-router-dom';
 
-const Page404 = () => {
+export const Page404: React.FC = (): JSX.Element => {
     return (
         <>
             <div className='logo404-wrapper'>
@@ -25,5 +25,3 @@ const Page404 = () => {
         </>
     )
 }
-
-export default Page404;

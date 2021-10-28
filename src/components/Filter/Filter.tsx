@@ -1,45 +1,52 @@
 import React, { useContext, useState } from 'react';
 import './Filter.scss';
 import { Button, InputBase } from '@material-ui/core';
-import PropTypes from 'prop-types';
 import { emptyFilter, FilterContext } from '../../contexts/filter-context';
+import { Filter as FilterInterface } from '../../interfaces/Filter';
 
-const Filter = (props) => {
+interface FilterProps {
+    slideView?: {
+        closeMenu: () => void,
+        Divider: JSX.Element,
+    }
+};
+
+const Filter: React.FC<FilterProps> = (props): JSX.Element => {
     const {filter, setFilterState} = useContext(FilterContext);
 
-    const [localFilter, setLocalFilter] = useState(filter);
+    const [localFilter, setLocalFilter] = useState<FilterInterface>(filter);
 
-    const handleCountry = (event) => {
+    const handleCountry = (event: React.ChangeEvent<HTMLInputElement>): void => {
         setLocalFilter(currentFilter => ({...currentFilter, country: event.target.value}));
     }
 
-    const handleCity = (event) => {
+    const handleCity = (event: React.ChangeEvent<HTMLInputElement>): void => {
         setLocalFilter(currentFilter => ({...currentFilter, city: event.target.value}));
     }
 
-    const handlePriceFrom = (event) => {
+    const handlePriceFrom = (event: React.ChangeEvent<HTMLInputElement>): void => {
         setLocalFilter(currentFilter => ({...currentFilter, priceFrom: event.target.value}));
     }
 
-    const handlePriceTo = (event) => {
+    const handlePriceTo = (event: React.ChangeEvent<HTMLInputElement>): void => {
         setLocalFilter(currentFilter => ({...currentFilter, priceTo: event.target.value}));
     }
 
-    const handleSelect = (event) => {
+    const handleSelect = (event: React.ChangeEvent<HTMLSelectElement>): void => {
         setLocalFilter(currentFilter => ({...currentFilter, sort: event.target.value}));
     }
 
-    const setFilter = () => {
+    const setFilter = (): void => {
         setFilterState({...localFilter, breed: filter.breed});
     }
 
-    const handleEnter = (event) => {
+    const handleEnter = (event:  React.KeyboardEvent): void => {
         if (event.key === 'Enter') {
             setFilter();
         }
     }
 
-    const resetFilter = () => {
+    const resetFilter = (): void => {
         setLocalFilter({...emptyFilter, breed: filter.breed});
         setFilterState({...emptyFilter, breed: filter.breed});
     }
@@ -47,7 +54,7 @@ const Filter = (props) => {
     return (
         <div className='filter-wrapper'>
             <div className='filter-name'>Country</div>
-            {props.Divider}
+            {props.slideView?.Divider}
             <div className='search large'>
                 <InputBase
                     value={localFilter.country}
@@ -58,7 +65,7 @@ const Filter = (props) => {
                 />
             </div>
             <div className='filter-name'>City</div>
-            {props.Divider}
+            {props.slideView?.Divider}
             <div className='search'>
                 <InputBase
                     value={localFilter.city}
@@ -69,8 +76,8 @@ const Filter = (props) => {
                 />
             </div>
             <div className='filter-name'>Price</div>
-            {props.Divider}
-            {!props.isMenu ?
+            {props.slideView?.Divider}
+            {!props.slideView ?
                 <div className='price-filter'>
                     <InputBase
                         value={localFilter.priceFrom}
@@ -91,25 +98,25 @@ const Filter = (props) => {
                 </div>
                 :
                 <div className='price-filter-wrapper'>
-                <InputBase
-                    className='left-search'
-                    value={localFilter.priceFrom}
-                    onChange={handlePriceFrom}
-                    fullWidth
-                    data-testid='input'
-                />
-                <InputBase
-                    className='right-search'
-                    value={localFilter.priceTo}
-                    onChange={handlePriceTo}
-                    fullWidth
-                    data-testid='input'
-                />
+                    <InputBase
+                        className='left-search'
+                        value={localFilter.priceFrom}
+                        onChange={handlePriceFrom}
+                        fullWidth
+                        data-testid='input'
+                    />
+                    <InputBase
+                        className='right-search'
+                        value={localFilter.priceTo}
+                        onChange={handlePriceTo}
+                        fullWidth
+                        data-testid='input'
+                    />
                 </div>
             }
-            {props.Divider}
+            {props.slideView?.Divider}
             <div className='filter-name'>Sort by</div>
-            {props.Divider}
+            {props.slideView?.Divider}
             <div className='filter-select-wrapper'>
                 <select className='filter-select' onChange={handleSelect} onKeyDown={handleEnter} value={localFilter.sort} data-testid='select'>
                     <option value='dateDown' data-testid="val1">Date ↓</option>
@@ -118,33 +125,25 @@ const Filter = (props) => {
                     <option value='priceUp' data-testid="val4">Price ↑</option>
                 </select>
             </div>
-            {props.Divider}
+            {props.slideView?.Divider}
             <div
                 className='reset-filters'
                 onClick={() => {
                     resetFilter();
-                    if (props.isMenu) {
-                        props.handleDrawer();
-                    }
+                    props.slideView?.closeMenu();
                 }}
             >Reset filters</div>
-            {!props.isMenu ?
+            {!props.slideView ?
                 <div className='filter-button-wrapper'>
                     <Button className='filter-button' variant='contained' color='primary' onClick={() => {setFilter();}}>Show result</Button>
                 </div>
                 :
                 <div className='drawer-button-wrapper'>
-                    <Button className='submit-button' variant='contained' color='primary' onClick={() => {setFilter(); props.handleDrawer();}}>Show result</Button>
+                    <Button className='submit-button' variant='contained' color='primary' onClick={() => {setFilter(); props.slideView?.closeMenu();}}>Show result</Button>
                 </div>
             }
         </div>
     )
 }
-
-Filter.propTypes = {
-    handleDrawer: PropTypes.func,
-    Divider: PropTypes.any,
-    isMenu: PropTypes.bool,
-};
 
 export default Filter;
