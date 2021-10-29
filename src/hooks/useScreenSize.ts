@@ -7,7 +7,7 @@ interface ScreenSize {
 }
 
 export const useScreenSize = (): ScreenSize => {
-    const desktop: boolean = useMediaQuery('(min-width: 769px)');
+    const desktop = useMediaQuery('(min-width: 769px)');
         return {
             desktop,
             tablet: useMediaQuery('(min-width: 426px)') && !desktop,

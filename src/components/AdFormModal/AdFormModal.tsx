@@ -6,7 +6,6 @@ import { app, db } from '../../firebase';
 import { toDate,  validateAd, fetchAds, fetchUser } from '../../utils';
 import { v4 as uuidv4 } from 'uuid';
 import { Ad, User, Fields } from '../../interfaces';
-import firebase from 'firebase';
 
 interface AdFormModalProps {
     handleClose: () => void,
@@ -62,14 +61,14 @@ const AdFormModal: React.FC<AdFormModalProps> = (props): JSX.Element => {
 
     const onDropHandler = (event: React.DragEvent<HTMLDivElement>): void => {
         event.preventDefault();
-        const file: File = event.dataTransfer.files[0];
+        const file = event.dataTransfer.files[0];
         setFile(file);
         setDrag(false);
         setUploaded(true);
     }
 
     const onFileChange = async (event: React.ChangeEvent<HTMLInputElement>): Promise<void> => {
-        const file: File | null = event.target.files ? event.target.files[0] : null;
+        const file = event.target.files ? event.target.files[0] : null;
         if (file) {
             setFile(file);
             setDrag(false);
@@ -78,9 +77,9 @@ const AdFormModal: React.FC<AdFormModalProps> = (props): JSX.Element => {
     };
 
     const publish = async (): Promise<void> => {
-        const storageRef: firebase.storage.Reference = app.storage().ref();
+        const storageRef = app.storage().ref();
         if (file) {
-            const fileRef: firebase.storage.Reference = storageRef.child(file.name);
+            const fileRef = storageRef.child(file.name);
             await fileRef.put(file);
             const fileUrl: string = await fileRef.getDownloadURL();
             await db.collection('dogAds').doc(uuidv4()).set({
@@ -120,7 +119,7 @@ const AdFormModal: React.FC<AdFormModalProps> = (props): JSX.Element => {
         setFields(current => ({...current, price: event.target.value}));
     };
 
-    const uploadedJSX: JSX.Element =
+    const uploadedJSX =
         <>
             <div>Uploaded!</div>
             <div className='file-name'>{file?.name}</div>
@@ -130,7 +129,7 @@ const AdFormModal: React.FC<AdFormModalProps> = (props): JSX.Element => {
             </Button>
         </>;
 
-    const dragJSX: JSX.Element =
+    const dragJSX =
         <>
             <div>Drag a picture!</div>
             <div>or</div>
@@ -140,7 +139,7 @@ const AdFormModal: React.FC<AdFormModalProps> = (props): JSX.Element => {
             </Button>
         </>;
 
-    const dropJSX: JSX.Element = <div>Drop a picture!</div>;
+    const dropJSX = <div>Drop a picture!</div>;
 
     return (
         <div className='new-ad-modal'>

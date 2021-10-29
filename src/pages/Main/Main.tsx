@@ -41,8 +41,8 @@ export const Main: React.FC = (): JSX.Element => {
         setPage(value);
     };
 
-    const filteredArray: Ad[] = adsData.filter(item => filterAds(item, filter));
-    const adWrapper: JSX.Element[] = filteredArray.sort(comparator).map((item, index) => {
+    const filteredArray = adsData.filter(item => filterAds(item, filter));
+    const adWrapper = filteredArray.sort(comparator).map((item, index) => {
         if (index < filteredArray.length && index >= (page - 1) * 10 && index < page * 10) {
             return (
                 <Link
@@ -68,7 +68,7 @@ export const Main: React.FC = (): JSX.Element => {
         }
     });
 
-    const pagination: JSX.Element =
+    const pagination =
         <Stack spacing={2}>
             <Pagination
                 count={filteredArray.length % 10 === 0 ? filteredArray.length / 10 : Math.trunc(filteredArray.length / 10) + 1}
@@ -81,7 +81,7 @@ export const Main: React.FC = (): JSX.Element => {
                 className={filteredArray.length <= 10 || loading ? 'pagination-wrapper none' : 'pagination-wrapper'}/>
         </Stack>;
 
-    const loadingJSX: JSX.Element = <div className='loading-wrapper'><CircularProgress className={loading ? 'loading' : 'loading done'}/></div>;
+    const loadingJSX = <div className='loading-wrapper'><CircularProgress className={loading ? 'loading' : 'loading done'}/></div>;
 
     useEffect(() => {
         if (JSON.parse(localStorage.getItem('search') as string)) {

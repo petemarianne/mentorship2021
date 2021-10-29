@@ -28,7 +28,7 @@ describe('New ad form modal component:', () => {
     })
 
     test('Publish button renders', () => {
-        const button: HTMLElement = screen.getByTestId('publish-button');
+        const button = screen.getByTestId('publish-button');
         expect(button).toBeInTheDocument();
         expect(screen.getByText('Publish')).toBeInTheDocument();
     })
@@ -61,7 +61,7 @@ describe('New ad form modal component:', () => {
     })
 
     test('Drag start, over and leave', () => {
-        const area: HTMLElement = screen.getByTestId('drug-and-drop-area');
+        const area = screen.getByTestId('drug-and-drop-area');
         fireEvent.dragStart(area);
         expect(screen.getByText('Drop a picture!')).toBeInTheDocument();
         fireEvent.dragLeave(area);

@@ -55,9 +55,9 @@ export const Ad: React.FC = (): JSX.Element => {
         setOpen(false);
     };
 
-    const pictureJSX: JSX.Element = <div className='pic-wrapper' onClick={handleOpen}><img src={ad.picture} alt={'ad'}/></div>;
+    const pictureJSX = <div className='pic-wrapper' onClick={handleOpen}><img src={ad.picture} alt={'ad'}/></div>;
 
-    const sellerInfoJSX: JSX.Element =
+    const sellerInfoJSX =
             <Link className='seller-info-wrapper' to={ad.sellerID.substring(6) === '1' ? '/myprofile' : `/profile${ad.sellerID.substring(6)}`} style={{ color: 'black', textDecoration: 'none' }}>
                 <div className='avatar-wrapper'><img src={user.avatar} alt='User avatar'/></div>
                 <div className='info-wrapper'>
@@ -67,7 +67,7 @@ export const Ad: React.FC = (): JSX.Element => {
                 </div>
             </Link>;
 
-    const buttonsJSX: JSX.Element =
+    const buttonsJSX =
         <>
             <div className='call-button-wrapper'>
                 <Button color='primary' variant='contained' className='call-button'>Call</Button>

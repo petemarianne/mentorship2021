@@ -5,7 +5,6 @@ import userEvent from '@testing-library/user-event';
 import { Divider } from '@material-ui/core';
 import React from 'react';
 import { emptyFilter, FilterContext } from '../../contexts/filter-context';
-import {Filter as FilterInterface} from '../../interfaces/Filter';
 
 describe('Filter component:', () => {
 
@@ -15,7 +14,7 @@ describe('Filter component:', () => {
         closeMenu: handleDrawer,
         Divider: <Divider style={{backgroundColor: 'transparent'}} data-testid='divider'/>,
     };
-    const filter: FilterInterface = emptyFilter;
+    const filter = emptyFilter;
 
     test('Desktop component renders', () => {
         render(<Filter />);

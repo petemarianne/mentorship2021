@@ -17,13 +17,13 @@ const Header: React.FC = (): JSX.Element => {
     const [redirect, setRedirect] = useState<boolean>(false);
     const [isDropdownOpen, setIsDropdownOpen] = useState<Element | null>(null);
     const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
+    const [open, setOpen] = useState<boolean>(false);
+
     const currentPathname: string = useLocation().pathname;
 
     const {filter, setFilterState} = useContext(FilterContext);
 
     const {desktop} = useScreenSize();
-
-    const [open, setOpen] = useState<boolean>(false);
 
     const handleOpen = (): void => {
         setOpen(true);
