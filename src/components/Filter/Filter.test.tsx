@@ -5,24 +5,23 @@ import userEvent from '@testing-library/user-event';
 import { Divider } from '@material-ui/core';
 import React from 'react';
 import { emptyFilter, FilterContext } from '../../contexts/filter-context';
-import {Filter as FilterInterface} from '../../interfaces/Filter';
 
 describe('Filter component:', () => {
 
     const handleDrawer = jest.fn();
     const setFilterState = jest.fn();
-    const filterProps = {
-        handleDrawer: handleDrawer,
+    const slideView = {
+        closeMenu: handleDrawer,
         Divider: <Divider style={{backgroundColor: 'transparent'}} data-testid='divider'/>,
     };
-    const filter: FilterInterface = emptyFilter;
+    const filter = emptyFilter;
 
     test('Desktop component renders', () => {
         render(<Filter />);
     });
 
     test('Mobile component renders', () => {
-        render(<Filter filterProps={filterProps}/>);
+        render(<Filter slideView={slideView}/>);
     });
 
     test('Text renders', () => {
@@ -40,12 +39,12 @@ describe('Filter component:', () => {
     });
 
     test('Mobile button renders', () => {
-        render(<Filter filterProps={filterProps}/>);
+        render(<Filter slideView={slideView}/>);
         expect(screen.getByText('Show result')).toBeInTheDocument();
     });
 
     test('Dividers render', () => {
-        render(<Filter filterProps={filterProps}/>);
+        render(<Filter slideView={slideView}/>);
         screen.getAllByTestId('divider').map((item, index) => {
             expect(item).toBeInTheDocument();
             expect(index).toBeLessThanOrEqual(5);
@@ -61,7 +60,7 @@ describe('Filter component:', () => {
     });
 
     test('Inputs render in mobile', () => {
-        render(<Filter filterProps={filterProps}/>);
+        render(<Filter slideView={slideView}/>);
         screen.getAllByTestId('input').map((item, index) => {
             expect(item).toBeInTheDocument();
             expect(index).toBeLessThanOrEqual(4);
@@ -81,7 +80,7 @@ describe('Filter component:', () => {
     });
 
     test('Handle drawer', () => {
-        render(<Filter filterProps={filterProps}/>);
+        render(<Filter slideView={slideView}/>);
         userEvent.click(screen.getByText('Show result'));
         expect(handleDrawer).toBeCalled();
         userEvent.click(screen.getByText('Reset filters'));
@@ -100,5 +99,37 @@ describe('Filter component:', () => {
             fireEvent.keyDown(item, {key: 'Enter', code: 'Enter', charCode: 13})
             expect(setFilterState).toBeCalled();
         });
+    })
+
+    test('Country input', () => {
+        render(<Filter />);
+        fireEvent.change(screen.getByTestId('country-input'), {
+            target: { value: 'test' }
+        });
+        expect(screen.getByTestId('country-input')).toHaveValue('test');
+    })
+
+    test('City input', () => {
+        render(<Filter />);
+        fireEvent.change(screen.getByTestId('city-input'), {
+            target: { value: 'test' }
+        });
+        expect(screen.getByTestId('city-input')).toHaveValue('test');
+    })
+
+    test('Price from input', () => {
+        render(<Filter />);
+        fireEvent.change(screen.getByTestId('left-input'), {
+            target: { value: 'test' }
+        });
+        expect(screen.getByTestId('left-input')).toHaveValue('test');
+    })
+
+    test('Price to input', () => {
+        render(<Filter />);
+        fireEvent.change(screen.getByTestId('right-input'), {
+            target: { value: 'test' }
+        });
+        expect(screen.getByTestId('right-input')).toHaveValue('test');
     })
 });

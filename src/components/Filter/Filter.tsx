@@ -61,7 +61,8 @@ const Filter: React.FC<FilterProps> = (props): JSX.Element => {
                     onChange={handleCountry}
                     onKeyDown={handleEnter}
                     fullWidth
-                    data-testid='input-country'
+                    inputProps={{ 'data-testid': 'country-input' }}
+                    data-testid='input'
                 />
             </div>
             <div className='filter-name'>City</div>
@@ -72,6 +73,7 @@ const Filter: React.FC<FilterProps> = (props): JSX.Element => {
                     onChange={handleCity}
                     onKeyDown={handleEnter}
                     fullWidth
+                    inputProps={{ 'data-testid': 'city-input' }}
                     data-testid='input'
                 />
             </div>
@@ -85,6 +87,7 @@ const Filter: React.FC<FilterProps> = (props): JSX.Element => {
                         onKeyDown={handleEnter}
                         className='price-search'
                         fullWidth
+                        inputProps={{ 'data-testid': 'left-input' }}
                         data-testid='input'
                     />
                     <InputBase
@@ -93,6 +96,7 @@ const Filter: React.FC<FilterProps> = (props): JSX.Element => {
                         onKeyDown={handleEnter}
                         className='price-search'
                         fullWidth
+                        inputProps={{ 'data-testid': 'right-input' }}
                         data-testid='input'
                     />
                 </div>
