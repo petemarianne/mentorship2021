@@ -27,5 +27,3 @@ yarn-error.log*
 .idea/
 out/
 .idea
-/client/node_modules/
-/client/coverage/
