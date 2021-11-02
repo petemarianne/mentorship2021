@@ -1,0 +1,148 @@
+@font-face {
+  font-family: "ReemKufi";
+  src: url("../../assets/fonts/ReemKufi-Regular.woff") format("woff");
+  font-style: normal;
+  font-weight: normal;
+}
+
+.header-wrapper {
+  height: 70px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.51);
+
+  .toolbar {
+    justify-content: space-between;
+    padding: 0;
+
+    .toolbar-left-side.desktop {
+      cursor: pointer;
+      width: 34.5%;
+      display: flex;
+      justify-content: center;
+      font-family: ReemKufi, sans-serif;
+      font-size: 64px;
+      color: #d27a3d;
+      -webkit-text-stroke-width: 1.5px;
+      -webkit-text-stroke-color: #230203;
+
+      .logo {
+        margin: 5px 3px 0;
+
+        img {
+          width: 55px;
+          height: 55px;
+        }
+      }
+    }
+
+    @media only screen and (max-width: 1160px) {
+      .toolbar-left-side.desktop {
+        font-size: 44px;
+
+        .logo {
+          img {
+            width: 43px;
+            height: 43px;
+          }
+        }
+      }
+    }
+
+    .search.desktop {
+      width: 34.5%;
+      border: 1px solid rgba(0, 0, 0, 0.51);
+      border-radius: 5px;
+      padding: 0 10px;
+    }
+
+    .toolbar-right-side.desktop {
+      width: 31%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      .submit-an-ad-button-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 10%;
+
+        .submit-an-ad-button {
+          width: 11.5vw;
+        }
+
+        @media only screen and (max-width: 1145px) {
+          .submit-an-ad-button {
+            font-size: 10px;
+          }
+        }
+
+        @media only screen and (max-width: 895px) {
+          .submit-an-ad-button {
+            font-size: 8px;
+          }
+        }
+      }
+
+      .avatar-header {
+        border: 1px solid rgba(0, 0, 0, 0.51);
+        height: 45px;
+        width: 45px;
+      }
+    }
+
+    .toolbar-left-side.mobile {
+      width: 35%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .menu-button {
+        margin-left: 17px;
+
+        .menu-icon {
+          color: black;
+        }
+      }
+
+      @media only screen and (max-width: 375px) {
+        .menu-button {
+          margin-left: 9px;
+        }
+      }
+
+      .logo {
+        margin-top: 5px;
+        margin-right: 7vw;
+
+        img {
+          width: 55px;
+          height: 55px;
+        }
+      }
+    }
+
+    .search.mobile {
+      width: 65.5%;
+      border: 1px solid rgba(0, 0, 0, 0.51);
+      border-radius: 5px;
+      display: flex;
+      justify-content: center;
+      margin: 0 29px;
+      padding: 0 10px;
+    }
+  }
+}
+
+.modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .modal-content {
+    width: fit-content;
+    block-size: fit-content;
+    min-width: 300px;
+    min-height: 126px;
+    padding: 20px;
+  }
+}

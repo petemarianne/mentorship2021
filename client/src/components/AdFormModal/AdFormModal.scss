@@ -1,0 +1,165 @@
+.new-ad-modal {
+  width: 440px;
+  height: auto;
+  background-color: white;
+  border-radius: 5px;
+
+  .close-icon-button-wrapper {
+    display: flex;
+    justify-content: right;
+    padding: 0;
+  }
+
+  .modal-header {
+    text-align: center;
+    font-size: 22px;
+    margin-top: -20px;
+    color: #d27a3d;
+    margin-bottom: 10px;
+    font-weight: bold;
+  }
+
+  .filter-name {
+    margin-left: 25px;
+    font-size: 18px;
+  }
+
+  .input {
+    border: 1px solid rgba(0, 0, 0, 0.51);
+    border-radius: 5px;
+    padding: 0 10px;
+    margin: 9px 25px 15px;
+  }
+
+  .location-input {
+    display: flex;
+    justify-content: space-between;
+
+    .filter-name.country {
+      margin-left: 25px;
+    }
+
+    .filter-name.city {
+      margin-left: -1px;
+    }
+
+    .input.country {
+      margin: 9px 0 15px 25px;
+    }
+
+    .input.city {
+      margin: 9px 25px 15px 0;
+    }
+  }
+
+  .price-input-picture-button-wrapper {
+    display: flex;
+    justify-content: left;
+    padding-bottom: 15px;
+
+    .price-input-button-wrapper {
+      width: 110px;
+      margin: 9px 25px 15px;
+
+      .input.price {
+        margin: 0;
+        width: 100%;
+      }
+
+      .validate-attention {
+        font-size: 11px;
+        color: #d00000;
+        padding-left: 20px;
+        margin-top: 30px;
+        margin-bottom: -39px;
+      }
+
+      .publish-button {
+        width: 130px;
+        margin-top: 40px;
+        height: 35px;
+      }
+    }
+
+    .drag-and-drop-wrapper {
+      width: 100%;
+      border: #d27a3d 1px dashed;
+      margin: -15px 25px 15px 20px;
+      text-align: center;
+      color: #d27a3d;
+      padding: 35px 0;
+
+      .upload-file-button {
+        font-size: 12px;
+        margin-top: 5px;
+        height: 25px;
+        width: 120px;
+      }
+
+      .file-name {
+        width: 200px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        margin-left: 18px;
+      }
+
+      .re-upload-file-button {
+        font-size: 10px;
+        margin-top: 5px;
+        height: 25px;
+        width: 150px;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 480px){
+  .new-ad-modal {
+    width: 300px;
+
+    .location-input {
+      .filter-name.city {
+        margin-left: 5px;
+      }
+
+      .input.country {
+        margin-right: 5px;
+      }
+
+      .input.city {
+        margin-left: 5px;
+      }
+    }
+
+    .price-input-picture-button-wrapper {
+      .price-input-button-wrapper {
+        width: 60px;
+
+        .validate-attention {
+          font-size: 6px;
+          padding-left: 11px;
+        }
+
+        .publish-button {
+          width: 85px;
+        }
+
+        .drag-and-drop-wrapper {
+          .file-name {
+            width: 110px;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            margin-left: 18px;
+          }
+
+          .re-upload-file-button {
+            font-size: 6px;
+            margin-top: 5px;
+            height: 25px;
+            width: 100px;
+          }
+        }
+      }
+    }
+  }
+}
