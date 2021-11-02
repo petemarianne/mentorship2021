@@ -95,6 +95,7 @@ export const Main: React.FC = (): JSX.Element => {
         setLoading(true);
         fetchAds().then((response) => {
             setAdsData(response);
+            console.log(response)
             setLoading(false);
         })
     }, [setFilterState]);

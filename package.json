@@ -12,7 +12,6 @@
     "dev": "cross-env NODE_ENV=development concurrently \"npm run server\" \"npm run client\""
   },
   "keywords": [
-    "mern",
     "react"
   ],
   "dependencies": {
