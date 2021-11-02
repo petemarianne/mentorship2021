@@ -16,19 +16,20 @@
     "@types/react": "^17.0.32",
     "@types/react-dom": "^17.0.10",
     "@types/react-router-dom": "^5.3.1",
-    "firebase": "^7.24.0",
-    "node-sass": "^6.0.1",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "react-scripts": "4.0.3",
-    "uuid": "^8.3.2",
-    "web-vitals": "^1.1.2",
     "bcryptjs": "^2.4.3",
     "config": "^3.2.4",
     "express": "^4.17.1",
     "express-validator": "^6.3.0",
+    "firebase": "^7.24.0",
     "jsonwebtoken": "^8.5.1",
-    "shortid": "^2.2.15"
+    "node-sass": "^6.0.1",
+    "npm-run-all": "^4.1.5",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-scripts": "4.0.3",
+    "shortid": "^2.2.15",
+    "uuid": "^8.3.2",
+    "web-vitals": "^1.1.2"
   },
   "main": "app.js",
   "scripts": {
@@ -38,7 +39,7 @@
     "client:build": "react-scripts build --prefix client",
     "test": "react-scripts test --prefix client",
     "eject": "react-scripts eject --prefix client",
-    "dev": "cross-env NODE_ENV=development concurrently \"npm run server\" \"npm run client\""
+    "dev": "run-p server client"
   },
   "eslintConfig": {
     "extends": [
