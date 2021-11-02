@@ -55,6 +55,26 @@ export const Ad: React.FC = (): JSX.Element => {
         setOpen(false);
     };
 
+    const getHandle = async () => {
+        try {
+            const response = await fetch('api/gettest', {method: 'GET'});
+            const data = await response.json();
+            console.log(data);
+        } catch (e) {
+            console.log('something went wrong')
+        }
+    };
+
+    const postHandle = async () => {
+        try {
+            const response = await fetch('api/posttest', {method: 'POST', body: JSON.stringify({message: 'post message'}), headers: {'Content-Type': 'application/json'}});
+            const data = await response.json();
+            console.log(data);
+        } catch (e) {
+            console.log('something went wrong')
+        }
+    }
+
     const pictureJSX = <div className='pic-wrapper' onClick={handleOpen}><img src={ad.picture} alt={'ad'}/></div>;
 
     const sellerInfoJSX =
@@ -70,10 +90,10 @@ export const Ad: React.FC = (): JSX.Element => {
     const buttonsJSX =
         <>
             <div className='call-button-wrapper'>
-                <Button color='primary' variant='contained' className='call-button'>Call</Button>
+                <Button color='primary' variant='contained' className='call-button' onClick={getHandle}>Call</Button>
             </div>
             <div className='email-button-wrapper'>
-                <Button color='primary' variant='outlined' className='email-button'>Email</Button>
+                <Button color='primary' variant='outlined' className='email-button' onClick={postHandle}>Email</Button>
             </div>
         </>;
 
