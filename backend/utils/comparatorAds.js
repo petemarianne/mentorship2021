@@ -14,4 +14,4 @@ export const comparator = (item1, item2, sort) => {
         default:
             return item2.date.seconds - item1.date.seconds;
     }
-}
+};
