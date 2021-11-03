@@ -1,7 +1,7 @@
 import express from 'express';
 import config from 'config';
-import testRouter from './routes/test.routes.js';
-import adsRouter from './routes/ads.routes.js';
+import testRouter from './backend/routes/test.routes.js';
+import adsRouter from './backend/routes/ads.routes.js';
 
 const app = express();
 
@@ -16,7 +16,7 @@ const PORT = config.get('port') || 3000;
 
 const start = () => {
     try {
-        app.listen(PORT, () => console.log(`App has been started on port ${PORT}....`));
+        app.listen(PORT, () => console.log(`App has been started on port ${PORT}...`));
     } catch (e) {
         console.log('Server Error ', e.message());
         process.exit(1);
