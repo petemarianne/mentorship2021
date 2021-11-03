@@ -39,13 +39,13 @@ export const Ad: React.FC = (): JSX.Element => {
     const { id } = useParams<{id: string}>();
 
     useEffect(() => {
-        fetchAd(id).then((response1) => {
-            setAd(response1);
-            fetchUser(Number(response1.sellerID.substring(6))).then((response2) => {
+        fetch('api/getad', {method: 'GET', headers: {id}}).then(response => response.json()).then((data) => {
+            setAd(data);
+            fetchUser(Number(data.sellerID.substring(6))).then((response2) => {
                 setUser(response2);
             });
         });
-    })
+    }, []);
 
     const handleOpen = (): void => {
         setOpen(true);

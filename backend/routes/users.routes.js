@@ -1,7 +1,5 @@
 import { Router } from 'express';
-import { ads } from '../data/ads.js';
-import { filterAds } from '../utils/filterAds.js';
-import { comparator } from '../utils/comparatorAds.js';
+import { users } from '../data/users.js';
 
 const adsRouter = Router();
 
@@ -24,4 +22,4 @@ adsRouter.get('/getad', async (req, res) => {
     }
 });
 
-export default adsRouter;
+export default usersRouter;

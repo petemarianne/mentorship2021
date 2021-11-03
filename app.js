@@ -11,6 +11,7 @@ const API = '/api';
 
 app.use(API, testRouter);
 app.use(API, adsRouter);
+//app.use(API);
 
 const PORT = config.get('port') || 3000;
 

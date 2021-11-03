@@ -79,7 +79,7 @@ export const Main: React.FC = (): JSX.Element => {
         try {
             setLoading(true);
             setPage(1);
-            fetch('api/getads', {method: 'GET', headers: {...filter}}).then(response => response.json()).then((data) => {
+            fetch('api/getallads', {method: 'GET', headers: {...filter}}).then(response => response.json()).then((data) => {
                     setAdsData(data);
                     setTimeout(() => {
                         setLoading(false);
