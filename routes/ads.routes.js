@@ -22,10 +22,10 @@ const filterAds = (item, filter) => {
         result = result && filter.city.toLowerCase() === item.city.toLowerCase();
     }
     if (filter.pricefrom !== '') {
-        result = result && Number(filter.priceFrom) <= Number(item.price);
+        result = result && Number(filter.pricefrom) <= Number(item.price);
     }
     if (filter.priceto !== '') {
-        result = result && Number(filter.priceTo) >= Number(item.price);
+        result = result && Number(filter.priceto) >= Number(item.price);
     }
     return result;
 };
