@@ -1,7 +1,7 @@
 import express from 'express';
 import config from 'config';
-import testRouter from './routes/test.routes.js';
-import adsRouter from './routes/ads.routes.js';
+import testRouter from './backend/routes/test.routes.js';
+import adsRouter from './backend/routes/ads.routes.js';
 
 const app = express();
 
