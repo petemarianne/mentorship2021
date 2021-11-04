@@ -5,7 +5,7 @@ import { useScreenSize } from '../../hooks/useScreenSize';
 import { Archive, Unarchive } from '@material-ui/icons';
 import SellIcon from '@mui/icons-material/Sell';
 import { useParams } from 'react-router-dom';
-import { fetchUsersAds, closeAd, sellAd, activateAd, toDate } from '../../utils';
+import { closeAd, sellAd, activateAd, toDate } from '../../utils';
 import { Ad, NumericDate, User } from '../../interfaces';
 
 interface ProfileProps {
@@ -38,11 +38,11 @@ export const Profile: React.FC<ProfileProps> = (props): JSX.Element => {
     const [page, setPage] = React.useState<number>(0);
 
     useEffect(() => {
-        const userPromise = props.myProfile ? fetch('api/getuser?id=seller1') : fetch(`api/getuser?id=selle${id}`);
+        const userPromise = props.myProfile ? fetch('api/getuser?id=seller1') : fetch(`api/getuser?id=seller${id}`);
         userPromise.then(response => response.json()).then((data) => {
             setUser(data);
-            fetchUsersAds(data.id).then((response) => {
-                setAdsData(response);
+            fetch(`api/getusersads?sellerID=${data.id}`).then(response => response.json()).then((data) => {
+                setAdsData(data);
             })
         })
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -85,7 +85,7 @@ export const Profile: React.FC<ProfileProps> = (props): JSX.Element => {
         <div className='profile-page'>
             {desktop && (
                 <div className='profile-info'>
-                    <div className='avatar'><img src={user.avatar} alt={'avatar'}/></div>
+                    <div className='avatar'><img src={user.avatar} alt='avatar'/></div>
                     <div>
                         <div className='name'>{user.name}</div>
                         <div className='phone'>Phone number: {user.phone}</div>
@@ -101,7 +101,7 @@ export const Profile: React.FC<ProfileProps> = (props): JSX.Element => {
             )}
             {!desktop && (
                 <div className='profile-info-mobile'>
-                    <div className='avatar'><img src={user.avatar} alt={'avatar'}/></div>
+                    <div className='avatar'><img src={user.avatar} alt='avatar'/></div>
                     <div className='name'>{user.name}</div>
                     <div className='phone'>Phone number: {user.phone}</div>
                     <div className='email'>Email: {user.email}</div>

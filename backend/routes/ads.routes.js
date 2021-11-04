@@ -22,6 +22,15 @@ adsRouter.get('/getfilteredads', async (req, res) => {
     }
 });
 
+adsRouter.get('/getusersads', async (req, res) => {
+    try {
+        const ad = ads.filter(item => item.sellerID === req.query.sellerID);
+        return res.status(200).json(ad);
+    } catch (e) {
+        res.status(500).json({message: 'Something went wrong'});
+    }
+});
+
 adsRouter.get('/getad', async (req, res) => {
     try {
         const ad = ads.filter(item => item.id.substring(2) === req.query.id)[0];
