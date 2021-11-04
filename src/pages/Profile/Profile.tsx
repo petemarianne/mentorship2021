@@ -5,7 +5,7 @@ import { useScreenSize } from '../../hooks/useScreenSize';
 import { Archive, Unarchive } from '@material-ui/icons';
 import SellIcon from '@mui/icons-material/Sell';
 import { useParams } from 'react-router-dom';
-import { fetchUsersAds, fetchUser, closeAd, sellAd, activateAd, toDate } from '../../utils';
+import { fetchUsersAds, closeAd, sellAd, activateAd, toDate } from '../../utils';
 import { Ad, NumericDate, User } from '../../interfaces';
 
 interface ProfileProps {
@@ -38,11 +38,11 @@ export const Profile: React.FC<ProfileProps> = (props): JSX.Element => {
     const [page, setPage] = React.useState<number>(0);
 
     useEffect(() => {
-        const userPromise = props.myProfile ? fetchUser(1) : fetchUser(Number(id));
-        userPromise.then((response1) => {
-            setUser(response1);
-            fetchUsersAds(response1.id).then((response2) => {
-                setAdsData(response2);
+        const userPromise = props.myProfile ? fetch('api/getuser?id=seller1') : fetch(`api/getuser?id=selle${id}`);
+        userPromise.then(response => response.json()).then((data) => {
+            setUser(data);
+            fetchUsersAds(data.id).then((response) => {
+                setAdsData(response);
             })
         })
         // eslint-disable-next-line react-hooks/exhaustive-deps
