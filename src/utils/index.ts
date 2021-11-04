@@ -6,5 +6,4 @@ export { fetchUser } from './fetchUser';
 export { fetchUsersAds } from './fetchUsersAds';
 export { toDate } from './toDate';
 export { validateAd } from './validateAd';
-export { filterAds } from './filterAds';
 export { fetchAd } from './fetchAd';
