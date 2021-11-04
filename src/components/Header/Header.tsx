@@ -10,7 +10,6 @@ import { Link, Redirect, useLocation } from 'react-router-dom';
 import AdFormModal from '../AdFormModal/AdFormModal';
 import { useScreenSize } from '../../hooks/useScreenSize';
 import { FilterContext } from '../../contexts/filter-context';
-import { db } from '../../firebase';
 
 const Header: React.FC = (): JSX.Element => {
     const [breed, setBreed] = useState<string>('');
@@ -68,12 +67,6 @@ const Header: React.FC = (): JSX.Element => {
         return <></>;
     };
 
-    const fetchLoggedInUsersAvatar = async (): Promise<string> => {
-        const usersCollection = await db.collection('users').where('id','==','seller1').get();
-        const user = usersCollection.docs.map((doc) => {return doc.data();})[0];
-        return user.avatar;
-    };
-
     const [loggedInUsersAvatar, setLoggedInUsersAvatar] = useState<string>('');
 
     useEffect(() => {
@@ -84,8 +77,8 @@ const Header: React.FC = (): JSX.Element => {
             localStorage.setItem('search',JSON.stringify({breed: ''}));
         }
         setBreed(JSON.parse(localStorage.getItem('search') as string).breed);
-        fetchLoggedInUsersAvatar().then((response) => {
-            setLoggedInUsersAvatar(response);
+        fetch('api/getuser?id=seller1').then(response => response.json()).then((data) => {
+            setLoggedInUsersAvatar(data.avatar);
         })
     }, [])
 

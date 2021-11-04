@@ -16,11 +16,11 @@ export const filterAds = (item, filter) => {
     if (filter.city !== '') {
         result = result && filter.city.toLowerCase() === item.city.toLowerCase();
     }
-    if (filter.pricefrom !== '') {
-        result = result && Number(filter.pricefrom) <= Number(item.price);
+    if (filter.priceFrom !== '') {
+        result = result && Number(filter.priceFrom) <= Number(item.price);
     }
-    if (filter.priceto !== '') {
-        result = result && Number(filter.priceto) >= Number(item.price);
+    if (filter.priceTo !== '') {
+        result = result && Number(filter.priceTo) >= Number(item.price);
     }
     return result;
 };
