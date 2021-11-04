@@ -2,9 +2,8 @@ import React, { useEffect, useState } from 'react';
 import './AdFormModal.scss';
 import { Button, CircularProgress, IconButton, InputBase } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
-import { app, db } from '../../firebase';
-import { toDate,  validateAd } from '../../utils';
-import { v4 as uuidv4 } from 'uuid';
+import { app } from '../../firebase';
+import { validateAd } from '../../utils';
 import { Ad, User, Fields } from '../../interfaces';
 
 interface AdFormModalProps {
@@ -82,20 +81,19 @@ const AdFormModal: React.FC<AdFormModalProps> = (props): JSX.Element => {
             const fileRef = storageRef.child(file.name);
             await fileRef.put(file);
             const fileUrl: string = await fileRef.getDownloadURL();
-            await db.collection('dogAds').doc(uuidv4()).set({
-                ...fields,
-                picture: fileUrl,
-                date: new Date(),
-                status: 'active',
-                sellerID: user.id,
-                id: 'ad' + (adsData.length + 1),
-            });
+            fetch('/api/setadinfo', {method: 'POST', body: JSON.stringify({
+                    ...fields,
+                    picture: fileUrl,
+                    date: {
+                        seconds: new Date().getTime() / 1000,
+                        nanoseconds: 0,
+                    },
+                    status: 'active',
+                    sellerID: user.id,
+                    id: 'ad' + (adsData.length + 1),
+                }), headers: {'Content-Type': 'application/json'}}).then(response => response.json()).then(data => console.log(data.message));
         }
-        await db.collection('users').doc(user.name).set({
-            ...user,
-            activeAds: user.activeAds + 1,
-            date: toDate(user.date),
-        });
+        fetch('/api/updateusersactiveads/1', {method: 'PUT'}).then(response => response.json()).then(data => console.log(data.message));
         props.handleClose();
     };
 

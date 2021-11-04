@@ -40,4 +40,13 @@ adsRouter.get('/getad', async (req, res) => {
     }
 });
 
+adsRouter.post('/setadinfo', async (req, res) => {
+    try {
+        ads.push(req.body);
+        return res.status(200).json({message: 'Your new ad is successfully added!'});
+    } catch (e) {
+        res.status(500).json({message: 'Something went wrong'});
+    }
+})
+
 export default adsRouter;
