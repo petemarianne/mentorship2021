@@ -7,6 +7,14 @@ const adsRouter = Router();
 
 adsRouter.get('/getallads', async (req, res) => {
     try {
+        return res.status(200).json([...ads]);
+    } catch (e) {
+        res.status(500).json({message: 'Something went wrong'});
+    }
+});
+
+adsRouter.get('/getfilteredads', async (req, res) => {
+    try {
         const filteredAds = ads.filter(item => filterAds(item, req.query)).sort((item1, item2) => comparator(item1, item2, req.query.sort));
         return res.status(200).json([...filteredAds]);
     } catch (e) {

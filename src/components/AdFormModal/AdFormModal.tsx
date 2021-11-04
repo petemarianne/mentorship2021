@@ -3,7 +3,7 @@ import './AdFormModal.scss';
 import { Button, CircularProgress, IconButton, InputBase } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import { app, db } from '../../firebase';
-import { toDate,  validateAd, fetchAds } from '../../utils';
+import { toDate,  validateAd } from '../../utils';
 import { v4 as uuidv4 } from 'uuid';
 import { Ad, User, Fields } from '../../interfaces';
 
@@ -41,8 +41,8 @@ const AdFormModal: React.FC<AdFormModalProps> = (props): JSX.Element => {
     )
 
     useEffect(() => {
-        fetchAds().then((response) => {
-            setAdsData(response);
+        fetch('api/getallads').then(response => response.json()).then((data) => {
+            setAdsData(data);
         });
         fetch('api/getuser?id=seller1').then(response => response.json()).then((data) => {
             setUser(data);
