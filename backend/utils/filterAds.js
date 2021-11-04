@@ -1,6 +1,4 @@
-import { Ad, Filter } from '../interfaces';
-
-export const filterAds = (item: Ad, filter: Filter): boolean => {
+export const filterAds = (item, filter) => {
     if (item.status !== 'active') {
         return false;
     }
@@ -18,11 +16,11 @@ export const filterAds = (item: Ad, filter: Filter): boolean => {
     if (filter.city !== '') {
         result = result && filter.city.toLowerCase() === item.city.toLowerCase();
     }
-    if (filter.priceFrom !== '') {
-        result = result && Number(filter.priceFrom) <= Number(item.price);
+    if (filter.pricefrom !== '') {
+        result = result && Number(filter.pricefrom) <= Number(item.price);
     }
-    if (filter.priceTo !== '') {
-        result = result && Number(filter.priceTo) >= Number(item.price);
+    if (filter.priceto !== '') {
+        result = result && Number(filter.priceto) >= Number(item.price);
     }
     return result;
 };
