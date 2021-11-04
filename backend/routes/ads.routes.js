@@ -47,6 +47,48 @@ adsRouter.post('/setadinfo', async (req, res) => {
     } catch (e) {
         res.status(500).json({message: 'Something went wrong'});
     }
-})
+});
+
+adsRouter.put('/closead/:id', async (req, res) => {
+    try {
+        const adIndex = ads.findIndex(item => item.id === req.params.id);
+        ads[adIndex].status = 'closed';
+        ads[adIndex].saleDate = null;
+        ads[adIndex].closingDate = {
+            seconds: new Date().getTime() / 1000,
+            nanoseconds: 0,
+        };
+        return res.status(200).json({message: 'The ad is closed!'});
+    } catch (e) {
+        res.status(500).json({message: 'Something went wrong'});
+    }
+});
+
+adsRouter.put('/activatead/:id', async (req, res) => {
+    try {
+        const adIndex = ads.findIndex(item => item.id === req.params.id);
+        ads[adIndex].status = 'active';
+        ads[adIndex].saleDate = null;
+        ads[adIndex].closingDate = null;
+        return res.status(200).json({message: 'The ad is active!'});
+    } catch (e) {
+        res.status(500).json({message: 'Something went wrong'});
+    }
+});
+
+adsRouter.put('/sellad/:id', async (req, res) => {
+    try {
+        const adIndex = ads.findIndex(item => item.id === req.params.id);
+        ads[adIndex].status = 'sold';
+        ads[adIndex].saleDate = {
+            seconds: new Date().getTime() / 1000,
+            nanoseconds: 0,
+        };
+        ads[adIndex].closingDate = null;
+        return res.status(200).json({message: 'The ad is sold!'});
+    } catch (e) {
+        res.status(500).json({message: 'Something went wrong'});
+    }
+});
 
 export default adsRouter;

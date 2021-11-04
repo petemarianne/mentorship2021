@@ -14,8 +14,12 @@ usersRouter.get('/getuser', async (req, res) => {
 
 usersRouter.put('/updateusersactiveads/:id', async (req, res) => {
     try {
-        const userIndex = users.findIndex(item => item.id === `seller${req.params.id}`);
-        users[userIndex].activeAds++;
+        const userIndex = users.findIndex(item => item.id === req.params.id);
+        if (req.body.action === 'add') {
+            users[userIndex].activeAds++;
+        } else {
+            users[userIndex].activeAds--;
+        }
         return res.status(200).json({message: 'User\'s info is updated'});
     } catch (e) {
         res.status(500).json({message: 'Something went wrong'});
