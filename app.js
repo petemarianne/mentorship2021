@@ -1,7 +1,7 @@
 import express from 'express';
 import config from 'config';
-import testRouter from './backend/routes/test.routes.js';
 import adsRouter from './backend/routes/ads.routes.js';
+import usersRouter from './backend/routes/users.routes.js';
 
 const app = express();
 
@@ -9,9 +9,8 @@ app.use(express.json({ extended: true }));
 
 const API = '/api';
 
-app.use(API, testRouter);
 app.use(API, adsRouter);
-//app.use(API);
+app.use(API, usersRouter);
 
 const PORT = config.get('port') || 3000;
 

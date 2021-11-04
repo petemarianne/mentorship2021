@@ -79,7 +79,7 @@ export const Main: React.FC = (): JSX.Element => {
         try {
             setLoading(true);
             setPage(1);
-            fetch('api/getallads', {method: 'GET', headers: {...filter}}).then(response => response.json()).then((data) => {
+            fetch(`api/getallads?breed=${filter.breed}&country=${filter.country}&city=${filter.city}&priceFrom=${filter.priceFrom}&priceTo=${filter.priceTo}&sort=${filter.sort}`).then(response => response.json()).then((data) => {
                     setAdsData(data);
                     setTimeout(() => {
                         setLoading(false);
@@ -97,7 +97,7 @@ export const Main: React.FC = (): JSX.Element => {
                     <Filter />
                     <div className='feed-wrapper'>
                         {loadingJSX}
-                        {!loading && adsData.length !== 0 && adsData.length === 0 ? <div className={'nothing-found'}>Nothing was found for your search!</div> : <></>}
+                        {!loading && adsData.length === 0 ? <div className={'nothing-found'}>Nothing was found for your search!</div> : <></>}
                         {adWrapper}
                         {pagination}
                     </div>
@@ -106,7 +106,7 @@ export const Main: React.FC = (): JSX.Element => {
             {!desktop && (
                 <div className='main-page-mobile-wrapper'>
                     {loadingJSX}
-                    {!loading && adsData.length !== 0 && adsData.length === 0 ? <div className={'nothing-found'}>Nothing was found for your search!</div> : <></>}
+                    {!loading && adsData.length === 0 ? <div className={'nothing-found'}>Nothing was found for your search!</div> : <></>}
                     {adWrapper}
                     {pagination}
                 </div>

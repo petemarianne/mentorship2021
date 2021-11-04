@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Modal } from '@material-ui/core';
 import './Ad.scss';
-import { fetchUser, fetchAd, toDate } from '../../utils';
+import { toDate } from '../../utils';
 import { useScreenSize } from '../../hooks/useScreenSize';
 import { Link, useParams } from 'react-router-dom';
 import { User, Ad as AdInterface } from '../../interfaces';
@@ -39,10 +39,10 @@ export const Ad: React.FC = (): JSX.Element => {
     const { id } = useParams<{id: string}>();
 
     useEffect(() => {
-        fetch('api/getad', {method: 'GET', headers: {id}}).then(response => response.json()).then((data) => {
+        fetch(`api/getad?id=${id}`).then(response => response.json()).then((data) => {
             setAd(data);
-            fetchUser(Number(data.sellerID.substring(6))).then((response2) => {
-                setUser(response2);
+            fetch(`api/getuser?id=${data.sellerID}`).then(response => response.json()).then((data) => {
+                setUser(data)
             });
         });
     }, []);
@@ -54,26 +54,6 @@ export const Ad: React.FC = (): JSX.Element => {
     const handleClose = (): void => {
         setOpen(false);
     };
-
-    const getHandle = async () => {
-        try {
-            const response = await fetch('api/gettest', {method: 'GET'});
-            const data = await response.json();
-            console.log(data);
-        } catch (e) {
-            console.log('something went wrong')
-        }
-    };
-
-    const postHandle = async () => {
-        try {
-            const response = await fetch('api/posttest', {method: 'POST', body: JSON.stringify({message: 'post message'}), headers: {'Content-Type': 'application/json'}});
-            const data = await response.json();
-            console.log(data);
-        } catch (e) {
-            console.log('something went wrong')
-        }
-    }
 
     const pictureJSX = <div className='pic-wrapper' onClick={handleOpen}><img src={ad.picture} alt={'ad'}/></div>;
 
@@ -90,10 +70,10 @@ export const Ad: React.FC = (): JSX.Element => {
     const buttonsJSX =
         <>
             <div className='call-button-wrapper'>
-                <Button color='primary' variant='contained' className='call-button' onClick={getHandle}>Call</Button>
+                <Button color='primary' variant='contained' className='call-button'>Call</Button>
             </div>
             <div className='email-button-wrapper'>
-                <Button color='primary' variant='outlined' className='email-button' onClick={postHandle}>Email</Button>
+                <Button color='primary' variant='outlined' className='email-button'>Email</Button>
             </div>
         </>;
 

@@ -7,7 +7,7 @@ const adsRouter = Router();
 
 adsRouter.get('/getallads', async (req, res) => {
     try {
-        const filteredAds = ads.filter(item => filterAds(item, req.headers)).sort((item1, item2) => comparator(item1, item2, req.headers.sort));
+        const filteredAds = ads.filter(item => filterAds(item, req.query)).sort((item1, item2) => comparator(item1, item2, req.query.sort));
         return res.status(200).json([...filteredAds]);
     } catch (e) {
         res.status(500).json({message: 'Something went wrong'});
@@ -16,8 +16,7 @@ adsRouter.get('/getallads', async (req, res) => {
 
 adsRouter.get('/getad', async (req, res) => {
     try {
-        const ad = ads.filter(item => item.id.substring(2) === req.headers.id)[0];
-        console.log(ad);
+        const ad = ads.filter(item => item.id.substring(2) === req.query.id)[0];
         return res.status(200).json(ad);
     } catch (e) {
         res.status(500).json({message: 'Something went wrong'});
