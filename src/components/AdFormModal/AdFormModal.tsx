@@ -91,9 +91,9 @@ const AdFormModal: React.FC<AdFormModalProps> = (props): JSX.Element => {
                     status: 'active',
                     sellerID: user.id,
                     id: 'ad' + (adsData.length + 1),
-                }), headers: {'Content-Type': 'application/json'}}).then(response => response.json()).then(data => console.log(data.message));
+                }), headers: {'Content-Type': 'application/json'}});
         }
-        fetch('/api/updateusersactiveads/seller1', {method: 'PUT', body: JSON.stringify({action: 'add'}), headers: {'Content-Type': 'application/json'}}).then(response => response.json()).then(data => console.log(data.message));
+        fetch('/api/updateusersactiveads/seller1', {method: 'PUT', body: JSON.stringify({action: 'add'}), headers: {'Content-Type': 'application/json'}});
         props.handleClose();
     };
 
