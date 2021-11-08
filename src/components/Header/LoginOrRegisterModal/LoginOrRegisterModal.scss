@@ -67,3 +67,75 @@
     }
   }
 }
+
+@media only screen and (max-width: 768px) {
+  .login-or-register-modal-wrapper {
+    width: 100%;
+    height: auto;
+    background-color: white;
+    border-radius: 5px;
+
+    .close-icon-button-wrapper {
+      display: flex;
+      justify-content: right;
+      padding: 0;
+
+      .modal-close-button {
+        padding: 0;
+      }
+    }
+
+    .navigation-bar {
+      display: flex;
+      margin: 15px -20px 30px;
+
+      .login,
+      .registration {
+        width: 50%;
+        text-align: center;
+        font-size: 18px;
+        color: #7f7f7fa3;
+        padding-bottom: 7px;
+        border-bottom: 1.5px solid #7f7f7fa3;
+        letter-spacing: 0.7px;
+        cursor: pointer;
+      }
+
+      .login.active,
+      .registration.active {
+        font-weight: bold;
+        padding-bottom: 10px;
+        color: #d27a3d;
+        border-bottom: 3px solid #d27a3d;
+      }
+    }
+
+    .label {
+      margin-left: 25px;
+      font-size: 18px;
+    }
+
+    .input {
+      border: 1px solid rgba(0, 0, 0, 0.51);
+      border-radius: 5px;
+      padding: 0 10px;
+      margin: 9px 25px 15px;
+    }
+
+    .validation {
+      font-size: 14px;
+      color: #d00000;
+      margin: -5px 25px;
+    }
+
+    .button-wrapper {
+      display: flex;
+      justify-content: center;
+      margin: 40px 25px 10px;
+
+      .button {
+        width: 100%;
+      }
+    }
+  }
+}

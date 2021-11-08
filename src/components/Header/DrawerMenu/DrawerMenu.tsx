@@ -4,6 +4,7 @@ import { Divider, Button, Avatar } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import './DrawerMenu.scss';
 import Filter from '../../Filter/Filter';
+import LoginOrRegisterModal from '../LoginOrRegisterModal/LoginOrRegisterModal';
 
 interface DrawerMenuProps {
     avatar: string,
@@ -45,7 +46,7 @@ const DrawerMenu: React.FC<DrawerMenuProps> = (props): JSX.Element => {
                     slideView={filterProps}
                     />
                 </> :
-                <div>login</div>
+                <LoginOrRegisterModal />
             }
         </div>
     );
