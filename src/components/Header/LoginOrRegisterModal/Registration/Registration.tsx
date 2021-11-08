@@ -52,58 +52,62 @@ const Registration: React.FC = (): JSX.Element => {
 
     const onSubmit = (event: FormEvent<HTMLFormElement>): void => {
         event.preventDefault();
-        const mailFormat = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        if (!mailFormat.test(fields.email)) {
+        const mailFormat = /^([a-zA-Z0-9._]+)@([a-zA-Z0-9._]+)\.([a-z]{2,3})$/;
+        if (!mailFormat.test(fields.email) && fields.email !== '') {
             setValidation(prevState => ({...prevState, email: true}));
-            console.log('email')
         }
         else {
             setValidation(prevState => ({...prevState, email: false}));
         }
         if (fields.password !== fields.repeatedPassword) {
             setValidation(prevState => ({...prevState, repeatedPassword: true}));
-            console.log('password')
         } else {
             setValidation(prevState => ({...prevState, repeatedPassword: false}));
         }
-        const phoneFormat = /^[+]\d$/;
-        if (!phoneFormat.test(fields.phone)) {
+        const phoneFormat = /^\+\d+$/;
+        if (!phoneFormat.test(fields.phone)  && fields.phone !== '') {
             setValidation(prevState => ({...prevState, phone: true}));
-            console.log('phone')
         } else {
             setValidation(prevState => ({...prevState, phone: false}));
         }
-        for (let key in fields) {
-            // @ts-ignore
-            if (fields[key] === '') {
-                setValidation(prevState => ({...prevState, allFields: true}));
-                break;
+        if (!(validation.email && validation.repeatedPassword && validation.phone)) {
+            for (let key in fields) {
+                // @ts-ignore
+                if (fields[key] === '') {
+                    setValidation(prevState => ({...prevState, allFields: true}));
+                    break;
+                }
+                setValidation(prevState => ({...prevState, allFields: false}));
             }
         }
     };
 
     return (
-        <form className='login-wrapper'>
+        <form className='login-wrapper' onSubmit={onSubmit}>
             <div className='label'>Email</div>
-            <div className='input'>
+            <div className={validation.email ? 'input validate' : 'input'}>
                 <InputBase value={fields.email} onChange={handleEmail} fullWidth/>
             </div>
+            {validation.email ? <div className='validation-registration'>Incorrect email!</div> : null}
             <div className='label'>Password</div>
-            <div className='input'>
+            <div className={validation.repeatedPassword ? 'input validate' : 'input'}>
                 <InputBase type='password' value={fields.password} onChange={handlePassword} fullWidth/>
             </div>
             <div className='label'>Repeat password</div>
-            <div className='input'>
+            <div className={validation.repeatedPassword ? 'input validate' : 'input'}>
                 <InputBase type='password' value={fields.repeatedPassword} onChange={handleRepeatedPassword} fullWidth/>
             </div>
+            {validation.repeatedPassword ? <div className='validation-registration'>Password don't match!</div> : null}
             <div className='label'>Name</div>
             <div className='input'>
                 <InputBase value={fields.name} onChange={handleName} fullWidth/>
             </div>
             <div className='label'>Phone number</div>
-            <div className='input'>
+            <div className={validation.phone ? 'input validate' : 'input'}>
                 <InputBase value={fields.phone} onChange={handlePhone} fullWidth/>
             </div>
+            {validation.phone ? <div className='validation-registration'>Incorrect phone number!</div> : null}
+            {validation.allFields ? <div className='validation-registration'>Fill in all the fields!</div> : null}
             <div className='button-wrapper'>
                 <Button type='submit' className='button' variant='contained' color='primary'>Register</Button>
             </div>
