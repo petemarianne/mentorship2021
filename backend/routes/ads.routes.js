@@ -44,10 +44,9 @@ adsRouter.post('/ads', async (req, res) => {
 
 adsRouter.put('/ads/:id', async (req, res) => { //patch
     try {
-        let adIndex;
+        const adIndex = ads.findIndex(item => item.id === req.params.id);
         switch (req.body.action) {
             case 'close':
-                adIndex = ads.findIndex(item => item.id === req.params.id);
                 ads[adIndex].status = 'closed';
                 ads[adIndex].saleDate = null;
                 ads[adIndex].closingDate = {
@@ -56,13 +55,11 @@ adsRouter.put('/ads/:id', async (req, res) => { //patch
                 };
                 return res.status(204);
             case 'activate':
-                adIndex = ads.findIndex(item => item.id === req.params.id);
                 ads[adIndex].status = 'active';
                 ads[adIndex].saleDate = null;
                 ads[adIndex].closingDate = null;
                 return res.status(204);
             case 'sell':
-                adIndex = ads.findIndex(item => item.id === req.params.id);
                 ads[adIndex].status = 'sold';
                 ads[adIndex].saleDate = {
                     seconds: new Date().getTime() / 1000,
@@ -71,7 +68,7 @@ adsRouter.put('/ads/:id', async (req, res) => { //patch
                 ads[adIndex].closingDate = null;
                 return res.status(204);
             default:
-                return res.status(404);
+                return res.status(500);
         }
     } catch (e) {
         res.status(500);

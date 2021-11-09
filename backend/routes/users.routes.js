@@ -26,7 +26,7 @@ usersRouter.put('/users/:id', async (req, res) => { //id 404!!!
                 users[userIndex].activeAds--;
                 return res.status(200).json({message: 'User\'s info is updated'});
             default:
-                return res.status(404); //500
+                return res.status(500);
         }
     } catch (e) {
         res.status(500);
