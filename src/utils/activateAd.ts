@@ -1,17 +1,6 @@
 import { Ad, User } from '../interfaces';
-import { db } from '../firebase';
 
 export const activateAd = async (ad: Ad, user: User): Promise<void> => {
-    await db.collection('dogAds').doc(ad.docID).set(
-        {
-            ...ad,
-            status: 'active',
-            saleDate: null,
-            closingDate: null,
-        }
-    );
-    await db.collection('users').doc(user.name).set({
-        ...user,
-        activeAds: user.activeAds + 1,
-    });
+    fetch(`/api/activatead/${ad.id}`, {method: 'PUT'});
+    fetch(`/api/updateusersactiveads/${user.id}`, {method: 'PUT', body: JSON.stringify({action: 'add'}), headers: {'Content-Type': 'application/json'}});
 };
