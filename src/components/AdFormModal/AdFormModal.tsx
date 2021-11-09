@@ -43,7 +43,7 @@ const AdFormModal: React.FC<AdFormModalProps> = (props): JSX.Element => {
         fetch('api/ads').then(response => response.json()).then((data) => {
             setAdsData(data);
         });
-        fetch('api/getuser?id=seller1').then(response => response.json()).then((data) => {
+        fetch('api/users/seller1').then(response => response.json()).then((data) => {
             setUser(data);
         });
     }, []);

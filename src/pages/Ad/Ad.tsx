@@ -43,7 +43,7 @@ export const Ad: React.FC = (): JSX.Element => {
             .then(response => response.json())
             .then((data) => {
                 setAd(data);
-                return fetch(`api/getuser?id=${data.sellerID}`)})
+                return fetch(`api/users/${data.sellerID}`)})
             .then(response => response.json())
             .then((data) => {setUser(data)});
     }, []);
