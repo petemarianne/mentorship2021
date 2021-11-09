@@ -57,7 +57,7 @@ export const Ad: React.FC = (): JSX.Element => {
     };
 
     const pictureJSX = <div className='pic-wrapper' onClick={handleOpen}><img src={ad.picture} alt={'ad'}/></div>;
-
+//activeAds!
     const sellerInfoJSX =
             <Link className='seller-info-wrapper' to={ad.sellerID.substring(6) === '1' ? '/myprofile' : `/profile${ad.sellerID.substring(6)}`} style={{ color: 'black', textDecoration: 'none' }}>
                 <div className='avatar-wrapper'><img src={user.avatar} alt='User avatar'/></div>

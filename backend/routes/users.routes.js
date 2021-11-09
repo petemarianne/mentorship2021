@@ -5,14 +5,17 @@ const usersRouter = Router();
 
 usersRouter.get('/users/:id', async (req, res) => {
     try {
-        const user = users.filter(item => item.id === req.params.id)[0];
-        return res.status(200).json(user);
+        const filteredUsers = users.filter(item => item.id === req.params.id);
+        if (filteredUsers.length === 0) {
+            return res.status(404);
+        }
+        return res.status(200).json(filteredUsers[0]);
     } catch (e) {
         res.status(500);
     }
 });
 
-usersRouter.put('/users/:id', async (req, res) => {
+usersRouter.put('/users/:id', async (req, res) => { //id 404!!!
     try {
         const userIndex = users.findIndex(item => item.id === req.params.id);
         switch (req.body.action) {
@@ -23,7 +26,7 @@ usersRouter.put('/users/:id', async (req, res) => {
                 users[userIndex].activeAds--;
                 return res.status(200).json({message: 'User\'s info is updated'});
             default:
-                return res.status(404);
+                return res.status(404); //500
         }
     } catch (e) {
         res.status(500);

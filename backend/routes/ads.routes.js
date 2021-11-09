@@ -23,8 +23,11 @@ adsRouter.get('/ads', async (req, res) => {
 
 adsRouter.get('/ads/:id', async (req, res) => {
     try {
-        const ad = ads.filter(item => item.id.substring(2) === req.params.id)[0];
-        return res.status(200).json(ad);
+        const filteredAds = ads.filter(item => item.id.substring(2) === req.params.id);
+        if (filteredAds.length === 0) {
+            return res.status(404);
+        }
+        return res.status(200).json(filteredAds[0]);
     } catch (e) {
         res.status(500);
     }
@@ -39,7 +42,7 @@ adsRouter.post('/ads', async (req, res) => {
     }
 });
 
-adsRouter.put('/ads/:id', async (req, res) => {
+adsRouter.put('/ads/:id', async (req, res) => { //patch
     try {
         let adIndex;
         switch (req.body.action) {
