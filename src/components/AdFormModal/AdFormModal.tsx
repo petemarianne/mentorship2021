@@ -40,7 +40,7 @@ const AdFormModal: React.FC<AdFormModalProps> = (props): JSX.Element => {
     )
 
     useEffect(() => {
-        fetch('api/getallads').then(response => response.json()).then((data) => {
+        fetch('api/ads').then(response => response.json()).then((data) => {
             setAdsData(data);
         });
         fetch('api/getuser?id=seller1').then(response => response.json()).then((data) => {
@@ -81,7 +81,7 @@ const AdFormModal: React.FC<AdFormModalProps> = (props): JSX.Element => {
             const fileRef = storageRef.child(file.name);
             await fileRef.put(file);
             const fileUrl: string = await fileRef.getDownloadURL();
-            fetch('/api/setadinfo', {method: 'POST', body: JSON.stringify({
+            fetch('/api/ads', {method: 'POST', body: JSON.stringify({
                     ...fields,
                     picture: fileUrl,
                     date: {

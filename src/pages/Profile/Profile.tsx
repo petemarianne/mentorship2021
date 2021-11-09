@@ -41,7 +41,7 @@ export const Profile: React.FC<ProfileProps> = (props): JSX.Element => {
         const userPromise = props.myProfile ? fetch('api/getuser?id=seller1') : fetch(`api/getuser?id=seller${id}`);
         userPromise.then(response => response.json()).then((data) => {
             setUser(data);
-            fetch(`api/getusersads?sellerID=${data.id}`).then(response => response.json()).then((data) => {
+            fetch(`api/ads?sellerID=${data.id}`).then(response => response.json()).then((data) => {
                 setAdsData(data);
             })
         })
