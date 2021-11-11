@@ -1,6 +1,6 @@
 import React, {FormEvent, useState} from 'react';
 import { Button, InputBase } from '@material-ui/core';
-import PicUpload from "../../../PicUpload/PicUpload";
+import PicUpload from '../../../PicUpload/PicUpload';
 
 const Registration: React.FC = (): JSX.Element => {
     const [fields, setFields] = useState<{
