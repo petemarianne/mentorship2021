@@ -1,5 +1,6 @@
 import React, {FormEvent, useState} from 'react';
 import { Button, InputBase } from '@material-ui/core';
+import PicUpload from "../../../PicUpload/PicUpload";
 
 const Registration: React.FC = (): JSX.Element => {
     const [fields, setFields] = useState<{
@@ -17,8 +18,6 @@ const Registration: React.FC = (): JSX.Element => {
         phone: '',
         picture: null,
     });
-    const [drag, setDrag] = useState<boolean>(false);
-    const [uploaded, setUploaded] = useState<boolean>(false);
     const [file, setFile] = useState<File>();
     const [validation, setValidation] = useState<{
         email: boolean,
@@ -31,33 +30,6 @@ const Registration: React.FC = (): JSX.Element => {
         phone: false,
         allFields: false
     });
-
-    const dragStartHandle = (event: React.DragEvent<HTMLDivElement>): void => {
-        event.preventDefault();
-        setDrag(true);
-    }
-
-    const dragLeaveHandle = (event: React.DragEvent<HTMLDivElement>): void => {
-        event.preventDefault();
-        setDrag(false);
-    }
-
-    const onDropHandler = (event: React.DragEvent<HTMLDivElement>): void => {
-        event.preventDefault();
-        const file = event.dataTransfer.files[0];
-        setFile(file);
-        setDrag(false);
-        setUploaded(true);
-    }
-
-    const onFileChange = async (event: React.ChangeEvent<HTMLInputElement>): Promise<void> => {
-        const file = event.target.files ? event.target.files[0] : null;
-        if (file) {
-            setFile(file);
-            setDrag(false);
-            setUploaded(true);
-        }
-    };
 
     const handleEmail = (event: React.ChangeEvent<HTMLInputElement>): void => {
         setFields(current => ({...current, email: event.target.value}));
@@ -111,28 +83,6 @@ const Registration: React.FC = (): JSX.Element => {
         }
     };
 
-    const uploadedJSX =
-        <>
-            <div>Uploaded!</div>
-            <div className='file-name'>{file?.name}</div>
-            <Button variant='contained' color='primary' component='label' className='re-upload-file-button'>
-                Upload Another File
-                <input data-testid='upload-another-file' type='file' onChange={onFileChange} hidden/>
-            </Button>
-        </>;
-
-    const dragJSX =
-        <>
-            <div>Drag a picture!</div>
-            <div>or</div>
-            <Button variant='contained' color='primary' component='label' className='upload-file-button' data-testid='upload-button'>
-                Upload File
-                <input type='file' onChange={onFileChange} hidden/>
-            </Button>
-        </>;
-
-    const dropJSX = <div>Drop a picture!</div>;
-
     return (
         <form className='login-wrapper' onSubmit={onSubmit}>
             <div className='label'>Email</div>
@@ -158,16 +108,7 @@ const Registration: React.FC = (): JSX.Element => {
                 <InputBase value={fields.phone} onChange={handlePhone} fullWidth/>
             </div>
             {validation.phone ? <div className='validation-registration'>Incorrect phone number!</div> : null}
-            <div onDragStart={dragStartHandle}
-                 onDragLeave={dragLeaveHandle}
-                 onDragOver={dragStartHandle}
-                 onDrop={drag ? onDropHandler : undefined}
-                 className='drag-and-drop-wrapper'
-                 style={drag ? {padding: '55px 0'} : undefined}
-                 data-testid='drug-and-drop-area'
-            >
-                {drag ?  dropJSX : uploaded ? uploadedJSX : dragJSX}
-            </div>
+            <PicUpload file={file} setFile={setFile} />
             {validation.allFields ? <div className='validation-registration'>Fill in all the fields!</div> : null}
             <div className='button-wrapper'>
                 <Button type='submit' className='button' variant='contained' color='primary'>Register</Button>
