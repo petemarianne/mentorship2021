@@ -15,9 +15,12 @@ usersRouter.get('/users/:id', async (req, res) => {
     }
 });
 
-usersRouter.put('/users/:id', async (req, res) => { //id 404!!!
+usersRouter.put('/users/:id', async (req, res) => {
     try {
         const userIndex = users.findIndex(item => item.id === req.params.id);
+        if (userIndex < 0) {
+            return res.status(404);
+        }
         switch (req.body.action) {
             case 'add':
                 users[userIndex].activeAds++;

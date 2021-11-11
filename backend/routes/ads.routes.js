@@ -42,9 +42,12 @@ adsRouter.post('/ads', async (req, res) => {
     }
 });
 
-adsRouter.put('/ads/:id', async (req, res) => { //patch
+adsRouter.put('/ads/:id', async (req, res) => {
     try {
         const adIndex = ads.findIndex(item => item.id === req.params.id);
+        if (adIndex < 0) {
+            return res.status(404);
+        }
         switch (req.body.status) {
             case 'closed':
                 ads[adIndex].status = 'closed';
@@ -53,12 +56,12 @@ adsRouter.put('/ads/:id', async (req, res) => { //patch
                     seconds: new Date().getTime() / 1000,
                     nanoseconds: 0,
                 };
-                return res.status(204).json({status: 'closed'});
+                return res.status(200).json({status: 'closed'});
             case 'active':
                 ads[adIndex].status = 'active';
                 ads[adIndex].saleDate = null;
                 ads[adIndex].closingDate = null;
-                return res.status(204).json({status: 'active'});
+                return res.status(200).json({status: 'active'});
             case 'sold':
                 ads[adIndex].status = 'sold';
                 ads[adIndex].saleDate = {
@@ -66,7 +69,7 @@ adsRouter.put('/ads/:id', async (req, res) => { //patch
                     nanoseconds: 0,
                 };
                 ads[adIndex].closingDate = null;
-                return res.status(204).json({status: 'sold'});
+                return res.status(200).json({status: 'sold'});
             default:
                 return res.status(500);
         }
