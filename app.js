@@ -2,6 +2,7 @@ import express from 'express';
 import config from 'config';
 import adsRouter from './backend/routes/ads.routes.js';
 import usersRouter from './backend/routes/users.routes.js';
+import authRouter from './backend/routes/auth.routes.js';
 
 const app = express();
 
@@ -11,6 +12,7 @@ const API = '/api';
 
 app.use(API, adsRouter);
 app.use(API, usersRouter);
+app.use(API + '/auth', authRouter);
 
 const PORT = config.get('port') || 3000;
 
