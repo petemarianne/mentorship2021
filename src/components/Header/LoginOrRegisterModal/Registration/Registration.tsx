@@ -1,5 +1,6 @@
 import React, {FormEvent, useState} from 'react';
 import { Button, InputBase } from '@material-ui/core';
+import PicUpload from '../../../PicUpload/PicUpload';
 
 const Registration: React.FC = (): JSX.Element => {
     const [fields, setFields] = useState<{
@@ -17,7 +18,7 @@ const Registration: React.FC = (): JSX.Element => {
         phone: '',
         picture: null,
     });
-
+    const [file, setFile] = useState<File>();
     const [validation, setValidation] = useState<{
         email: boolean,
         repeatedPassword: boolean,
@@ -28,7 +29,7 @@ const Registration: React.FC = (): JSX.Element => {
         repeatedPassword: false,
         phone: false,
         allFields: false
-    })
+    });
 
     const handleEmail = (event: React.ChangeEvent<HTMLInputElement>): void => {
         setFields(current => ({...current, email: event.target.value}));
@@ -107,6 +108,7 @@ const Registration: React.FC = (): JSX.Element => {
                 <InputBase value={fields.phone} onChange={handlePhone} fullWidth/>
             </div>
             {validation.phone ? <div className='validation-registration'>Incorrect phone number!</div> : null}
+            <PicUpload file={file} setFile={setFile} />
             {validation.allFields ? <div className='validation-registration'>Fill in all the fields!</div> : null}
             <div className='button-wrapper'>
                 <Button type='submit' className='button' variant='contained' color='primary'>Register</Button>

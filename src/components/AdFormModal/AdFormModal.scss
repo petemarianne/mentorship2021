@@ -43,10 +43,6 @@
       margin-left: -1px;
     }
 
-    .input.country {
-      margin: 9px 0 15px 25px;
-    }
-
     .input.city {
       margin: 9px 25px 15px 0;
     }
@@ -101,6 +97,7 @@
         text-overflow: ellipsis;
         overflow: hidden;
         margin-left: 18px;
+        white-space: nowrap;
       }
 
       .re-upload-file-button {
@@ -147,9 +144,6 @@
         .drag-and-drop-wrapper {
           .file-name {
             width: 110px;
-            text-overflow: ellipsis;
-            overflow: hidden;
-            margin-left: 18px;
           }
 
           .re-upload-file-button {
