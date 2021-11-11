@@ -39,11 +39,11 @@ export const Ad: React.FC = (): JSX.Element => {
     const { id } = useParams<{id: string}>();
 
     useEffect(() => {
-        fetch(`api/getad?id=${id}`)
+        fetch(`api/ads/${id}`)
             .then(response => response.json())
             .then((data) => {
                 setAd(data);
-                return fetch(`api/getuser?id=${data.sellerID}`)})
+                return fetch(`api/users/${data.sellerID}`)})
             .then(response => response.json())
             .then((data) => {setUser(data)});
     }, []);

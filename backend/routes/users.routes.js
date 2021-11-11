@@ -3,26 +3,36 @@ import { users } from '../data/users.js';
 
 const usersRouter = Router();
 
-usersRouter.get('/getuser', async (req, res) => {
+usersRouter.get('/users/:id', async (req, res) => {
     try {
-        const user = users.filter(item => item.id === req.query.id)[0];
-        return res.status(200).json(user);
+        const filteredUsers = users.filter(item => item.id === req.params.id);
+        if (filteredUsers.length === 0) {
+            return res.status(404);
+        }
+        return res.status(200).json(filteredUsers[0]);
     } catch (e) {
-        res.status(500).json({message: 'Something went wrong'});
+        res.status(500);
     }
 });
 
-usersRouter.put('/updateusersactiveads/:id', async (req, res) => {
+usersRouter.put('/users/:id', async (req, res) => {
     try {
         const userIndex = users.findIndex(item => item.id === req.params.id);
-        if (req.body.action === 'add') {
-            users[userIndex].activeAds++;
-        } else {
-            users[userIndex].activeAds--;
+        if (userIndex < 0) {
+            return res.status(404);
         }
-        return res.status(200).json({message: 'User\'s info is updated'});
+        switch (req.body.action) {
+            case 'add':
+                users[userIndex].activeAds++;
+                return res.status(200).json({message: 'User\'s info is updated'});
+            case 'remove':
+                users[userIndex].activeAds--;
+                return res.status(200).json({message: 'User\'s info is updated'});
+            default:
+                return res.status(500);
+        }
     } catch (e) {
-        res.status(500).json({message: 'Something went wrong'});
+        res.status(500);
     }
 });
 

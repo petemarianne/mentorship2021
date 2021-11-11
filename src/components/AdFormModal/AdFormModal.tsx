@@ -40,10 +40,10 @@ const AdFormModal: React.FC<AdFormModalProps> = (props): JSX.Element => {
     )
 
     useEffect(() => {
-        fetch('api/getallads').then(response => response.json()).then((data) => {
+        fetch('api/ads').then(response => response.json()).then((data) => {
             setAdsData(data);
         });
-        fetch('api/getuser?id=seller1').then(response => response.json()).then((data) => {
+        fetch('api/users/seller1').then(response => response.json()).then((data) => {
             setUser(data);
         });
     }, []);
@@ -81,7 +81,7 @@ const AdFormModal: React.FC<AdFormModalProps> = (props): JSX.Element => {
             const fileRef = storageRef.child(file.name);
             await fileRef.put(file);
             const fileUrl: string = await fileRef.getDownloadURL();
-            fetch('/api/setadinfo', {method: 'POST', body: JSON.stringify({
+            fetch('/api/ads', {method: 'POST', body: JSON.stringify({
                     ...fields,
                     picture: fileUrl,
                     date: {
@@ -93,7 +93,7 @@ const AdFormModal: React.FC<AdFormModalProps> = (props): JSX.Element => {
                     id: 'ad' + (adsData.length + 1),
                 }), headers: {'Content-Type': 'application/json'}});
         }
-        fetch('/api/updateusersactiveads/seller1', {method: 'PUT', body: JSON.stringify({action: 'add'}), headers: {'Content-Type': 'application/json'}});
+        fetch('/api/users/seller1', {method: 'PUT', body: JSON.stringify({action: 'add'}), headers: {'Content-Type': 'application/json'}});
         props.handleClose();
     };
 

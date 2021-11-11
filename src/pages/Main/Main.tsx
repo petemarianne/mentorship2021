@@ -79,7 +79,7 @@ export const Main: React.FC = (): JSX.Element => {
         try {
             setLoading(true);
             setPage(1);
-            fetch(`api/getfilteredads?breed=${filter.breed}&country=${filter.country}&city=${filter.city}&priceFrom=${filter.priceFrom}&priceTo=${filter.priceTo}&sort=${filter.sort}`).then(response => response.json()).then((data) => {
+            fetch(`api/ads?breed=${filter.breed}&country=${filter.country}&city=${filter.city}&priceFrom=${filter.priceFrom}&priceTo=${filter.priceTo}&sort=${filter.sort}`).then(response => response.json()).then((data) => {
                     setAdsData(data);
                     setTimeout(() => {
                         setLoading(false);

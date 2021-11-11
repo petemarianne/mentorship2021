@@ -38,13 +38,11 @@ export const Profile: React.FC<ProfileProps> = (props): JSX.Element => {
     const [page, setPage] = React.useState<number>(0);
 
     useEffect(() => {
-        const userPromise = props.myProfile ? fetch('api/getuser?id=seller1') : fetch(`api/getuser?id=seller${id}`);
-        userPromise.then(response => response.json()).then((data) => {
+        const userPromise = props.myProfile ? fetch('api/users/seller1') : fetch(`api/users/seller${id}`);
+        userPromise.then(response => response.json()).then((data) => { //promise chain!!!!
             setUser(data);
-            fetch(`api/getusersads?sellerID=${data.id}`).then(response => response.json()).then((data) => {
-                setAdsData(data);
-            })
-        })
+            return fetch(`api/ads?sellerID=${data.id}`);
+        }).then(response => response.json()).then(data => setAdsData(data));
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [rerender]);
 

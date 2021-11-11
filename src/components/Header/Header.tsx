@@ -77,7 +77,7 @@ const Header: React.FC = (): JSX.Element => {
             localStorage.setItem('search',JSON.stringify({breed: ''}));
         }
         setBreed(JSON.parse(localStorage.getItem('search') as string).breed);
-        fetch('api/getuser?id=seller1').then(response => response.json()).then((data) => {
+        fetch('api/users/seller1').then(response => response.json()).then((data) => {
             setLoggedInUsersAvatar(data.avatar);
         })
     }, [])
