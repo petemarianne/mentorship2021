@@ -73,7 +73,7 @@ authRouter.post('/login',
             const {email, password} = req.body;
 
             const userIndex = users.findIndex(item => item.email === email);
-            if (userIndex >= 0) {
+            if (userIndex < 0) {
                 return res.status(404).json({message: 'User is not found!'});
             }
 

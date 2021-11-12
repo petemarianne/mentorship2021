@@ -165,7 +165,8 @@ export const users = [
         "email": "mileycyrus@icloud.com",
         "id": "seller1",
         "name": "Miley Cyrus",
-        "phone": "+158295928956"
+        "phone": "+158295928956",
+        password: '$2a$12$4qf3Wi7rH0val4E9VmX.8ugca3zBllR1hihj7sXt3J9hS0BCuzXN6'
     },
     {
         "activeAds": 1,
