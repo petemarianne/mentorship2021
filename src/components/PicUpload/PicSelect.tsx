@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { Button } from '@material-ui/core';
 
-interface PicUploadProps {
+interface PicSelectProps {
     file: File | undefined,
     setFile: React.Dispatch<React.SetStateAction<File | undefined>>
 };
 
-const PicUpload: React.FC<PicUploadProps> = (props): JSX.Element => {
+const PicSelect: React.FC<PicSelectProps> = (props): JSX.Element => {
     const [drag, setDrag] = useState<boolean>(false);
-    const [uploaded, setUploaded] = useState<boolean>(false);
+    const [selected, setSelected] = useState<boolean>(false);
 
     const dragStartHandle = (event: React.DragEvent<HTMLDivElement>): void => {
         event.preventDefault();
@@ -25,7 +25,7 @@ const PicUpload: React.FC<PicUploadProps> = (props): JSX.Element => {
         const file = event.dataTransfer.files[0];
         props.setFile(file);
         setDrag(false);
-        setUploaded(true);
+        setSelected(true);
     }
 
     const onFileChange = async (event: React.ChangeEvent<HTMLInputElement>): Promise<void> => {
@@ -33,7 +33,7 @@ const PicUpload: React.FC<PicUploadProps> = (props): JSX.Element => {
         if (file) {
             props.setFile(file);
             setDrag(false);
-            setUploaded(true);
+            setSelected(true);
         }
     };
 
@@ -68,9 +68,9 @@ const PicUpload: React.FC<PicUploadProps> = (props): JSX.Element => {
              style={drag ? {padding: '55px 0'} : undefined}
              data-testid='drug-and-drop-area'
         >
-            {drag ?  dropJSX : uploaded ? uploadedJSX : dragJSX}
+            {drag ?  dropJSX : selected ? uploadedJSX : dragJSX}
         </div>
     )
 }
 
-export default PicUpload;
+export default PicSelect;

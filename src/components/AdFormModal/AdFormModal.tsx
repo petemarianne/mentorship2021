@@ -5,7 +5,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import { app } from '../../firebase';
 import { validateAd } from '../../utils';
 import { Ad, User, Fields } from '../../interfaces';
-import PicUpload from '../PicUpload/PicUpload';
+import PicSelect from '../PicUpload/PicSelect';
 
 interface AdFormModalProps {
     handleClose: () => void,
@@ -145,7 +145,7 @@ const AdFormModal: React.FC<AdFormModalProps> = (props): JSX.Element => {
                             {!loading ? 'Publish' : <CircularProgress color='inherit' size='25px' data-testid='loading'/>}
                         </Button>
                     </div>
-                    <PicUpload file={file} setFile={setFile} />
+                    <PicSelect file={file} setFile={setFile} />
                 </div>
             </form>
         </div>
