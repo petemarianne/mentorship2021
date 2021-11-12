@@ -3,7 +3,7 @@ import { Button } from '@material-ui/core';
 
 interface PicSelectProps {
     file: File | undefined,
-    setFile: React.Dispatch<React.SetStateAction<File | undefined>>
+    onFileSelect: React.Dispatch<React.SetStateAction<File | undefined>>
 };
 
 const PicSelect: React.FC<PicSelectProps> = (props): JSX.Element => {
@@ -23,7 +23,7 @@ const PicSelect: React.FC<PicSelectProps> = (props): JSX.Element => {
     const onDropHandler = (event: React.DragEvent<HTMLDivElement>): void => {
         event.preventDefault();
         const file = event.dataTransfer.files[0];
-        props.setFile(file);
+        props.onFileSelect(file);
         setDrag(false);
         setSelected(true);
     }
@@ -31,7 +31,7 @@ const PicSelect: React.FC<PicSelectProps> = (props): JSX.Element => {
     const onFileChange = async (event: React.ChangeEvent<HTMLInputElement>): Promise<void> => {
         const file = event.target.files ? event.target.files[0] : null;
         if (file) {
-            props.setFile(file);
+            props.onFileSelect(file);
             setDrag(false);
             setSelected(true);
         }
