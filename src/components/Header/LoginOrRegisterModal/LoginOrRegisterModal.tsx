@@ -7,7 +7,7 @@ import './LoginOrRegisterModal.scss';
 import { useScreenSize } from '../../../hooks/useScreenSize';
 
 interface LoginOrRegisterModalProps {
-    handleClose?: () => void,
+    handleClose: () => void,
 };
 
 const LoginOrRegisterModal: React.FC<LoginOrRegisterModalProps> = (props): JSX.Element => {
@@ -30,7 +30,7 @@ const LoginOrRegisterModal: React.FC<LoginOrRegisterModalProps> = (props): JSX.E
                 <div className={isLogin ? 'login active' : 'login'} onClick={() => setIsLogin(true)}>LOGIN</div>
                 <div className={isLogin ? 'registration' : 'registration active'} onClick={() => setIsLogin(false)}>REGISTRATION</div>
             </div>
-            {isLogin ? <Login /> : <Registration />}
+            {isLogin ? <Login /> : <Registration onCloseModal={props.handleClose}/>}
         </div>
     );
 };

@@ -46,7 +46,7 @@ const DrawerMenu: React.FC<DrawerMenuProps> = (props): JSX.Element => {
                     slideView={filterProps}
                     />
                 </> :
-                <LoginOrRegisterModal />
+                <LoginOrRegisterModal handleClose={props.closeMenu} />
             }
         </div>
     );

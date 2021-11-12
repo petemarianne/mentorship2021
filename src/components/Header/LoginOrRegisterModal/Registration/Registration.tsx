@@ -3,21 +3,23 @@ import { Button, CircularProgress, InputBase } from '@material-ui/core';
 import PicUpload from '../../../PicUpload/PicUpload';
 import { app } from '../../../../firebase';
 
-const Registration: React.FC = (): JSX.Element => {
+interface RegistrationProps {
+    onCloseModal: () => void,
+}
+
+const Registration: React.FC<RegistrationProps> = (props): JSX.Element => {
     const [fields, setFields] = useState<{
         email: string,
         password: string,
         repeatedPassword: string,
         name: string,
         phone: string,
-        picture: File | null,
     }>({
         email: '',
         password: '',
         repeatedPassword: '',
         name: '',
         phone: '',
-        picture: null,
     });
     const [file, setFile] = useState<File>();
     const [loading, setLoading] = useState<boolean>(false);
@@ -73,7 +75,7 @@ const Registration: React.FC = (): JSX.Element => {
         } else {
             setValidation(prevState => ({...prevState, phone: false}));
         }
-        if (file === undefined) {
+        if (!file) {
             setValidation(prevState => ({...prevState, allFields: true}));
         }
         if (!(validation.email && validation.repeatedPassword && validation.phone)) {
@@ -87,10 +89,15 @@ const Registration: React.FC = (): JSX.Element => {
             }
         }
         const storageRef = app.storage().ref();
-        if (file) {
+        if (file && !validation.email && !validation.phone && !validation.repeatedPassword && !validation.allFields) {
             const fileRef = storageRef.child(file.name);
             await fileRef.put(file);
             const fileUrl: string = await fileRef.getDownloadURL();
+            fetch('/api/auth/register',
+                {method: 'POST',
+                    body: JSON.stringify({email: fields.email, password: fields.email, name: fields.name, phone: fields.phone, avatar: fileUrl }),
+                    headers: {'Content-Type': 'application/json'}})
+                .then(() => props.onCloseModal());
         }
     };
 
