@@ -3,7 +3,7 @@ import { Button } from '@material-ui/core';
 
 interface PicSelectProps {
     file?: File,
-    onFileSelect: React.Dispatch<React.SetStateAction<File | undefined>>
+    onFileSelect: (file: File) => void
 };
 
 const PicSelect: React.FC<PicSelectProps> = (props): JSX.Element => {
