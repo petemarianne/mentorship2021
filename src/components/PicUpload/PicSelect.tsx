@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { Button } from '@material-ui/core';
 
 interface PicSelectProps {
-    file: File | undefined,
-    onFileSelect: React.Dispatch<React.SetStateAction<File | undefined>>
+    file?: File,
+    onFileSelect: (file: File) => void
 };
 
 const PicSelect: React.FC<PicSelectProps> = (props): JSX.Element => {
