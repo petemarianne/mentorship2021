@@ -169,7 +169,7 @@ const Registration: React.FC<RegistrationProps> = (props): JSX.Element => {
                 <InputBase value={fields.phone} onChange={handlePhone} fullWidth/>
             </div>
             {!validation.phone ? <div className='validation-registration'>Incorrect phone number!</div> : null}
-            <PicSelect file={file} setFile={setFile} />
+            <PicSelect file={file} onFileSelect={setFile} />
             {validation.allFields === 0 ? <div className='validation-registration'>Fill in all the fields!</div> : null}
             <div className='button-wrapper'>
                 <Button type='submit' className='button' variant='contained' color='primary'>

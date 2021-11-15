@@ -145,7 +145,7 @@ const AdFormModal: React.FC<AdFormModalProps> = (props): JSX.Element => {
                             {!loading ? 'Publish' : <CircularProgress color='inherit' size='25px' data-testid='loading'/>}
                         </Button>
                     </div>
-                    <PicSelect file={file} setFile={setFile} />
+                    <PicSelect file={file} onFileSelect={setFile} />
                 </div>
             </form>
         </div>
