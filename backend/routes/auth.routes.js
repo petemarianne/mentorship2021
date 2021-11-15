@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import {check, header, validationResult} from 'express-validator';
+import { check, validationResult } from 'express-validator';
 import { users } from '../data/users.js';
 import bcrypt from 'bcryptjs';
 import jsonwebtoken from 'jsonwebtoken';
