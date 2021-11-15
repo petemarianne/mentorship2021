@@ -126,7 +126,6 @@ const Registration: React.FC<RegistrationProps> = (props): JSX.Element => {
                     .then(response => {
                         if (response.ok) {
                             props.onCloseModal();
-                            return;
                         } else {
                             response.json().then((data) => {
                                 if (data.message === 'This email is already used!') {

@@ -1,5 +1,6 @@
-import React, { FormEvent, useState } from 'react';
+import React, { FormEvent, useContext, useState } from 'react';
 import { InputBase, Button, CircularProgress } from '@material-ui/core';
+import { AuthContext } from '../../../../contexts/auth-context';
 
 interface RegistrationProps {
     onCloseModal: () => void,
@@ -13,9 +14,10 @@ const Login: React.FC<RegistrationProps> = (props): JSX.Element => {
         email: '',
         password: ''
     });
-
     const [validation, setValidation] = useState<boolean>(true);
     const [loading, setLoading] = useState<boolean>(false);
+
+    const {setSellerID} = useContext(AuthContext)
 
     const handleEmail = (event: React.ChangeEvent<HTMLInputElement>): void => {
         setFields(current => ({...current, email: event.target.value}));
@@ -36,14 +38,24 @@ const Login: React.FC<RegistrationProps> = (props): JSX.Element => {
                     password: fields.password
                 }),
                 headers: {'Content-Type': 'application/json'}
-            }).then(response => {
-             if (!response.ok) {
-                 setValidation(false);
-             } else {
-                 props.onCloseModal();
-             }
-             setLoading(false);
-        });
+            })
+            .then(response => {
+                if (!response.ok) {
+                    setValidation(false);
+                } else {
+                    return response.json();
+                }
+            })
+            .then(data => {
+            localStorage.setItem('token', data.token);
+            return fetch('/api/auth/login', {method: 'GET', headers: {'Authorization': data.token}})
+            })
+            .then(response => response.json())
+            .then(data => {
+                setSellerID(data.userID);
+                setLoading(false);
+                props.onCloseModal();
+            });
     }
 
     return (

@@ -10,6 +10,8 @@ import { Link, Redirect, useLocation } from 'react-router-dom';
 import AdFormModal from '../AdFormModal/AdFormModal';
 import { useScreenSize } from '../../hooks/useScreenSize';
 import { FilterContext } from '../../contexts/filter-context';
+import { AuthContext } from '../../contexts/auth-context';
+import LoginOrRegisterModal from './LoginOrRegisterModal/LoginOrRegisterModal';
 
 const Header: React.FC = (): JSX.Element => {
     const [breed, setBreed] = useState<string>('');
@@ -21,6 +23,7 @@ const Header: React.FC = (): JSX.Element => {
     const currentPathname: string = useLocation().pathname;
 
     const {filter, setFilterState} = useContext(FilterContext);
+    const {sellerID, setSellerID} = useContext(AuthContext);
 
     const {desktop} = useScreenSize();
 
@@ -80,7 +83,17 @@ const Header: React.FC = (): JSX.Element => {
         fetch('api/users/seller1').then(response => response.json()).then((data) => {
             setLoggedInUsersAvatar(data.avatar);
         })
-    }, [])
+    }, []);
+
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        console.log(token)
+        if (token) {
+            fetch('/api/auth/login', {method: 'GET', headers: {'Authorization': token}})
+                .then(response => response.json())
+                .then(data => setSellerID(data.userID));
+        }
+    }, [sellerID]);
 
     return (
         <AppBar color='inherit' position='static' className='header-wrapper' elevation={0}>
@@ -96,13 +109,23 @@ const Header: React.FC = (): JSX.Element => {
                             <InputBase placeholder='Search for a breed…' value={breed} onChange={handleBreed} onKeyDown={handleEnter} fullWidth/>
                         </div>
                         <div className='toolbar-right-side desktop'>
-                            <div className='submit-an-ad-button-wrapper'>
-                                <Button color='primary' variant='contained' className='submit-an-ad-button' onClick={handleOpen}>Submit an ad</Button>
-                            </div>
-                            <Button onClick={handleDropdownOpen}>
-                                <Avatar className='avatar-header' src={loggedInUsersAvatar}/>
-                                <ArrowDropDownIcon className='icons-triangle icons-color' />
-                            </Button>
+                            {sellerID ?
+                                <>
+                                    <div className='submit-an-ad-button-wrapper'>
+                                        <Button color='primary' variant='contained' className='submit-an-ad-button'
+                                                onClick={handleOpen}>Submit an ad</Button>
+                                    </div>
+                                    <Button onClick={handleDropdownOpen}>
+                                        <Avatar className='avatar-header' src={loggedInUsersAvatar}/>
+                                        <ArrowDropDownIcon className='icons-triangle icons-color'/>
+                                    </Button>
+                                </>
+                                :
+                                <div className='submit-an-ad-button-wrapper'>
+                                    <Button color='primary' variant='contained' className='submit-an-ad-button'
+                                            onClick={handleOpen}>Login</Button>
+                                </div>
+                            }
                         </div>
                     </>
                 )}
@@ -140,7 +163,7 @@ const Header: React.FC = (): JSX.Element => {
                     aria-describedby='simple-modal-description'
                     className='modal'>
                     <div className='modal-content'>
-                        <AdFormModal handleClose={handleClose}/>
+                        {sellerID ? <AdFormModal handleClose={handleClose}/> : <LoginOrRegisterModal handleClose={handleClose}/>}
                     </div>
                 </Modal>
                 {renderRedirect()}

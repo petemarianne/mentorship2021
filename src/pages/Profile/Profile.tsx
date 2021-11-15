@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import './Profile.scss';
 import { IconButton, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow } from '@material-ui/core';
 import { useScreenSize } from '../../hooks/useScreenSize';
@@ -7,10 +7,7 @@ import SellIcon from '@mui/icons-material/Sell';
 import { useParams } from 'react-router-dom';
 import { closeAd, sellAd, activateAd, toDate } from '../../utils';
 import { Ad, NumericDate, User } from '../../interfaces';
-
-interface ProfileProps {
-    myProfile?: boolean,
-}
+import { AuthContext } from '../../contexts/auth-context';
 
 interface Column {
     id: string,
@@ -19,7 +16,7 @@ interface Column {
     align: 'center' | 'left' | 'right' | 'justify' | 'inherit' | undefined,
 }
 
-export const Profile: React.FC<ProfileProps> = (props): JSX.Element => {
+export const Profile: React.FC = (): JSX.Element => {
     const [adsData, setAdsData] = useState<Ad[]>([]);
     const [user, setUser] = useState<User>({
         activeAds: 0,
@@ -37,8 +34,10 @@ export const Profile: React.FC<ProfileProps> = (props): JSX.Element => {
     const [rerender, setRerender] = useState(0);
     const [page, setPage] = React.useState<number>(0);
 
+    const {sellerID} = useContext(AuthContext);
+
     useEffect(() => {
-        const userPromise = props.myProfile ? fetch('api/users/seller1') : fetch(`api/users/seller${id}`);
+        const userPromise = sellerID ? fetch(`api/users/${sellerID}`) : fetch(`api/users/seller${id}`);
         userPromise.then(response => response.json()).then((data) => { //promise chain!!!!
             setUser(data);
             return fetch(`api/ads?sellerID=${data.id}`);
@@ -57,7 +56,7 @@ export const Profile: React.FC<ProfileProps> = (props): JSX.Element => {
         { id: 'price', label: 'Price', minWidth: 40, align: 'center'},
     ];
 
-    if (props.myProfile) {
+    if (sellerID) {
         columns.push({ id: 'action', label: 'Action', minWidth: 80, align: 'center'});
     }
 
@@ -138,7 +137,7 @@ export const Profile: React.FC<ProfileProps> = (props): JSX.Element => {
                                         {dateCell(row.closingDate)}
                                         <TableCell size='medium' align='center'>{row.status}</TableCell>
                                         <TableCell size='medium' align='center'>{row.price}</TableCell>
-                                        {props.myProfile ?
+                                        {sellerID ?
                                             <TableCell size='medium' align='center'>
                                                 {row.status === 'closed' ?
                                                     <IconButton

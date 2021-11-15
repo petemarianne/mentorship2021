@@ -5,7 +5,7 @@ import './styles/buttons.scss';
 import Layout from './components/Layout/Layout';
 import { Main, Ad, Profile, MyProfile, Page404 } from './pages';
 
-const App: React.FC = ():JSX.Element => {
+const App: React.FC = (): JSX.Element => {
     return (
         <div className='App'>
             <BrowserRouter>

@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import {check, validationResult} from 'express-validator';
+import {check, header, validationResult} from 'express-validator';
 import { users } from '../data/users.js';
 import bcrypt from 'bcryptjs';
 import jsonwebtoken from 'jsonwebtoken';
@@ -87,11 +87,21 @@ authRouter.post('/login',
                 config.get('jwtSecret'),
                 {expiresIn: '1h'}
             );
-
-            return res.status(200).json({token, userID: users[userIndex].id});
+            return res.status(200).json({token});
         } catch (e) {
             return res.status(500);
         }
 });
+
+authRouter.get('/login', async (req, res) => {
+        try {
+            const parsedToken = jsonwebtoken.decode(req.headers['authorization']);
+            const userID = parsedToken.userID;
+            return res.status(200).json({userID});
+        } catch (e) {
+            return res.status(500);
+        }
+    });
+
 
 export default authRouter;

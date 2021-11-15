@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Button, Modal } from '@material-ui/core';
 import './Ad.scss';
 import { toDate } from '../../utils';
 import { useScreenSize } from '../../hooks/useScreenSize';
 import { Link, useParams } from 'react-router-dom';
 import { User, Ad as AdInterface } from '../../interfaces';
+import { AuthContext } from '../../contexts/auth-context';
 
 export const Ad: React.FC = (): JSX.Element => {
     const {desktop, tablet, mobile} = useScreenSize();
@@ -38,6 +39,8 @@ export const Ad: React.FC = (): JSX.Element => {
     const [open, setOpen] = useState<boolean>(false);
     const { id } = useParams<{id: string}>();
 
+    const {sellerID} = useContext(AuthContext);
+
     useEffect(() => {
         fetch(`api/ads/${id}`)
             .then(response => response.json())
@@ -59,7 +62,7 @@ export const Ad: React.FC = (): JSX.Element => {
     const pictureJSX = <div className='pic-wrapper' onClick={handleOpen}><img src={ad.picture} alt={'ad'}/></div>;
 
     const sellerInfoJSX =
-            <Link className='seller-info-wrapper' to={ad.sellerID.substring(6) === '1' ? '/myprofile' : `/profile${ad.sellerID.substring(6)}`} style={{ color: 'black', textDecoration: 'none' }}>
+            <Link className='seller-info-wrapper' to={ad.sellerID === sellerID ? '/myprofile' : `/profile${ad.sellerID.substring(6)}`} style={{ color: 'black', textDecoration: 'none' }}>
                 <div className='avatar-wrapper'><img src={user.avatar} alt='User avatar'/></div>
                 <div className='info-wrapper'>
                     <div className='username'>{user.name}</div>
