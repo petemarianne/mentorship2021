@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Button } from '@material-ui/core';
 
 interface PicSelectProps {
-    file: File | undefined,
+    file?: File,
     onFileSelect: React.Dispatch<React.SetStateAction<File | undefined>>
 };
 
