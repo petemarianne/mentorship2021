@@ -10,7 +10,7 @@ interface AccountDropdownProps {
 };
 
 const AccountDropdown: React.FC<AccountDropdownProps> = (props): JSX.Element => {
-    const {setSellerID} = useContext(AuthContext);
+    const {logout} = useContext(AuthContext);
 
     return (
         <>
@@ -31,8 +31,7 @@ const AccountDropdown: React.FC<AccountDropdownProps> = (props): JSX.Element => 
                 }}>
                 <MenuItem onClick={props.handleDropdown} component={Link} to={'/myprofile'}>My profile</MenuItem>
                 <MenuItem onClick={() => {
-                    setSellerID(undefined);
-                    localStorage.setItem('token', '');
+                    logout();
                     props.handleDropdown();
                 }}
                 >

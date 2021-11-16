@@ -23,7 +23,7 @@ const Header: React.FC = (): JSX.Element => {
     const currentPathname: string = useLocation().pathname;
 
     const {filter, setFilterState} = useContext(FilterContext);
-    const {sellerID, setSellerID} = useContext(AuthContext);
+    const {sellerID, login} = useContext(AuthContext);
 
     const {desktop} = useScreenSize();
 
@@ -87,11 +87,8 @@ const Header: React.FC = (): JSX.Element => {
 
     useEffect(() => {
         const token = localStorage.getItem('token');
-        console.log(token)
         if (token) {
-            fetch('/api/auth/login', {method: 'GET', headers: {'Authorization': token}})
-                .then(response => response.json())
-                .then(data => setSellerID(data.userID));
+            login(token);
         }
     }, [sellerID]);
 

@@ -19,7 +19,7 @@ const DrawerMenu: React.FC<DrawerMenuProps> = (props): JSX.Element => {
         Divider: <Divider style={{backgroundColor: 'transparent'}}/>,
     };
 
-    const {sellerID, setSellerID} = useContext(AuthContext);
+    const {sellerID, logout} = useContext(AuthContext);
 
     const [login, setLogin] = useState<boolean>(false)
 
@@ -50,8 +50,7 @@ const DrawerMenu: React.FC<DrawerMenuProps> = (props): JSX.Element => {
                             <Button className='my-account-button' variant='contained' color='secondary' component={Link} to={'/profile'}>My profile</Button>
                             <Divider style={{backgroundColor: 'transparent'}} />
                             <Button className='logout-button' variant='contained' color='secondary' onClick={() =>{
-                                setSellerID(undefined);
-                                localStorage.setItem('token', '');
+                                logout();
                                 props.closeMenu();
                             }
                             }>Logout</Button>

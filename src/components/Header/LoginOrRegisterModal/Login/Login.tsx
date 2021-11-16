@@ -17,7 +17,7 @@ const Login: React.FC<RegistrationProps> = (props): JSX.Element => {
     const [validation, setValidation] = useState<boolean>(true);
     const [loading, setLoading] = useState<boolean>(false);
 
-    const {setSellerID} = useContext(AuthContext)
+    const {login} = useContext(AuthContext)
 
     const handleEmail = (event: React.ChangeEvent<HTMLInputElement>): void => {
         setFields(current => ({...current, email: event.target.value}));
@@ -47,12 +47,8 @@ const Login: React.FC<RegistrationProps> = (props): JSX.Element => {
                 }
             })
             .then(data => {
-            localStorage.setItem('token', data.token);
-            return fetch('/api/auth/login', {method: 'GET', headers: {'Authorization': data.token}})
-            })
-            .then(response => response.json())
-            .then(data => {
-                setSellerID(data.userID);
+                localStorage.setItem('token', data.token);
+                login(data.token);
                 setLoading(false);
                 props.onCloseModal();
             });
