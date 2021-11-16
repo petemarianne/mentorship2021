@@ -8,7 +8,7 @@ export const MyProfile: React.FC = (): JSX.Element => {
 
     return (
         <>
-            <Profile />
+            <Profile myProfile={true}/>
             {sellerID ? null : <Redirect to='/' />}
         </>
     );

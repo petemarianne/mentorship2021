@@ -4,10 +4,14 @@ import { IconButton, Table, TableBody, TableCell, TableContainer, TableHead, Tab
 import { useScreenSize } from '../../hooks/useScreenSize';
 import { Archive, Unarchive } from '@material-ui/icons';
 import SellIcon from '@mui/icons-material/Sell';
-import { useParams } from 'react-router-dom';
+import {Redirect, useParams} from 'react-router-dom';
 import { closeAd, sellAd, activateAd, toDate } from '../../utils';
 import { Ad, NumericDate, User } from '../../interfaces';
 import { AuthContext } from '../../contexts/auth-context';
+
+interface ProfileProps {
+    myProfile?: boolean,
+}
 
 interface Column {
     id: string,
@@ -16,7 +20,7 @@ interface Column {
     align: 'center' | 'left' | 'right' | 'justify' | 'inherit' | undefined,
 }
 
-export const Profile: React.FC = (): JSX.Element => {
+export const Profile: React.FC<ProfileProps> = (props): JSX.Element => {
     const [adsData, setAdsData] = useState<Ad[]>([]);
     const [user, setUser] = useState<User>({
         activeAds: 0,
@@ -34,11 +38,11 @@ export const Profile: React.FC = (): JSX.Element => {
     const [rerender, setRerender] = useState(0);
     const [page, setPage] = React.useState<number>(0);
 
-    const {sellerID} = useContext(AuthContext);
+    const { sellerID } = useContext(AuthContext);
 
     useEffect(() => {
-        const userPromise = sellerID ? fetch(`api/users/${sellerID}`) : fetch(`api/users/seller${id}`);
-        userPromise.then(response => response.json()).then((data) => { //promise chain!!!!
+        const userPromise = props.myProfile ? fetch(`api/users/${sellerID}`) : fetch(`api/users/seller${id}`);
+        userPromise.then(response => response.json()).then((data) => {
             setUser(data);
             return fetch(`api/ads?sellerID=${data.id}`);
         }).then(response => response.json()).then(data => setAdsData(data));
@@ -56,21 +60,21 @@ export const Profile: React.FC = (): JSX.Element => {
         { id: 'price', label: 'Price', minWidth: 40, align: 'center'},
     ];
 
-    if (sellerID) {
+    if (props.myProfile) {
         columns.push({ id: 'action', label: 'Action', minWidth: 80, align: 'center'});
     }
 
     const dateCell = (date: NumericDate | undefined): JSX.Element => {
-            return date ?
-                <TableCell size='medium' align='center'>
-                    {toDate(date).toLocaleString('default', {
-                        day: 'numeric',
-                        month: 'short',
-                        year: 'numeric',
-                        hour: 'numeric',
-                        minute: 'numeric'
-                    })}
-                </TableCell> :
+        return date ?
+            <TableCell size='medium' align='center'>
+                {toDate(date).toLocaleString('default', {
+                    day: 'numeric',
+                    month: 'short',
+                    year: 'numeric',
+                    hour: 'numeric',
+                    minute: 'numeric'
+                })}
+            </TableCell> :
             <TableCell/>;
     };
 
@@ -137,7 +141,7 @@ export const Profile: React.FC = (): JSX.Element => {
                                         {dateCell(row.closingDate)}
                                         <TableCell size='medium' align='center'>{row.status}</TableCell>
                                         <TableCell size='medium' align='center'>{row.price}</TableCell>
-                                        {sellerID ?
+                                        {props.myProfile ?
                                             <TableCell size='medium' align='center'>
                                                 {row.status === 'closed' ?
                                                     <IconButton
