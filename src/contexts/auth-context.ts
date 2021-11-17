@@ -1,15 +1,17 @@
 import { createContext } from 'react';
 
 interface DefaultAuth  {
-    sellerID?: string,
+    sellerID: string | null,
+    token: string | null,
+    login: (arg0: string, arg: string) => void,
     logout: () => void,
-    login: (arg0: string) => void;
 };
 
 const defaultAuth: DefaultAuth = {
-    sellerID: undefined,
+    sellerID: null,
+    token: null,
+    login: () => {},
     logout: () => {},
-    login: arg0 => {},
 };
 
 export const AuthContext = createContext(defaultAuth);

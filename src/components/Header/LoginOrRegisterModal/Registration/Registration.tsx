@@ -1,7 +1,8 @@
-import React, { FormEvent, useState } from 'react';
+import React, { FormEvent, useContext, useState } from 'react';
 import { Button, CircularProgress, InputBase } from '@material-ui/core';
 import PicSelect from '../../../PicUpload/PicSelect';
 import { app } from '../../../../firebase';
+import { AuthContext } from '../../../../contexts/auth-context';
 
 interface RegistrationProps {
     onCloseModal: () => void,
@@ -38,6 +39,8 @@ const Registration: React.FC<RegistrationProps> = (props): JSX.Element => {
         allFields: -1,
         usedEmail: true,
     });
+
+    const {login} = useContext(AuthContext);
 
     const handleEmail = (event: React.ChangeEvent<HTMLInputElement>): void => {
         setFields(current => ({...current, email: event.target.value}));
@@ -125,7 +128,11 @@ const Registration: React.FC<RegistrationProps> = (props): JSX.Element => {
                     })
                     .then(response => {
                         if (response.ok) {
-                            props.onCloseModal();
+                            response.json().then((data) => {
+                                console.log(data)
+                                login(data.token, data.user.id);
+                                props.onCloseModal();
+                            });
                         } else {
                             response.json().then((data) => {
                                 if (data.message === 'This email is already used!') {

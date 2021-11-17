@@ -4,7 +4,7 @@ import { IconButton, Table, TableBody, TableCell, TableContainer, TableHead, Tab
 import { useScreenSize } from '../../hooks/useScreenSize';
 import { Archive, Unarchive } from '@material-ui/icons';
 import SellIcon from '@mui/icons-material/Sell';
-import {Redirect, useParams} from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { closeAd, sellAd, activateAd, toDate } from '../../utils';
 import { Ad, NumericDate, User } from '../../interfaces';
 import { AuthContext } from '../../contexts/auth-context';
@@ -47,7 +47,7 @@ export const Profile: React.FC<ProfileProps> = (props): JSX.Element => {
             return fetch(`api/ads?sellerID=${data.id}`);
         }).then(response => response.json()).then(data => setAdsData(data));
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [rerender]);
+    }, [rerender, sellerID]);
 
     const {desktop} = useScreenSize();
 
@@ -149,7 +149,7 @@ export const Profile: React.FC<ProfileProps> = (props): JSX.Element => {
                                                         size='small'
                                                         color='primary'
                                                         onClick={() => {
-                                                            activateAd(row, user).then(() => {
+                                                            activateAd(row).then(() => {
                                                                 setRerender(cur => (cur + 1));
                                                             });
                                                         }}
@@ -163,7 +163,7 @@ export const Profile: React.FC<ProfileProps> = (props): JSX.Element => {
                                                                 size='small'
                                                                 color='primary'
                                                                 onClick={() => {
-                                                                    sellAd(row, user).then(() => {
+                                                                    sellAd(row).then(() => {
                                                                         setRerender(cur => (cur + 1));
                                                                     });
                                                                 }}
@@ -175,7 +175,7 @@ export const Profile: React.FC<ProfileProps> = (props): JSX.Element => {
                                                                 size='small'
                                                                 color='primary'
                                                                 onClick={() => {
-                                                                    closeAd(row, user).then(() => {
+                                                                    closeAd(row).then(() => {
                                                                         setRerender(cur => (cur + 1));
                                                                     });
                                                                 }}

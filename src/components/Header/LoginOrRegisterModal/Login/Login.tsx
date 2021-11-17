@@ -47,8 +47,7 @@ const Login: React.FC<RegistrationProps> = (props): JSX.Element => {
                 }
             })
             .then(data => {
-                localStorage.setItem('token', data.token);
-                login(data.token);
+                login(data.token, data.userID);
                 setLoading(false);
                 props.onCloseModal();
             });

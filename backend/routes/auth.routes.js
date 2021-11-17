@@ -48,7 +48,13 @@ authRouter.post(
 
         users.push(user);
 
-        return res.status(201).json({...user});
+        const token = jsonwebtoken.sign(
+            {userID: user.id},
+            config.get('jwtSecret'),
+            {expiresIn: '1h'}
+        );
+
+        return res.status(201).json({user, token});
     } catch (e) {
         return res.status(500);
     }
@@ -87,21 +93,11 @@ authRouter.post('/login',
                 config.get('jwtSecret'),
                 {expiresIn: '1h'}
             );
-            return res.status(200).json({token});
+            return res.status(200).json({token, userID: users[userIndex].id});
         } catch (e) {
             return res.status(500);
         }
 });
-
-authRouter.get('/login', async (req, res) => {
-        try {
-            const parsedToken = jsonwebtoken.decode(req.headers['authorization']);
-            const userID = parsedToken.userID;
-            return res.status(200).json({userID});
-        } catch (e) {
-            return res.status(500);
-        }
-    });
 
 
 export default authRouter;

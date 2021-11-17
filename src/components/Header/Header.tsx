@@ -23,7 +23,7 @@ const Header: React.FC = (): JSX.Element => {
     const currentPathname: string = useLocation().pathname;
 
     const {filter, setFilterState} = useContext(FilterContext);
-    const {sellerID, login} = useContext(AuthContext);
+    const { sellerID, logout, token, login } = useContext(AuthContext);
 
     const {desktop} = useScreenSize();
 
@@ -80,17 +80,20 @@ const Header: React.FC = (): JSX.Element => {
             localStorage.setItem('search',JSON.stringify({breed: ''}));
         }
         setBreed(JSON.parse(localStorage.getItem('search') as string).breed);
-        fetch('api/users/seller1').then(response => response.json()).then((data) => {
-            setLoggedInUsersAvatar(data.avatar);
-        })
-    }, []);
-
-    useEffect(() => {
-        const token = localStorage.getItem('token');
-        if (token) {
-            login(token);
+        if (sellerID && token) {
+            fetch(`api/users/${sellerID}`, {method: 'GET', headers: {'authorization': token}}).then(response => {
+                if (!response.ok) {
+                    logout();
+                } else {
+                    return response.json()
+                }
+            }).then((data) => {
+                try {
+                    setLoggedInUsersAvatar(data.avatar);
+                } catch (e) {}
+            })
         }
-    }, [sellerID]);
+    }, [sellerID, token]);
 
     return (
         <AppBar color='inherit' position='static' className='header-wrapper' elevation={0}>
