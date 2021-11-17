@@ -35,7 +35,6 @@ const AdFormModal: React.FC<AdFormModalProps> = (props): JSX.Element => {
             await fileRef.put(file);
             const fileUrl: string = await fileRef.getDownloadURL();
             fetch('api/ads').then(response => response.json()).then((data) => {
-                console.log(data);
                 fetch('/api/ads', {
                     method: 'POST', body: JSON.stringify({
                         ...fields,
@@ -49,7 +48,6 @@ const AdFormModal: React.FC<AdFormModalProps> = (props): JSX.Element => {
                         id: 'ad' + (data.length + 1),
                     }), headers: {'Content-Type': 'application/json', 'authorization': token}
                 });
-                console.log(data.length, data);
             });
             fetch(`/api/users/${sellerID}`, {
                 method: 'PUT',
