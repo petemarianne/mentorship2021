@@ -31,11 +31,10 @@
     "uuid": "^8.3.2",
     "web-vitals": "^1.1.2"
   },
-  "main": "app.js",
-  "type": "module",
+  "main": "app.ts",
   "scripts": {
-    "start": "cross-env NODE_ENV=production node app.js",
-    "server": "nodemon app.js",
+    "start": "cross-env NODE_ENV=production node app.ts",
+    "server": "nodemon app.ts",
     "client": "react-scripts start --prefix client",
     "client:build": "react-scripts build --prefix client",
     "test": "react-scripts test --prefix client",
@@ -64,6 +63,8 @@
   "devDependencies": {
     "@mui/material": "^5.0.0",
     "@testing-library/jest-dom": "^5.14.1",
+    "@types/config": "^0.0.40",
+    "@types/express": "^4.17.13",
     "@types/uuid": "^8.3.1",
     "@typescript-eslint/parser": "^5.1.0",
     "concurrently": "^5.0.2",
