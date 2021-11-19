@@ -34,20 +34,17 @@ const AdFormModal: React.FC<AdFormModalProps> = (props): JSX.Element => {
             const fileRef = storageRef.child(file.name);
             await fileRef.put(file);
             const fileUrl: string = await fileRef.getDownloadURL();
-            fetch('api/ads').then(response => response.json()).then((data) => {
-                fetch('/api/ads', {
-                    method: 'POST', body: JSON.stringify({
-                        ...fields,
-                        picture: fileUrl,
-                        date: {
-                            seconds: new Date().getTime() / 1000,
-                            nanoseconds: 0,
-                        },
-                        status: 'active',
-                        sellerID: sellerID,
-                        id: 'ad' + (data.length + 1),
-                    }), headers: {'Content-Type': 'application/json', 'authorization': token}
-                });
+            fetch('/api/ads', {
+                method: 'POST', body: JSON.stringify({
+                    ...fields,
+                    picture: fileUrl,
+                    date: {
+                        seconds: new Date().getTime() / 1000,
+                        nanoseconds: 0,
+                    },
+                    status: 'active',
+                    sellerID: sellerID,
+                }), headers: {'Content-Type': 'application/json', 'authorization': token}
             });
             fetch(`/api/users/${sellerID}`, {
                 method: 'PUT',

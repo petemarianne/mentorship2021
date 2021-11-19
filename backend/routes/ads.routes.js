@@ -45,7 +45,7 @@ adsRouter.post('/ads', async (req, res) => {
             if (req.body.sellerID !== parsedToken.userID) {
                 return res.status(401).send('Invalid token');
             }
-            ads.push(req.body);
+            ads.push({...req.body, id: `ad${ads.length + 1}`});
             return res.status(201);
         } catch (e) {
             return res.status(401).send('Invalid token');
