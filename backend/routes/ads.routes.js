@@ -4,6 +4,7 @@ import { filterAds } from '../utils/filterAds.js';
 import { comparator } from '../utils/comparatorAds.js';
 import jsonwebtoken from 'jsonwebtoken';
 import config from 'config';
+import { users } from '../data/users.js';
 
 const adsRouter = Router();
 
@@ -19,7 +20,7 @@ adsRouter.get('/ads', async (req, res) => {
         }
         return res.status(200).json([...ads]);
     } catch (e) {
-        res.status(500);
+        return res.status(500);
     }
 });
 
@@ -31,27 +32,28 @@ adsRouter.get('/ads/:id', async (req, res) => {
         }
         return res.status(200).json(filteredAds[0]);
     } catch (e) {
-        res.status(500);
+        return res.status(500);
     }
 });
 
 adsRouter.post('/ads', async (req, res) => {
     try {
         if (!req.headers['authorization']) {
-            return res.status(400).send('Access revoked!');
+            return res.status(401).send('Access revoked!');
         }
         try {
             const parsedToken = jsonwebtoken.verify(req.headers['authorization'], config.get('jwtSecret'));
-            if (req.body.sellerID !== parsedToken.userID) {
-                return res.status(401).send('Invalid token');
+            const userIndex = users.findIndex(item => item.id === parsedToken.userID);
+            if (userIndex < 0) {
+                return res.status(403);
             }
-            ads.push(req.body);
+            ads.push({...req.body, id: `ad${ads.length + 1}`, sellerID: parsedToken.userID});
             return res.status(201);
         } catch (e) {
-            return res.status(401).send('Invalid token');
+            return res.status(403).send('Invalid token');
         }
     } catch (e) {
-        res.status(500);
+        return res.status(500);
     }
 });
 
@@ -98,7 +100,7 @@ adsRouter.put('/ads/:id', async (req, res) => {
             return res.status(401).send('Invalid token');
         }
     } catch (e) {
-        res.status(500);
+        return res.status(500);
     }
 });
 

@@ -54,7 +54,7 @@ authRouter.post(
             {expiresIn: '1h'}
         );
 
-        return res.status(201).json({user, token});
+        return res.status(201).json({userID: user.id, token});
     } catch (e) {
         return res.status(500);
     }
