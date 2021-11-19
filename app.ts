@@ -6,6 +6,7 @@ import authRouter from './backend/routes/auth.routes';
 
 const app = express();
 
+// @ts-ignore
 app.use(express.json({ extended: true }));
 
 const API = '/api';
