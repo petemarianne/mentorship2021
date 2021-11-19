@@ -19,7 +19,7 @@ adsRouter.get('/ads', async (req, res) => {
         }
         return res.status(200).json([...ads]);
     } catch (e) {
-        res.status(500);
+        return res.status(500);
     }
 });
 
@@ -31,7 +31,7 @@ adsRouter.get('/ads/:id', async (req, res) => {
         }
         return res.status(200).json(filteredAds[0]);
     } catch (e) {
-        res.status(500);
+        return res.status(500);
     }
 });
 
@@ -51,7 +51,7 @@ adsRouter.post('/ads', async (req, res) => {
             return res.status(401).send('Invalid token');
         }
     } catch (e) {
-        res.status(500);
+        return res.status(500);
     }
 });
 
@@ -98,7 +98,7 @@ adsRouter.put('/ads/:id', async (req, res) => {
             return res.status(401).send('Invalid token');
         }
     } catch (e) {
-        res.status(500);
+        return res.status(500);
     }
 });
 
