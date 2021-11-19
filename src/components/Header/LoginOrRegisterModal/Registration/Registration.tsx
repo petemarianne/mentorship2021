@@ -8,6 +8,12 @@ interface RegistrationProps {
     onCloseModal: () => void,
 }
 
+enum AllFieldsValidation {
+    InitialState = 0,
+    NotAllFieldsFilled = 1,
+    AllFieldsFilled = 2,
+}
+
 const Registration: React.FC<RegistrationProps> = (props): JSX.Element => {
     const [fields, setFields] = useState<{
         email: string,
@@ -29,14 +35,14 @@ const Registration: React.FC<RegistrationProps> = (props): JSX.Element => {
         password: boolean,
         repeatedPassword: boolean,
         phone: boolean,
-        allFields: number,
+        allFields: AllFieldsValidation,
         usedEmail: boolean,
     }>({
         email: true,
         password: true,
         repeatedPassword: true,
         phone: true,
-        allFields: -1,
+        allFields: AllFieldsValidation.InitialState,
         usedEmail: true,
     });
 
@@ -65,19 +71,19 @@ const Registration: React.FC<RegistrationProps> = (props): JSX.Element => {
     const onSubmit = async (event: FormEvent<HTMLFormElement>): Promise<void> => {
         event.preventDefault();
         let flag = false;
-        if (validation.allFields !== 1) {
+        if (validation.allFields !== AllFieldsValidation.AllFieldsFilled) {
             for (let key in fields) {
                 // @ts-ignore
                 if (fields[key] === '' || !file) {
-                    setValidation(prevState => ({...prevState, allFields: 0}));
+                    setValidation(prevState => ({...prevState, allFields: AllFieldsValidation.NotAllFieldsFilled}));
                     flag = false;
                     break;
                 }
-                setValidation(prevState => ({...prevState, allFields: 1}));
+                setValidation(prevState => ({...prevState, allFields: AllFieldsValidation.AllFieldsFilled}));
                 flag = true;
             }
         }
-        if (validation.allFields === 1 || flag) {
+        if (validation.allFields === AllFieldsValidation.AllFieldsFilled || flag) {
             flag = false;
             const mailFormat = /^([a-zA-Z0-9._]+)@([a-zA-Z0-9._]+)\.([a-z]{2,3})$/;
             if (!mailFormat.test(fields.email) && fields.email !== '') {
@@ -170,7 +176,7 @@ const Registration: React.FC<RegistrationProps> = (props): JSX.Element => {
             </div>
             {!validation.phone ? <div className='validation-registration'>Incorrect phone number!</div> : null}
             <PicSelect file={file} onFileSelect={setFile} />
-            {validation.allFields === 0 ? <div className='validation-registration'>Fill in all the fields!</div> : null}
+            {validation.allFields === AllFieldsValidation.NotAllFieldsFilled ? <div className='validation-registration'>Fill in all the fields!</div> : null}
             <div className='button-wrapper'>
                 <Button type='submit' className='button' variant='contained' color='primary'>
                     {!loading ? 'Register' : <CircularProgress color='inherit' size='25px' data-testid='loading'/>}
