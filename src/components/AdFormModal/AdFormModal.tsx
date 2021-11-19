@@ -43,7 +43,6 @@ const AdFormModal: React.FC<AdFormModalProps> = (props): JSX.Element => {
                         nanoseconds: 0,
                     },
                     status: 'active',
-                    sellerID: sellerID,
                 }), headers: {'Content-Type': 'application/json', 'authorization': token}
             });
             fetch(`/api/users/${sellerID}`, {
