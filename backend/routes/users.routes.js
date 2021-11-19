@@ -11,11 +11,13 @@ usersRouter.get('/users/:id', async (req, res) => {
             try {
                 const parsedToken = jsonwebtoken.verify(req.headers['authorization'], config.get('jwtSecret'));
                 if (parsedToken.userID !== req.params.id) {
-                    return res.status(401).send('Invalid token');
+                    return res.status(403).send('Invalid token');
                 }
             } catch (e) {
-                return res.status(401).send('Invalid token');
+                return res.status(403).send('Invalid token');
             }
+        } else {
+            return res.status(401).send('Access revoked!');
         }
         const filteredUsers = users.filter(item => item.id === req.params.id);
         if (filteredUsers.length === 0) {
