@@ -114,7 +114,7 @@ const Registration: React.FC<RegistrationProps> = (props): JSX.Element => {
                 const fileRef = storageRef.child(file.name);
                 await fileRef.put(file);
                 const fileUrl: string = await fileRef.getDownloadURL();
-                fetch('/api/auth/register',
+                const registerResponse = await fetch('/api/auth/register',
                     {
                         method: 'POST',
                         body: JSON.stringify({
@@ -125,22 +125,16 @@ const Registration: React.FC<RegistrationProps> = (props): JSX.Element => {
                             avatar: fileUrl
                         }),
                         headers: {'Content-Type': 'application/json'}
-                    })
-                    .then(response => {
-                        if (response.ok) {
-                            response.json().then((data) => {
-                                console.log(data)
-                                login(data.token, data.user.id);
-                                props.onCloseModal();
-                            });
-                        } else {
-                            response.json().then((data) => {
-                                if (data.message === 'This email is already used!') {
-                                    setValidation(prevState => ({...prevState, usedEmail: false}));
-                                }
-                            });
-                        }
                     });
+                const registerData = await registerResponse.json();
+                if (registerResponse.ok) {
+                    login(registerData.token, registerData.userID);
+                    props.onCloseModal();
+                } else {
+                    if (registerData.message === 'This email is already used!') {
+                        setValidation(prevState => ({...prevState, usedEmail: false}));
+                    }
+                }
             }
         }
     };
