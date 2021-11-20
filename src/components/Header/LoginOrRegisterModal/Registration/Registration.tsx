@@ -9,9 +9,9 @@ interface RegistrationProps {
 }
 
 enum AllFieldsValidation {
-    InitialState = 0,
-    NotAllFieldsFilled = 1,
-    AllFieldsFilled = 2,
+    InitialState,
+    NotAllFieldsFilled,
+    AllFieldsFilled,
 }
 
 const Registration: React.FC<RegistrationProps> = (props): JSX.Element => {
