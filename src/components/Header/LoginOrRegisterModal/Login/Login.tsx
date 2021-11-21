@@ -42,15 +42,14 @@ const Login: React.FC<RegistrationProps> = (props): JSX.Element => {
             .then(response => {
                 if (!response.ok) {
                     setValidation(false);
+                    setLoading(false);
                 } else {
-                    return response.json();
+                    response.json().then(data => {
+                        login(data.token, data.userID);
+                        props.onCloseModal();
+                    });
                 }
             })
-            .then(data => {
-                login(data.token, data.userID);
-                setLoading(false);
-                props.onCloseModal();
-            });
     }
 
     return (

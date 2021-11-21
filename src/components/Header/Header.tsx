@@ -23,7 +23,7 @@ const Header: React.FC = (): JSX.Element => {
     const currentPathname: string = useLocation().pathname;
 
     const {filter, setFilterState} = useContext(FilterContext);
-    const { sellerID, logout, token, login } = useContext(AuthContext);
+    const { sellerID, logout, token } = useContext(AuthContext);
 
     const {desktop} = useScreenSize();
 
@@ -85,12 +85,10 @@ const Header: React.FC = (): JSX.Element => {
                 if (response.status === 401 || response.status === 403) {
                     logout();
                 } else {
-                    return response.json()
+                    response.json().then((data) => {
+                        setLoggedInUsersAvatar(data.avatar);
+                    })
                 }
-            }).then((data) => {
-                try {
-                    setLoggedInUsersAvatar(data.avatar);
-                } catch (e) {}
             })
         }
     }, [sellerID, token]);
