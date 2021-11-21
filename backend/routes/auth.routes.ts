@@ -84,8 +84,7 @@ authRouter.post('/login',
             if (userIndex < 0) {
                 return res.status(404).json({message: 'User is not found!'});
             }
-// @ts-ignore
-            const isMatch = await bcrypt.compare(password, users[userIndex].password);
+            const isMatch = bcrypt.compare(password, users[userIndex].password as string);
             if (!isMatch) {
                 return res.status(400).json({message: 'Incorrect password!'});
             }
