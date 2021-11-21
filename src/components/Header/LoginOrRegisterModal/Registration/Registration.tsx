@@ -1,5 +1,7 @@
-import React, {FormEvent, useState} from 'react';
-import { Button, InputBase } from '@material-ui/core';
+import React, { FormEvent, useState } from 'react';
+import { Button, CircularProgress, InputBase } from '@material-ui/core';
+import PicSelect from '../../../PicUpload/PicSelect';
+import { app } from '../../../../firebase';
 
 const Registration: React.FC = (): JSX.Element => {
     const [fields, setFields] = useState<{
@@ -17,7 +19,8 @@ const Registration: React.FC = (): JSX.Element => {
         phone: '',
         picture: null,
     });
-
+    const [file, setFile] = useState<File>();
+    const [loading, setLoading] = useState<boolean>(false);
     const [validation, setValidation] = useState<{
         email: boolean,
         repeatedPassword: boolean,
@@ -28,7 +31,7 @@ const Registration: React.FC = (): JSX.Element => {
         repeatedPassword: false,
         phone: false,
         allFields: false
-    })
+    });
 
     const handleEmail = (event: React.ChangeEvent<HTMLInputElement>): void => {
         setFields(current => ({...current, email: event.target.value}));
@@ -50,7 +53,7 @@ const Registration: React.FC = (): JSX.Element => {
         setFields(current => ({...current, phone: event.target.value}));
     };
 
-    const onSubmit = (event: FormEvent<HTMLFormElement>): void => {
+    const onSubmit = async (event: FormEvent<HTMLFormElement>): Promise<void> => {
         event.preventDefault();
         const mailFormat = /^([a-zA-Z0-9._]+)@([a-zA-Z0-9._]+)\.([a-z]{2,3})$/;
         if (!mailFormat.test(fields.email) && fields.email !== '') {
@@ -70,6 +73,9 @@ const Registration: React.FC = (): JSX.Element => {
         } else {
             setValidation(prevState => ({...prevState, phone: false}));
         }
+        if (file === undefined) {
+            setValidation(prevState => ({...prevState, allFields: true}));
+        }
         if (!(validation.email && validation.repeatedPassword && validation.phone)) {
             for (let key in fields) {
                 // @ts-ignore
@@ -80,10 +86,19 @@ const Registration: React.FC = (): JSX.Element => {
                 setValidation(prevState => ({...prevState, allFields: false}));
             }
         }
+        const storageRef = app.storage().ref();
+        if (file) {
+            const fileRef = storageRef.child(file.name);
+            await fileRef.put(file);
+            const fileUrl: string = await fileRef.getDownloadURL();
+        }
     };
 
     return (
-        <form className='login-wrapper' onSubmit={onSubmit}>
+        <form className='login-wrapper' onSubmit={(e) => {
+            setLoading(true);
+            onSubmit(e).then(() => setLoading(false));
+        }}>
             <div className='label'>Email</div>
             <div className={validation.email ? 'input validate' : 'input'}>
                 <InputBase value={fields.email} onChange={handleEmail} fullWidth/>
@@ -107,9 +122,12 @@ const Registration: React.FC = (): JSX.Element => {
                 <InputBase value={fields.phone} onChange={handlePhone} fullWidth/>
             </div>
             {validation.phone ? <div className='validation-registration'>Incorrect phone number!</div> : null}
+            <PicSelect file={file} onFileSelect={setFile} />
             {validation.allFields ? <div className='validation-registration'>Fill in all the fields!</div> : null}
             <div className='button-wrapper'>
-                <Button type='submit' className='button' variant='contained' color='primary'>Register</Button>
+                <Button type='submit' className='button' variant='contained' color='primary'>
+                    {!loading ? 'Register' : <CircularProgress color='inherit' size='25px' data-testid='loading'/>}
+                </Button>
             </div>
         </form>
     );

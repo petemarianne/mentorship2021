@@ -76,6 +76,36 @@
       width: 100%;
     }
   }
+  .drag-and-drop-wrapper {
+    border: #d27a3d 1px dashed;
+    margin: 20px 25px 15px 20px;
+    text-align: center;
+    color: #d27a3d;
+    padding: 35px 0;
+    font-size: 18px;
+
+    .upload-file-button {
+      font-size: 14px;
+      margin-top: 5px;
+      height: 30px;
+      width: 160px;
+    }
+
+    .file-name {
+      width: 200px;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      margin: 0 auto;
+      white-space: nowrap;
+    }
+
+    .re-upload-file-button {
+      font-size: 10px;
+      margin-top: 5px;
+      height: 25px;
+      width: 150px;
+    }
+  }
 }
 
 @media only screen and (max-width: 768px) {
