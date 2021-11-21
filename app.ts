@@ -3,11 +3,18 @@ import config from 'config';
 import adsRouter from './backend/routes/ads.routes';
 import usersRouter from './backend/routes/users.routes';
 import authRouter from './backend/routes/auth.routes';
+import { JwtPayload } from 'jsonwebtoken';
 
 const app = express();
 
 // @ts-ignore
 app.use(express.json({ extended: true }));
+
+declare module 'jsonwebtoken' {
+    export interface UserIDJwtPayload extends JwtPayload {
+        userID: string
+    }
+}
 
 const API = '/api';
 

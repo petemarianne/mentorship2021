@@ -1,4 +1,6 @@
-export const users = [
+import { User } from '../../src/interfaces';
+
+export const users: User[] = [
     {
         "activeAds": 1,
         "avatar": "https://firebasestorage.googleapis.com/v0/b/dog-shop-8c56c.appspot.com/o/d7bf6e2ef003c5d365f711d5d6a16acb.jpeg?alt=media&token=61dcc497-145e-499d-8c85-5160cee56990",
@@ -60,7 +62,7 @@ export const users = [
         "phone": "+375295682710"
     },
     {
-        "activeAds": "1",
+        "activeAds": 1,
         "avatar": "https://firebasestorage.googleapis.com/v0/b/dog-shop-8c56c.appspot.com/o/1302826.jpeg?alt=media&token=5a031c34-7c7e-4ec4-90df-13d93813e4fc",
         "date": {
             "seconds": 1618940880,
@@ -72,7 +74,7 @@ export const users = [
         "phone": "+1904638953"
     },
     {
-        "activeAds": "1",
+        "activeAds": 1,
         "avatar": "https://firebasestorage.googleapis.com/v0/b/dog-shop-8c56c.appspot.com/o/EM0NQhfXUAYQ1OX.jpeg?alt=media&token=bedde035-b3c7-46f8-ac68-dad044460b54",
         "date": {
             "seconds": 1618219560,

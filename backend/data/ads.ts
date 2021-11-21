@@ -1,4 +1,6 @@
-export const ads = [
+import { Ad } from '../../src/interfaces';
+
+export const ads: Ad[] = [
     {
         "id": "ad1",
         "title": "Huskita",

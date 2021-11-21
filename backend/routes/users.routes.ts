@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import { users } from '../data/users.js';
-import jsonwebtoken from 'jsonwebtoken';
+import { users } from '../data/users';
+import jsonwebtoken, { UserIDJwtPayload } from 'jsonwebtoken';
 import config from 'config';
 
 const usersRouter = Router();
@@ -9,7 +9,7 @@ usersRouter.get('/users/:id', async (req, res) => {
     try {
         if (req.headers['authorization']) {
             try {
-                const parsedToken = jsonwebtoken.verify(req.headers['authorization'], config.get('jwtSecret'));
+                const parsedToken = <UserIDJwtPayload>jsonwebtoken.verify(req.headers['authorization'], config.get('jwtSecret'));
                 if (parsedToken.userID !== req.params.id) {
                     return res.status(403).send('Invalid token');
                 }
@@ -33,7 +33,7 @@ usersRouter.put('/users/:id', async (req, res) => {
             return res.status(400).send('Access revoked!');
         }
         try {
-            const parsedToken = jsonwebtoken.verify(req.headers['authorization'], config.get('jwtSecret'));
+            const parsedToken = <UserIDJwtPayload>jsonwebtoken.verify(req.headers['authorization'], config.get('jwtSecret'));
             if (parsedToken.userID !== req.params.id) {
                 return res.status(401).send('Invalid token');
             }

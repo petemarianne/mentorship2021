@@ -1,10 +1,10 @@
 import { Router } from 'express';
-import { ads } from '../data/ads.js';
-import { filterAds } from '../utils/filterAds.js';
-import { comparator } from '../utils/comparatorAds.js';
-import jsonwebtoken from 'jsonwebtoken';
+import { ads } from '../data/ads';
+import { filterAds } from '../utils/filterAds';
+import { comparator } from '../utils/comparatorAds';
+import jsonwebtoken, { UserIDJwtPayload } from 'jsonwebtoken';
 import config from 'config';
-import { users } from '../data/users.js';
+import { users } from '../data/users';
 
 const adsRouter = Router();
 
@@ -42,7 +42,7 @@ adsRouter.post('/ads', async (req, res) => {
             return res.status(401).send('Access revoked!');
         }
         try {
-            const parsedToken = jsonwebtoken.verify(req.headers['authorization'], config.get('jwtSecret'));
+            const parsedToken = <UserIDJwtPayload>jsonwebtoken.verify(req.headers['authorization'], config.get('jwtSecret'));
             const userIndex = users.findIndex(item => item.id === parsedToken.userID);
             if (userIndex < 0) {
                 return res.status(403);
@@ -63,7 +63,7 @@ adsRouter.put('/ads/:id', async (req, res) => {
             return res.status(400).send('Access revoked!');
         }
         try {
-            const parsedToken = jsonwebtoken.verify(req.headers['authorization'], config.get('jwtSecret'));
+            const parsedToken = <UserIDJwtPayload>jsonwebtoken.verify(req.headers['authorization'], config.get('jwtSecret'));
             const adIndex = ads.findIndex(item => item.id === req.params.id);
             if (adIndex < 0) {
                 return res.status(404);
@@ -74,7 +74,7 @@ adsRouter.put('/ads/:id', async (req, res) => {
             switch (req.body.status) {
                 case 'closed':
                     ads[adIndex].status = 'closed';
-                    ads[adIndex].saleDate = null;
+                    ads[adIndex].saleDate = undefined;
                     ads[adIndex].closingDate = {
                         seconds: new Date().getTime() / 1000,
                         nanoseconds: 0,
@@ -82,8 +82,8 @@ adsRouter.put('/ads/:id', async (req, res) => {
                     return res.status(200).json({status: 'closed'});
                 case 'active':
                     ads[adIndex].status = 'active';
-                    ads[adIndex].saleDate = null;
-                    ads[adIndex].closingDate = null;
+                    ads[adIndex].saleDate = undefined;
+                    ads[adIndex].closingDate = undefined;
                     return res.status(200).json({status: 'active'});
                 case 'sold':
                     ads[adIndex].status = 'sold';
@@ -91,7 +91,7 @@ adsRouter.put('/ads/:id', async (req, res) => {
                         seconds: new Date().getTime() / 1000,
                         nanoseconds: 0,
                     };
-                    ads[adIndex].closingDate = null;
+                    ads[adIndex].closingDate = undefined;
                     return res.status(200).json({status: 'sold'});
                 default:
                     return res.status(500);

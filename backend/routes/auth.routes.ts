@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { check, validationResult } from 'express-validator';
-import { users } from '../data/users.js';
+import { users } from '../data/users';
 import bcrypt from 'bcryptjs';
 import jsonwebtoken from 'jsonwebtoken';
 import config from 'config';
@@ -13,6 +13,7 @@ authRouter.post(
        check('email', 'Invalid email').isEmail(),
         check('password', 'Password must be more than 6 symbols').isLength({min: 6})
     ],
+    // @ts-ignore
     async (req, res) => {
     try {
         const errors = validationResult(req);
@@ -65,6 +66,7 @@ authRouter.post('/login',
         check('email', 'Invalid email').normalizeEmail().isEmail(),
         check('password', 'Password must be more than 6 symbols').exists()
     ],
+    // @ts-ignore
     async (req, res) => {
         try {
             const errors = validationResult(req);
@@ -82,7 +84,7 @@ authRouter.post('/login',
             if (userIndex < 0) {
                 return res.status(404).json({message: 'User is not found!'});
             }
-
+// @ts-ignore
             const isMatch = await bcrypt.compare(password, users[userIndex].password);
             if (!isMatch) {
                 return res.status(400).json({message: 'Incorrect password!'});
