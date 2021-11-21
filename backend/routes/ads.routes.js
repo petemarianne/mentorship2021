@@ -45,7 +45,7 @@ adsRouter.post('/ads', async (req, res) => {
             const parsedToken = jsonwebtoken.verify(req.headers['authorization'], config.get('jwtSecret'));
             const userIndex = users.findIndex(item => item.id === parsedToken.userID);
             if (userIndex < 0) {
-                return res.status(403);
+                return res.status(403).send('Invalid token');
             }
             ads.push({...req.body, id: `ad${ads.length + 1}`, sellerID: parsedToken.userID});
             return res.status(201);
@@ -60,7 +60,7 @@ adsRouter.post('/ads', async (req, res) => {
 adsRouter.put('/ads/:id', async (req, res) => {
     try {
         if (!req.headers['authorization']) {
-            return res.status(400).send('Access revoked!');
+            return res.status(401).send('Access revoked!');
         }
         try {
             const parsedToken = jsonwebtoken.verify(req.headers['authorization'], config.get('jwtSecret'));
@@ -69,7 +69,7 @@ adsRouter.put('/ads/:id', async (req, res) => {
                 return res.status(404);
             }
             if (ads[adIndex].sellerID !== parsedToken.userID) {
-                return res.status(401).send('Invalid token');
+                return res.status(403).send('Invalid token');
             }
             switch (req.body.status) {
                 case 'closed':
@@ -97,7 +97,7 @@ adsRouter.put('/ads/:id', async (req, res) => {
                     return res.status(500);
             }
         } catch (e) {
-            return res.status(401).send('Invalid token');
+            return res.status(403).send('Invalid token');
         }
     } catch (e) {
         return res.status(500);

@@ -30,12 +30,12 @@ usersRouter.get('/users/:id', async (req, res) => {
 usersRouter.put('/users/:id', async (req, res) => {
     try {
         if (!req.headers['authorization']) {
-            return res.status(400).send('Access revoked!');
+            return res.status(401).send('Access revoked!');
         }
         try {
             const parsedToken = jsonwebtoken.verify(req.headers['authorization'], config.get('jwtSecret'));
             if (parsedToken.userID !== req.params.id) {
-                return res.status(401).send('Invalid token');
+                return res.status(403).send('Invalid token');
             }
             const userIndex = users.findIndex(item => item.id === req.params.id);
             if (userIndex < 0) {
@@ -52,7 +52,7 @@ usersRouter.put('/users/:id', async (req, res) => {
                     return res.status(500);
             }
         } catch (e) {
-            return res.status(401).send('Invalid token');
+            return res.status(403).send('Invalid token');
         }
     } catch (e) {
         return res.status(500);
