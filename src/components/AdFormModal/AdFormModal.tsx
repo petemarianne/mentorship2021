@@ -26,7 +26,7 @@ const AdFormModal: React.FC<AdFormModalProps> = (props): JSX.Element => {
         }
     )
 
-    const {token, sellerID} = useContext(AuthContext);
+    const {token} = useContext(AuthContext);
 
     const publish = async (): Promise<void> => {
         const storageRef = app.storage().ref();
@@ -44,11 +44,6 @@ const AdFormModal: React.FC<AdFormModalProps> = (props): JSX.Element => {
                     },
                     status: 'active',
                 }), headers: {'Content-Type': 'application/json', 'authorization': token}
-            });
-            fetch(`/api/users/${sellerID}`, {
-                method: 'PUT',
-                body: JSON.stringify({action: 'add'}),
-                headers: {'Content-Type': 'application/json', 'authorization': token}
             });
         }
         props.handleClose();
