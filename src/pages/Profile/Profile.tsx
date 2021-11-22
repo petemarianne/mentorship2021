@@ -23,7 +23,6 @@ interface Column {
 export const Profile: React.FC<ProfileProps> = (props): JSX.Element => {
     const [adsData, setAdsData] = useState<Ad[]>([]);
     const [user, setUser] = useState<User>({
-        activeAds: 0,
         avatar: '',
         date: {
             seconds: 0,

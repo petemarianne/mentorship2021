@@ -25,7 +25,6 @@ export const Ad: React.FC = (): JSX.Element => {
         price: 0,
     });
     const [user, setUser] = useState<User>({
-        activeAds: 0,
         avatar: '',
         date: {
             seconds: 0,
@@ -36,6 +35,7 @@ export const Ad: React.FC = (): JSX.Element => {
         name: '',
         phone: '',
     });
+    const [activeAds, setActiveAds] = useState<number>(0);
     const [open, setOpen] = useState<boolean>(false);
     const { id } = useParams<{id: string}>();
 
@@ -48,7 +48,15 @@ export const Ad: React.FC = (): JSX.Element => {
                 setAd(data);
                 return fetch(`api/users/${data.sellerID}`)})
             .then(response => response.json())
-            .then((data) => {setUser(data)});
+            .then((data) => {
+                setUser(data);
+                return fetch(`api/ads?sellerID=${data.id}`);
+            })
+            .then(response => response.json())
+            .then((data: AdInterface[]) => {
+                const number = data.filter(item => item.status === 'active').length;
+                setActiveAds(number);
+            });
     }, []);
 
     const handleOpen = (): void => {
@@ -66,7 +74,7 @@ export const Ad: React.FC = (): JSX.Element => {
                 <div className='avatar-wrapper'><img src={user.avatar} alt='User avatar'/></div>
                 <div className='info-wrapper'>
                     <div className='username'>{user.name}</div>
-                    <div className='ads-count'>Ads: {user.activeAds}</div>
+                    <div className='ads-count'>Ads: {activeAds}</div>
                     <div className='date'>On Dog Shop since {toDate(user.date).toLocaleString('default', {month: 'long',  year: 'numeric'})}</div>
                 </div>
             </Link>;
