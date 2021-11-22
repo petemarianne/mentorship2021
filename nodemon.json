@@ -1,0 +1,13 @@
+{
+  "ignore": ["node_modules/**/*", "src/**/*", "public/**/*", "tsconfig.json"],
+  "watch": [
+    "app.ts", "tsconfig.node.json", "backend/**/*"
+  ],
+  "execMap": {
+    "ts": "node -r ts-node/register"
+  },
+  "env": {
+    "NODE_ENV": "development"
+  },
+  "ext": "json,ts"
+}

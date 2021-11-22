@@ -67,7 +67,7 @@ authRouter.post('/login',
         check('password', 'Password must be more than 6 symbols').exists()
     ],
     // @ts-ignore
-    async (req, res) => {
+    (req, res) => {
         try {
             const errors = validationResult(req);
 
@@ -102,3 +102,4 @@ authRouter.post('/login',
 
 
 export default authRouter;
+

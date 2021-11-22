@@ -7,7 +7,7 @@ const usersRouter = Router();
 
 usersRouter.get('/users/:id', async (req, res) => {
     try {
-        if (req.headers['authorization']) {
+        /*if (req.headers['authorization']) {
             try {
                 const parsedToken = <UserIDJwtPayload>jsonwebtoken.verify(req.headers['authorization'], config.get('jwtSecret'));
                 if (parsedToken.userID !== req.params.id) {
@@ -16,7 +16,7 @@ usersRouter.get('/users/:id', async (req, res) => {
             } catch (e) {
                 return res.status(403).send('Invalid token');
             }
-        }
+        }*/
         const filteredUsers = users.filter(item => item.id === req.params.id);
         if (filteredUsers.length === 0) {
             return res.status(404);

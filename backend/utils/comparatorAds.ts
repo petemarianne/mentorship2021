@@ -1,4 +1,6 @@
-export const comparator = (item1, item2, sort) => {
+import { Ad } from '../../src/interfaces';
+
+export const comparator = (item1: Ad, item2: Ad, sort: any) => {
     if (item1.price === item2.price) {
         return item2.date.seconds - item1.date.seconds;
     }

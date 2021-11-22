@@ -1,4 +1,6 @@
-export const filterAds = (item, filter) => {
+import { Ad, Filter } from '../../src/interfaces';
+
+export const filterAds = (item: Ad, filter: any) => {
     if (item.status !== 'active') {
         return false;
     }

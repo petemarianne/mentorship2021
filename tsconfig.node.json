@@ -1,0 +1,11 @@
+{
+  "extends": "tsconfig.json",
+  "compilerOptions": {
+    "module": "CommonJS"
+  },
+  "include": [
+    "backend/**/*",
+    "app.ts"
+  ],
+  "exclude": ["src"]
+}
