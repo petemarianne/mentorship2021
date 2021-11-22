@@ -8,7 +8,7 @@ import { users } from '../data/users';
 
 const adsRouter = Router();
 
-adsRouter.get('/ads', async (req, res) => {
+adsRouter.get('/ads', (req, res) => {
     try {
         if (req.query.sellerID) {
             const ad = ads.filter(item => item.sellerID === req.query.sellerID);
@@ -24,7 +24,7 @@ adsRouter.get('/ads', async (req, res) => {
     }
 });
 
-adsRouter.get('/ads/:id', async (req, res) => {
+adsRouter.get('/ads/:id', (req, res) => {
     try {
         const filteredAds = ads.filter(item => item.id.substring(2) === req.params.id);
         if (filteredAds.length === 0) {
@@ -36,7 +36,7 @@ adsRouter.get('/ads/:id', async (req, res) => {
     }
 });
 
-adsRouter.post('/ads', async (req, res) => {
+adsRouter.post('/ads', (req, res) => {
     try {
         if (!req.headers['authorization']) {
             return res.status(401).send('Access revoked!');
@@ -57,7 +57,7 @@ adsRouter.post('/ads', async (req, res) => {
     }
 });
 
-adsRouter.put('/ads/:id', async (req, res) => {
+adsRouter.put('/ads/:id', (req, res) => {
     try {
         if (!req.headers['authorization']) {
             return res.status(401).send('Access revoked!');
