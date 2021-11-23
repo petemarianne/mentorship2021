@@ -25,7 +25,7 @@ usersRouter.get('/users/:id', async (req, res) => {
     }
 });
 
-usersRouter.get('/userinfo', async (req, res) => {
+usersRouter.get('/user/info', async (req, res) => { //after adding error boundary remove this method
     try {
         if (req.headers['authorization']) {
             try {
