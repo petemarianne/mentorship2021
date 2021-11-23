@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import './Profile.scss';
 import { IconButton, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow } from '@material-ui/core';
 import { useScreenSize } from '../../hooks/useScreenSize';
@@ -7,6 +7,7 @@ import SellIcon from '@mui/icons-material/Sell';
 import { useParams } from 'react-router-dom';
 import { closeAd, sellAd, activateAd, toDate } from '../../utils';
 import { Ad, NumericDate, User } from '../../interfaces';
+import { AuthContext } from '../../contexts/auth-context';
 
 interface ProfileProps {
     myProfile?: boolean,
@@ -22,7 +23,6 @@ interface Column {
 export const Profile: React.FC<ProfileProps> = (props): JSX.Element => {
     const [adsData, setAdsData] = useState<Ad[]>([]);
     const [user, setUser] = useState<User>({
-        activeAds: 0,
         avatar: '',
         date: {
             seconds: 0,
@@ -37,14 +37,16 @@ export const Profile: React.FC<ProfileProps> = (props): JSX.Element => {
     const [rerender, setRerender] = useState(0);
     const [page, setPage] = React.useState<number>(0);
 
+    const { sellerID, token } = useContext(AuthContext);
+
     useEffect(() => {
-        const userPromise = props.myProfile ? fetch('api/users/seller1') : fetch(`api/users/seller${id}`);
-        userPromise.then(response => response.json()).then((data) => { //promise chain!!!!
+        const userPromise = props.myProfile && token ? fetch('api/user/info', {method: 'GET', headers: {'authorization': token}}) : fetch(`api/users/seller${id}`);
+        userPromise.then(response => response.json()).then((data) => {
             setUser(data);
             return fetch(`api/ads?sellerID=${data.id}`);
         }).then(response => response.json()).then(data => setAdsData(data));
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [rerender]);
+    }, [rerender, sellerID]);
 
     const {desktop} = useScreenSize();
 
@@ -62,16 +64,16 @@ export const Profile: React.FC<ProfileProps> = (props): JSX.Element => {
     }
 
     const dateCell = (date: NumericDate | undefined): JSX.Element => {
-            return date ?
-                <TableCell size='medium' align='center'>
-                    {toDate(date).toLocaleString('default', {
-                        day: 'numeric',
-                        month: 'short',
-                        year: 'numeric',
-                        hour: 'numeric',
-                        minute: 'numeric'
-                    })}
-                </TableCell> :
+        return date ?
+            <TableCell size='medium' align='center'>
+                {toDate(date).toLocaleString('default', {
+                    day: 'numeric',
+                    month: 'short',
+                    year: 'numeric',
+                    hour: 'numeric',
+                    minute: 'numeric'
+                })}
+            </TableCell> :
             <TableCell/>;
     };
 
@@ -146,7 +148,7 @@ export const Profile: React.FC<ProfileProps> = (props): JSX.Element => {
                                                         size='small'
                                                         color='primary'
                                                         onClick={() => {
-                                                            activateAd(row, user).then(() => {
+                                                            activateAd(row).then(() => {
                                                                 setRerender(cur => (cur + 1));
                                                             });
                                                         }}
@@ -160,7 +162,7 @@ export const Profile: React.FC<ProfileProps> = (props): JSX.Element => {
                                                                 size='small'
                                                                 color='primary'
                                                                 onClick={() => {
-                                                                    sellAd(row, user).then(() => {
+                                                                    sellAd(row).then(() => {
                                                                         setRerender(cur => (cur + 1));
                                                                     });
                                                                 }}
@@ -172,7 +174,7 @@ export const Profile: React.FC<ProfileProps> = (props): JSX.Element => {
                                                                 size='small'
                                                                 color='primary'
                                                                 onClick={() => {
-                                                                    closeAd(row, user).then(() => {
+                                                                    closeAd(row).then(() => {
                                                                         setRerender(cur => (cur + 1));
                                                                     });
                                                                 }}

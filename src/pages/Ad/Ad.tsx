@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Button, Modal } from '@material-ui/core';
 import './Ad.scss';
 import { toDate } from '../../utils';
 import { useScreenSize } from '../../hooks/useScreenSize';
 import { Link, useParams } from 'react-router-dom';
 import { User, Ad as AdInterface } from '../../interfaces';
+import { AuthContext } from '../../contexts/auth-context';
 
 export const Ad: React.FC = (): JSX.Element => {
     const {desktop, tablet, mobile} = useScreenSize();
@@ -24,7 +25,6 @@ export const Ad: React.FC = (): JSX.Element => {
         price: 0,
     });
     const [user, setUser] = useState<User>({
-        activeAds: 0,
         avatar: '',
         date: {
             seconds: 0,
@@ -35,8 +35,11 @@ export const Ad: React.FC = (): JSX.Element => {
         name: '',
         phone: '',
     });
+    const [activeAds, setActiveAds] = useState<number>(0);
     const [open, setOpen] = useState<boolean>(false);
     const { id } = useParams<{id: string}>();
+
+    const {sellerID} = useContext(AuthContext);
 
     useEffect(() => {
         fetch(`api/ads/${id}`)
@@ -45,7 +48,15 @@ export const Ad: React.FC = (): JSX.Element => {
                 setAd(data);
                 return fetch(`api/users/${data.sellerID}`)})
             .then(response => response.json())
-            .then((data) => {setUser(data)});
+            .then((data) => {
+                setUser(data);
+                return fetch(`api/ads?sellerID=${data.id}`);
+            })
+            .then(response => response.json())
+            .then((data: AdInterface[]) => {
+                const number = data.filter(item => item.status === 'active').length;
+                setActiveAds(number);
+            });
     }, []);
 
     const handleOpen = (): void => {
@@ -59,11 +70,11 @@ export const Ad: React.FC = (): JSX.Element => {
     const pictureJSX = <div className='pic-wrapper' onClick={handleOpen}><img src={ad.picture} alt={'ad'}/></div>;
 
     const sellerInfoJSX =
-            <Link className='seller-info-wrapper' to={ad.sellerID.substring(6) === '1' ? '/myprofile' : `/profile${ad.sellerID.substring(6)}`} style={{ color: 'black', textDecoration: 'none' }}>
+            <Link className='seller-info-wrapper' to={ad.sellerID === sellerID ? '/myprofile' : `/profile${ad.sellerID.substring(6)}`} style={{ color: 'black', textDecoration: 'none' }}>
                 <div className='avatar-wrapper'><img src={user.avatar} alt='User avatar'/></div>
                 <div className='info-wrapper'>
                     <div className='username'>{user.name}</div>
-                    <div className='ads-count'>Ads: {user.activeAds}</div>
+                    <div className='ads-count'>Ads: {activeAds}</div>
                     <div className='date'>On Dog Shop since {toDate(user.date).toLocaleString('default', {month: 'long',  year: 'numeric'})}</div>
                 </div>
             </Link>;

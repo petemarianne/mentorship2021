@@ -1,37 +1,52 @@
-import React, { FormEvent, useState } from 'react';
+import React, { FormEvent, useContext, useState } from 'react';
 import { Button, CircularProgress, InputBase } from '@material-ui/core';
 import PicSelect from '../../../PicUpload/PicSelect';
 import { app } from '../../../../firebase';
+import { AuthContext } from '../../../../contexts/auth-context';
 
-const Registration: React.FC = (): JSX.Element => {
+interface RegistrationProps {
+    onCloseModal: () => void,
+}
+
+enum AllFieldsValidation {
+    InitialState,
+    NotAllFieldsFilled,
+    AllFieldsFilled,
+}
+
+const Registration: React.FC<RegistrationProps> = (props): JSX.Element => {
     const [fields, setFields] = useState<{
         email: string,
         password: string,
         repeatedPassword: string,
         name: string,
         phone: string,
-        picture: File | null,
     }>({
         email: '',
         password: '',
         repeatedPassword: '',
         name: '',
         phone: '',
-        picture: null,
     });
     const [file, setFile] = useState<File>();
     const [loading, setLoading] = useState<boolean>(false);
     const [validation, setValidation] = useState<{
         email: boolean,
+        password: boolean,
         repeatedPassword: boolean,
         phone: boolean,
-        allFields: boolean
+        allFields: AllFieldsValidation,
+        usedEmail: boolean,
     }>({
-        email: false,
-        repeatedPassword: false,
-        phone: false,
-        allFields: false
+        email: true,
+        password: true,
+        repeatedPassword: true,
+        phone: true,
+        allFields: AllFieldsValidation.InitialState,
+        usedEmail: true,
     });
+
+    const {login} = useContext(AuthContext);
 
     const handleEmail = (event: React.ChangeEvent<HTMLInputElement>): void => {
         setFields(current => ({...current, email: event.target.value}));
@@ -55,42 +70,78 @@ const Registration: React.FC = (): JSX.Element => {
 
     const onSubmit = async (event: FormEvent<HTMLFormElement>): Promise<void> => {
         event.preventDefault();
-        const mailFormat = /^([a-zA-Z0-9._]+)@([a-zA-Z0-9._]+)\.([a-z]{2,3})$/;
-        if (!mailFormat.test(fields.email) && fields.email !== '') {
-            setValidation(prevState => ({...prevState, email: true}));
-        }
-        else {
-            setValidation(prevState => ({...prevState, email: false}));
-        }
-        if (fields.password !== fields.repeatedPassword) {
-            setValidation(prevState => ({...prevState, repeatedPassword: true}));
-        } else {
-            setValidation(prevState => ({...prevState, repeatedPassword: false}));
-        }
-        const phoneFormat = /^\+\d+$/;
-        if (!phoneFormat.test(fields.phone)  && fields.phone !== '') {
-            setValidation(prevState => ({...prevState, phone: true}));
-        } else {
-            setValidation(prevState => ({...prevState, phone: false}));
-        }
-        if (file === undefined) {
-            setValidation(prevState => ({...prevState, allFields: true}));
-        }
-        if (!(validation.email && validation.repeatedPassword && validation.phone)) {
+        let flag = false;
+        if (validation.allFields !== AllFieldsValidation.AllFieldsFilled) {
             for (let key in fields) {
                 // @ts-ignore
-                if (fields[key] === '') {
-                    setValidation(prevState => ({...prevState, allFields: true}));
+                if (fields[key] === '' || !file) {
+                    setValidation(prevState => ({...prevState, allFields: AllFieldsValidation.NotAllFieldsFilled}));
+                    flag = false;
                     break;
                 }
-                setValidation(prevState => ({...prevState, allFields: false}));
+                setValidation(prevState => ({...prevState, allFields: AllFieldsValidation.AllFieldsFilled}));
+                flag = true;
             }
         }
-        const storageRef = app.storage().ref();
-        if (file) {
-            const fileRef = storageRef.child(file.name);
-            await fileRef.put(file);
-            const fileUrl: string = await fileRef.getDownloadURL();
+        if (validation.allFields === AllFieldsValidation.AllFieldsFilled || flag) {
+            flag = false;
+            const mailFormat = /^([a-zA-Z0-9._]+)@([a-zA-Z0-9._]+)\.([a-z]{2,3})$/;
+            if (!mailFormat.test(fields.email) && fields.email !== '') {
+                setValidation(prevState => ({...prevState, email: false}));
+                flag = false;
+            } else {
+                setValidation(prevState => ({...prevState, email: true}));
+                flag = true;
+            }
+            if (fields.password.length < 6) {
+                setValidation(prevState => ({...prevState, password: false}));
+                flag = false;
+            } else {
+                setValidation(prevState => ({...prevState, password: true}));
+                flag = true;
+                if (fields.password !== fields.repeatedPassword) {
+                    setValidation(prevState => ({...prevState, repeatedPassword: false}));
+                    flag = false;
+                } else {
+                    setValidation(prevState => ({...prevState, repeatedPassword: true}));
+                    flag = true;
+                }
+            }
+            const phoneFormat = /^\+\d+$/;
+            if (!phoneFormat.test(fields.phone) && fields.phone !== '') {
+                setValidation(prevState => ({...prevState, phone: false}));
+                flag = false;
+            } else {
+                setValidation(prevState => ({...prevState, phone: true}));
+                flag = true;
+            }
+            const storageRef = app.storage().ref();
+            if (flag && file) {
+                const fileRef = storageRef.child(file.name);
+                await fileRef.put(file);
+                const fileUrl: string = await fileRef.getDownloadURL();
+                const registerResponse = await fetch('/api/auth/register',
+                    {
+                        method: 'POST',
+                        body: JSON.stringify({
+                            email: fields.email,
+                            password: fields.password,
+                            name: fields.name,
+                            phone: fields.phone,
+                            avatar: fileUrl
+                        }),
+                        headers: {'Content-Type': 'application/json'}
+                    });
+                const registerData = await registerResponse.json();
+                if (registerResponse.ok) {
+                    login(registerData.token, registerData.userID);
+                    props.onCloseModal();
+                } else {
+                    if (registerData.message === 'This email is already used!') {
+                        setValidation(prevState => ({...prevState, usedEmail: false}));
+                    }
+                }
+            }
         }
     };
 
@@ -100,30 +151,32 @@ const Registration: React.FC = (): JSX.Element => {
             onSubmit(e).then(() => setLoading(false));
         }}>
             <div className='label'>Email</div>
-            <div className={validation.email ? 'input validate' : 'input'}>
+            <div className={!validation.email ? 'input validate' : 'input'}>
                 <InputBase value={fields.email} onChange={handleEmail} fullWidth/>
             </div>
-            {validation.email ? <div className='validation-registration'>Incorrect email!</div> : null}
+            {!validation.email ? <div className='validation-registration'>Incorrect email!</div> : null}
+            {!validation.usedEmail ? <div className='validation-registration'>This email is already used!</div> : null}
             <div className='label'>Password</div>
-            <div className={validation.repeatedPassword ? 'input validate' : 'input'}>
+            <div className={!validation.password || !validation.repeatedPassword ? 'input validate' : 'input'}>
                 <InputBase type='password' value={fields.password} onChange={handlePassword} fullWidth/>
             </div>
+            {!validation.password ? <div className='validation-registration'>The password must contain at least 6 characters!</div> : null}
             <div className='label'>Repeat password</div>
-            <div className={validation.repeatedPassword ? 'input validate' : 'input'}>
+            <div className={!validation.repeatedPassword ? 'input validate' : 'input'}>
                 <InputBase type='password' value={fields.repeatedPassword} onChange={handleRepeatedPassword} fullWidth/>
             </div>
-            {validation.repeatedPassword ? <div className='validation-registration'>Password don't match!</div> : null}
+            {!validation.repeatedPassword ? <div className='validation-registration'>Password don't match!</div> : null}
             <div className='label'>Name</div>
             <div className='input'>
                 <InputBase value={fields.name} onChange={handleName} fullWidth/>
             </div>
             <div className='label'>Phone number</div>
-            <div className={validation.phone ? 'input validate' : 'input'}>
+            <div className={!validation.phone ? 'input validate' : 'input'}>
                 <InputBase value={fields.phone} onChange={handlePhone} fullWidth/>
             </div>
-            {validation.phone ? <div className='validation-registration'>Incorrect phone number!</div> : null}
+            {!validation.phone ? <div className='validation-registration'>Incorrect phone number!</div> : null}
             <PicSelect file={file} onFileSelect={setFile} />
-            {validation.allFields ? <div className='validation-registration'>Fill in all the fields!</div> : null}
+            {validation.allFields === AllFieldsValidation.NotAllFieldsFilled ? <div className='validation-registration'>Fill in all the fields!</div> : null}
             <div className='button-wrapper'>
                 <Button type='submit' className='button' variant='contained' color='primary'>
                     {!loading ? 'Register' : <CircularProgress color='inherit' size='25px' data-testid='loading'/>}

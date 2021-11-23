@@ -13,6 +13,7 @@
     "@testing-library/user-event": "^12.8.3",
     "@types/jest": "^27.0.2",
     "@types/node": "^16.11.4",
+    "@types/nodemon": "^1.19.1",
     "@types/react": "^17.0.32",
     "@types/react-dom": "^17.0.10",
     "@types/react-router-dom": "^5.3.1",
@@ -23,6 +24,7 @@
     "firebase": "^7.24.0",
     "jsonwebtoken": "^8.5.1",
     "node-sass": "^6.0.1",
+    "nodemon": "^2.0.15",
     "npm-run-all": "^4.1.5",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
@@ -31,11 +33,10 @@
     "uuid": "^8.3.2",
     "web-vitals": "^1.1.2"
   },
-  "main": "app.js",
-  "type": "module",
+  "main": "app.ts",
   "scripts": {
-    "start": "cross-env NODE_ENV=production node app.js",
-    "server": "nodemon app.js",
+    "start": "cross-env NODE_ENV=production ts-node --skip-project --project tsconfig.node.json app.ts",
+    "server": "nodemon app.ts",
     "client": "react-scripts start --prefix client",
     "client:build": "react-scripts build --prefix client",
     "test": "react-scripts test --prefix client",
@@ -64,13 +65,16 @@
   "devDependencies": {
     "@mui/material": "^5.0.0",
     "@testing-library/jest-dom": "^5.14.1",
+    "@types/bcryptjs": "^2.4.2",
+    "@types/config": "^0.0.40",
+    "@types/express": "^4.17.13",
+    "@types/jsonwebtoken": "^8.5.6",
     "@types/uuid": "^8.3.1",
     "@typescript-eslint/parser": "^5.1.0",
     "concurrently": "^5.0.2",
     "cross-env": "^6.0.3",
-    "nodemon": "^2.0.2",
     "prop-types": "^15.7.2",
     "react-router-dom": "^5.3.0",
-    "typescript": "^4.4.4"
+    "typescript": "^4.5.2"
   }
 }

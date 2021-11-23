@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import './AdFormModal.scss';
 import { Button, CircularProgress, IconButton, InputBase } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import { app } from '../../firebase';
 import { validateAd } from '../../utils';
-import { Ad, User, Fields } from '../../interfaces';
+import { Fields } from '../../interfaces';
 import PicSelect from '../PicUpload/PicSelect';
+import { AuthContext } from '../../contexts/auth-context';
 
 interface AdFormModalProps {
     handleClose: () => void,
@@ -13,19 +14,6 @@ interface AdFormModalProps {
 
 const AdFormModal: React.FC<AdFormModalProps> = (props): JSX.Element => {
     const [loading, setLoading] = useState<boolean>(false);
-    const [adsData, setAdsData] = useState<Ad[]>([]);
-    const [user, setUser] = useState<User>({
-        activeAds: 0,
-        avatar: '',
-        date: {
-            seconds: 0,
-            nanoseconds: 0,
-        },
-        email: '',
-        id: '',
-        name: '',
-        phone: '',
-    });
     const [validate, setValidate] = useState<boolean>(true);
     const [file, setFile] = useState<File>();
     const [fields, setFields] = useState<Fields>(
@@ -38,22 +26,16 @@ const AdFormModal: React.FC<AdFormModalProps> = (props): JSX.Element => {
         }
     )
 
-    useEffect(() => {
-        fetch('api/ads').then(response => response.json()).then((data) => {
-            setAdsData(data);
-        });
-        fetch('api/users/seller1').then(response => response.json()).then((data) => {
-            setUser(data);
-        });
-    }, []);
+    const {token} = useContext(AuthContext);
 
     const publish = async (): Promise<void> => {
         const storageRef = app.storage().ref();
-        if (file) {
+        if (file && token) {
             const fileRef = storageRef.child(file.name);
             await fileRef.put(file);
             const fileUrl: string = await fileRef.getDownloadURL();
-            fetch('/api/ads', {method: 'POST', body: JSON.stringify({
+            fetch('/api/ads', {
+                method: 'POST', body: JSON.stringify({
                     ...fields,
                     picture: fileUrl,
                     date: {
@@ -61,11 +43,9 @@ const AdFormModal: React.FC<AdFormModalProps> = (props): JSX.Element => {
                         nanoseconds: 0,
                     },
                     status: 'active',
-                    sellerID: user.id,
-                    id: 'ad' + (adsData.length + 1),
-                }), headers: {'Content-Type': 'application/json'}});
+                }), headers: {'Content-Type': 'application/json', 'authorization': token}
+            });
         }
-        fetch('/api/users/seller1', {method: 'PUT', body: JSON.stringify({action: 'add'}), headers: {'Content-Type': 'application/json'}});
         props.handleClose();
     };
 

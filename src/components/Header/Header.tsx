@@ -10,6 +10,8 @@ import { Link, Redirect, useLocation } from 'react-router-dom';
 import AdFormModal from '../AdFormModal/AdFormModal';
 import { useScreenSize } from '../../hooks/useScreenSize';
 import { FilterContext } from '../../contexts/filter-context';
+import { AuthContext } from '../../contexts/auth-context';
+import LoginOrRegisterModal from './LoginOrRegisterModal/LoginOrRegisterModal';
 
 const Header: React.FC = (): JSX.Element => {
     const [breed, setBreed] = useState<string>('');
@@ -21,6 +23,7 @@ const Header: React.FC = (): JSX.Element => {
     const currentPathname: string = useLocation().pathname;
 
     const {filter, setFilterState} = useContext(FilterContext);
+    const { sellerID, logout, token } = useContext(AuthContext);
 
     const {desktop} = useScreenSize();
 
@@ -77,10 +80,18 @@ const Header: React.FC = (): JSX.Element => {
             localStorage.setItem('search',JSON.stringify({breed: ''}));
         }
         setBreed(JSON.parse(localStorage.getItem('search') as string).breed);
-        fetch('api/users/seller1').then(response => response.json()).then((data) => {
-            setLoggedInUsersAvatar(data.avatar);
-        })
-    }, [])
+        if (sellerID && token) {
+            fetch('api/user/info', {method: 'GET', headers: {'authorization': token}}).then(response => {
+                if (response.status === 401) {
+                    logout();
+                } else {
+                    response.json().then((data) => {
+                        setLoggedInUsersAvatar(data.avatar);
+                    })
+                }
+            })
+        }
+    }, [sellerID, token]);
 
     return (
         <AppBar color='inherit' position='static' className='header-wrapper' elevation={0}>
@@ -96,13 +107,23 @@ const Header: React.FC = (): JSX.Element => {
                             <InputBase placeholder='Search for a breed…' value={breed} onChange={handleBreed} onKeyDown={handleEnter} fullWidth/>
                         </div>
                         <div className='toolbar-right-side desktop'>
-                            <div className='submit-an-ad-button-wrapper'>
-                                <Button color='primary' variant='contained' className='submit-an-ad-button' onClick={handleOpen}>Submit an ad</Button>
-                            </div>
-                            <Button onClick={handleDropdownOpen}>
-                                <Avatar className='avatar-header' src={loggedInUsersAvatar}/>
-                                <ArrowDropDownIcon className='icons-triangle icons-color' />
-                            </Button>
+                            {sellerID ?
+                                <>
+                                    <div className='submit-an-ad-button-wrapper'>
+                                        <Button color='primary' variant='contained' className='submit-an-ad-button'
+                                                onClick={handleOpen}>Submit an ad</Button>
+                                    </div>
+                                    <Button onClick={handleDropdownOpen}>
+                                        <Avatar className='avatar-header' src={loggedInUsersAvatar}/>
+                                        <ArrowDropDownIcon className='icons-triangle icons-color'/>
+                                    </Button>
+                                </>
+                                :
+                                <div className='submit-an-ad-button-wrapper'>
+                                    <Button color='primary' variant='contained' className='submit-an-ad-button'
+                                            onClick={handleOpen}>Login</Button>
+                                </div>
+                            }
                         </div>
                     </>
                 )}
@@ -140,7 +161,7 @@ const Header: React.FC = (): JSX.Element => {
                     aria-describedby='simple-modal-description'
                     className='modal'>
                     <div className='modal-content'>
-                        <AdFormModal handleClose={handleClose}/>
+                        {sellerID ? <AdFormModal handleClose={handleClose}/> : <LoginOrRegisterModal handleClose={handleClose}/>}
                     </div>
                 </Modal>
                 {renderRedirect()}

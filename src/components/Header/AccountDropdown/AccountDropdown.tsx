@@ -1,8 +1,8 @@
-import React, {useState} from 'react';
-import { Menu, MenuItem, Modal } from '@material-ui/core';
+import React, { useContext } from 'react';
+import { Menu, MenuItem } from '@material-ui/core';
 import { Link } from 'react-router-dom';
-import LoginOrRegisterModal from '../LoginOrRegisterModal/LoginOrRegisterModal';
 import './AccountDropdown.scss';
+import { AuthContext } from '../../../contexts/auth-context';
 
 interface AccountDropdownProps {
     isOpen: Element | null,
@@ -10,15 +10,7 @@ interface AccountDropdownProps {
 };
 
 const AccountDropdown: React.FC<AccountDropdownProps> = (props): JSX.Element => {
-    const [open, setOpen] = useState<boolean>(false);
-
-    const handleOpen = (): void => {
-        setOpen(true);
-    };
-
-    const handleClose = (): void => {
-        setOpen(false);
-    };
+    const {logout} = useContext(AuthContext);
 
     return (
         <>
@@ -38,18 +30,14 @@ const AccountDropdown: React.FC<AccountDropdownProps> = (props): JSX.Element => 
                     horizontal: 'center'
                 }}>
                 <MenuItem onClick={props.handleDropdown} component={Link} to={'/myprofile'}>My profile</MenuItem>
-                <MenuItem onClick={() => {props.handleDropdown(); handleOpen();}}>Login</MenuItem>
+                <MenuItem onClick={() => {
+                    logout();
+                    props.handleDropdown();
+                }}
+                >
+                    Logout
+                </MenuItem>
             </Menu>
-            <Modal
-                open={open}
-                onClose={handleClose}
-                aria-labelledby='simple-modal-title'
-                aria-describedby='simple-modal-description'
-                className='modal'>
-                <div className='modal-content'>
-                    <LoginOrRegisterModal handleClose={handleClose}/>
-                </div>
-            </Modal>
         </>
     );
 };
