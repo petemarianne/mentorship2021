@@ -37,10 +37,10 @@ export const Profile: React.FC<ProfileProps> = (props): JSX.Element => {
     const [rerender, setRerender] = useState(0);
     const [page, setPage] = React.useState<number>(0);
 
-    const { sellerID } = useContext(AuthContext);
+    const { sellerID, token } = useContext(AuthContext);
 
     useEffect(() => {
-        const userPromise = props.myProfile ? fetch(`api/users/${sellerID}`) : fetch(`api/users/seller${id}`);
+        const userPromise = props.myProfile && token ? fetch('api/userinfo', {method: 'GET', headers: {'authorization': token}}) : fetch(`api/users/seller${id}`);
         userPromise.then(response => response.json()).then((data) => {
             setUser(data);
             return fetch(`api/ads?sellerID=${data.id}`);
