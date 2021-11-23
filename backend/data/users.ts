@@ -1,6 +1,10 @@
 import { User } from '../../src/interfaces';
 
-export const users: User[] = [
+interface UserDB extends User {
+    password?: string
+}
+
+export const users: UserDB[] = [
     {
         "avatar": "https://firebasestorage.googleapis.com/v0/b/dog-shop-8c56c.appspot.com/o/d7bf6e2ef003c5d365f711d5d6a16acb.jpeg?alt=media&token=61dcc497-145e-499d-8c85-5160cee56990",
         "date": {

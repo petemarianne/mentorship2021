@@ -81,7 +81,7 @@ const Header: React.FC = (): JSX.Element => {
         }
         setBreed(JSON.parse(localStorage.getItem('search') as string).breed);
         if (sellerID && token) {
-            fetch('api/userinfo', {method: 'GET', headers: {'authorization': token}}).then(response => {
+            fetch('api/user/info', {method: 'GET', headers: {'authorization': token}}).then(response => {
                 if (response.status === 401) {
                     logout();
                 } else {
