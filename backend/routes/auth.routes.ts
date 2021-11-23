@@ -3,12 +3,28 @@ import { users } from '../data/users';
 import bcrypt from 'bcryptjs';
 import jsonwebtoken from 'jsonwebtoken';
 import config from 'config';
+import {check, validationResult} from "express-validator";
 
 const authRouter = Router();
 
-authRouter.post('/register', async (req, res) => {
-    try {
-        const { email, password, name, phone, avatar } = req.body;
+authRouter.post(
+    '/register',
+    [
+        check('email', 'Invalid email').isEmail(),
+        check('password', 'Password must be more than 6 symbols').isLength({min: 6})
+    ],
+    async (req: any, res: any) => {
+            try {
+                const errors = validationResult(req);
+
+                if (!errors.isEmpty()) {
+                    return res.status(400).json({
+                        errors: errors.array(),
+                        message: 'Invalid data!'
+                    });
+                }
+
+                const { email, password, name, phone, avatar } = req.body;
 
         const userIndex = users.findIndex(item => item.email === email);
         if (userIndex >= 0) {
@@ -44,7 +60,12 @@ authRouter.post('/register', async (req, res) => {
     }
 });
 
-authRouter.post('/login', (req, res) => {
+authRouter.post('/login',
+    [
+        check('email', 'Invalid email').normalizeEmail().isEmail(),
+        check('password', 'Password must be more than 6 symbols').exists()
+    ],
+    async (req: any, res: any) => {
         try {
             const {email, password} = req.body;
 
