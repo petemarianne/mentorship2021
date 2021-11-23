@@ -5,6 +5,7 @@ import usersRouter from './backend/routes/users.routes';
 import authRouter from './backend/routes/auth.routes';
 import { JwtPayload } from 'jsonwebtoken';
 import { MyOptionsJson } from "body-parser";
+import path from 'path';
 
 const app = express();
 
@@ -31,6 +32,14 @@ const API = '/api';
 app.use(API, adsRouter);
 app.use(API, usersRouter);
 app.use(API + '/auth', authRouter);
+
+if (process.env.NODE_ENV === 'production') {
+    app.use('/', express.static(path.join(__dirname, 'build')));
+
+    app.get('*', (req, res) => {
+        res.sendFile(path.resolve(__dirname, 'build', 'index.html'))
+    });
+}
 
 const PORT = config.get('port') || 3000;
 
