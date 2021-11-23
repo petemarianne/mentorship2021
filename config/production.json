@@ -1,0 +1,4 @@
+{
+  "port": 2300,
+  "jwtSecret": "dog shop by ppiatrovich"
+}
