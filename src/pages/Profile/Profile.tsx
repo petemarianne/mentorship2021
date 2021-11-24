@@ -8,6 +8,7 @@ import { useParams } from 'react-router-dom';
 import { closeAd, sellAd, activateAd, toDate } from '../../utils';
 import { Ad, NumericDate, User } from '../../interfaces';
 import { AuthContext } from '../../contexts/auth-context';
+import {ErrorBoundary} from "react-error-boundary";
 
 interface ProfileProps {
     myProfile?: boolean,
@@ -35,12 +36,13 @@ export const Profile: React.FC<ProfileProps> = (props): JSX.Element => {
     });
     const { id } = useParams<{id: string}>();
     const [rerender, setRerender] = useState(0);
-    const [page, setPage] = React.useState<number>(0);
+    const [page, setPage] = useState<number>(0);
+    const [error, setError] = useState<boolean>(false);
 
-    const { sellerID, token } = useContext(AuthContext);
+    const { sellerID } = useContext(AuthContext);
 
     useEffect(() => {
-        const userPromise = props.myProfile && token ? fetch('api/user/info', {method: 'GET', headers: {'authorization': token}}) : fetch(`api/users/seller${id}`);
+        const userPromise = props.myProfile ? fetch(`api/users/${sellerID}`) : fetch(`api/users/seller${id}`);
         userPromise.then(response => response.json()).then((data) => {
             setUser(data);
             return fetch(`api/ads?sellerID=${data.id}`);
@@ -81,7 +83,24 @@ export const Profile: React.FC<ProfileProps> = (props): JSX.Element => {
         setPage(newPage);
     };
 
+    const renderError = () => {
+        if (error) {
+            throw new Error('...')
+        } else {
+            return null;
+        }
+    }
+
     return (
+        <ErrorBoundary FallbackComponent={({error}) => {
+            return (
+            <div role="alert">
+            <p>Something went wrong:</p>
+            <pre>{error.message}</pre>
+            </div>
+            )
+        }}>
+            {renderError()}
         <div className='profile-page'>
             {desktop && (
                 <div className='profile-info'>
@@ -174,7 +193,7 @@ export const Profile: React.FC<ProfileProps> = (props): JSX.Element => {
                                                                 size='small'
                                                                 color='primary'
                                                                 onClick={() => {
-                                                                    closeAd(row).then(() => {
+                                                                    closeAd(row, setError).then(() => {
                                                                         setRerender(cur => (cur + 1));
                                                                     });
                                                                 }}
@@ -201,5 +220,6 @@ export const Profile: React.FC<ProfileProps> = (props): JSX.Element => {
                 className='table-pagination'
             />
         </div>
+        </ErrorBoundary>
     );
 };

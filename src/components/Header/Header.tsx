@@ -23,7 +23,7 @@ const Header: React.FC = (): JSX.Element => {
     const currentPathname: string = useLocation().pathname;
 
     const {filter, setFilterState} = useContext(FilterContext);
-    const { sellerID, logout, token } = useContext(AuthContext);
+    const { sellerID, token } = useContext(AuthContext);
 
     const {desktop} = useScreenSize();
 
@@ -81,15 +81,7 @@ const Header: React.FC = (): JSX.Element => {
         }
         setBreed(JSON.parse(localStorage.getItem('search') as string).breed);
         if (sellerID && token) {
-            fetch('api/user/info', {method: 'GET', headers: {'authorization': token}}).then(response => {
-                if (response.status === 401) {
-                    logout();
-                } else {
-                    response.json().then((data) => {
-                        setLoggedInUsersAvatar(data.avatar);
-                    })
-                }
-            })
+            fetch(`api/users/${sellerID}`).then(response => response.json()).then(data => setLoggedInUsersAvatar(data.avatar));
         }
     }, [sellerID, token]);
 
