@@ -6,7 +6,7 @@ export const useFetchError = () => {
     const request = async (input:  RequestInfo, init?: RequestInit) => {
         const response = await fetch(input, init);
         if (response.status === 401) {
-            setError(new Error('???'));
+            setError(new Error('Auth session is over!'));
         } else {
             return await response.json();
         }
