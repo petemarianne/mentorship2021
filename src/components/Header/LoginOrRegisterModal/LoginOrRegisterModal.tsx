@@ -4,7 +4,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import Login from './Login/Login';
 import Registration from './Registration/Registration';
 import './LoginOrRegisterModal.scss';
-import { useScreenSize } from '../../../hooks/useScreenSize';
+import { useScreenSize } from '../../../hooks';
 
 interface LoginOrRegisterModalProps {
     handleClose: () => void,

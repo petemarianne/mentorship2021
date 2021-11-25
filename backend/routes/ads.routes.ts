@@ -50,7 +50,7 @@ adsRouter.post('/ads', (req, res) => {
             ads.push({...req.body, id: `ad${ads.length + 1}`, sellerID: parsedToken.userID});
             return res.status(201);
         } catch (e) {
-            return res.status(403).send('Invalid token');
+            return res.status(401).send('Invalid token');
         }
     } catch (e) {
         return res.status(500);
@@ -97,7 +97,7 @@ adsRouter.put('/ads/:id', (req, res) => {
                     return res.status(500);
             }
         } catch (e) {
-            return res.status(403).send('Invalid token');
+            return res.status(401).send('Invalid token');
         }
     } catch (e) {
         return res.status(500);

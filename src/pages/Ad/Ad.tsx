@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Button, Modal } from '@material-ui/core';
 import './Ad.scss';
 import { toDate } from '../../utils';
-import { useScreenSize } from '../../hooks/useScreenSize';
+import { useScreenSize } from '../../hooks';
 import { Link, useParams } from 'react-router-dom';
 import { User, Ad as AdInterface } from '../../interfaces';
 import { AuthContext } from '../../contexts/auth-context';

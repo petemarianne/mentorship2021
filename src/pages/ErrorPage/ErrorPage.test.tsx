@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-import { Page404 } from './Page404';
+import { ErrorPage } from './ErrorPage';
 import { Route, MemoryRouter } from 'react-router-dom';
 import React from 'react';
 
@@ -9,7 +9,7 @@ test('Page 404 renders:', () => {
         <MemoryRouter initialEntries={['/pathname']}>
             <Route
                 path='*'
-                render={() => <Page404 />}/>
+                render={() => <ErrorPage />}/>
         </MemoryRouter>
     );
     screen.getAllByText('4').map((item, index) => {

@@ -8,7 +8,7 @@ import AccountDropdown from './AccountDropdown/AccountDropdown';
 import DrawerMenu from './DrawerMenu/DrawerMenu';
 import { Link, Redirect, useLocation } from 'react-router-dom';
 import AdFormModal from '../AdFormModal/AdFormModal';
-import { useScreenSize } from '../../hooks/useScreenSize';
+import { useScreenSize } from '../../hooks';
 import { FilterContext } from '../../contexts/filter-context';
 import { AuthContext } from '../../contexts/auth-context';
 import LoginOrRegisterModal from './LoginOrRegisterModal/LoginOrRegisterModal';
@@ -23,7 +23,7 @@ const Header: React.FC = (): JSX.Element => {
     const currentPathname: string = useLocation().pathname;
 
     const {filter, setFilterState} = useContext(FilterContext);
-    const { sellerID, logout, token } = useContext(AuthContext);
+    const { sellerID, token } = useContext(AuthContext);
 
     const {desktop} = useScreenSize();
 
@@ -81,15 +81,7 @@ const Header: React.FC = (): JSX.Element => {
         }
         setBreed(JSON.parse(localStorage.getItem('search') as string).breed);
         if (sellerID && token) {
-            fetch('api/user/info', {method: 'GET', headers: {'authorization': token}}).then(response => {
-                if (response.status === 401) {
-                    logout();
-                } else {
-                    response.json().then((data) => {
-                        setLoggedInUsersAvatar(data.avatar);
-                    })
-                }
-            })
+            fetch(`api/users/${sellerID}`).then(response => response.json()).then(data => setLoggedInUsersAvatar(data.avatar));
         }
     }, [sellerID, token]);
 
@@ -161,7 +153,7 @@ const Header: React.FC = (): JSX.Element => {
                     aria-describedby='simple-modal-description'
                     className='modal'>
                     <div className='modal-content'>
-                        {sellerID ? <AdFormModal handleClose={handleClose}/> : <LoginOrRegisterModal handleClose={handleClose}/>}
+                        {sellerID ? <AdFormModal handleClose={handleClose} /> : <LoginOrRegisterModal handleClose={handleClose}/>}
                     </div>
                 </Modal>
                 {renderRedirect()}

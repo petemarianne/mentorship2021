@@ -1,13 +1,14 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import './Profile.scss';
 import { IconButton, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow } from '@material-ui/core';
-import { useScreenSize } from '../../hooks/useScreenSize';
+import { useFetchError, useScreenSize } from '../../hooks';
 import { Archive, Unarchive } from '@material-ui/icons';
 import SellIcon from '@mui/icons-material/Sell';
 import { useParams } from 'react-router-dom';
-import { closeAd, sellAd, activateAd, toDate } from '../../utils';
+import { toDate } from '../../utils';
 import { Ad, NumericDate, User } from '../../interfaces';
 import { AuthContext } from '../../contexts/auth-context';
+import { useErrorHandler } from 'react-error-boundary';
 
 interface ProfileProps {
     myProfile?: boolean,
@@ -35,12 +36,12 @@ export const Profile: React.FC<ProfileProps> = (props): JSX.Element => {
     });
     const { id } = useParams<{id: string}>();
     const [rerender, setRerender] = useState(0);
-    const [page, setPage] = React.useState<number>(0);
+    const [page, setPage] = useState<number>(0);
 
     const { sellerID, token } = useContext(AuthContext);
 
     useEffect(() => {
-        const userPromise = props.myProfile && token ? fetch('api/user/info', {method: 'GET', headers: {'authorization': token}}) : fetch(`api/users/seller${id}`);
+        const userPromise = props.myProfile ? fetch(`api/users/${sellerID}`) : fetch(`api/users/seller${id}`);
         userPromise.then(response => response.json()).then((data) => {
             setUser(data);
             return fetch(`api/ads?sellerID=${data.id}`);
@@ -49,6 +50,9 @@ export const Profile: React.FC<ProfileProps> = (props): JSX.Element => {
     }, [rerender, sellerID]);
 
     const {desktop} = useScreenSize();
+
+    const {request, error} = useFetchError();
+    useErrorHandler(error)
 
     const columns: Column[] = [
         { id: 'title', label: 'Title', minWidth: 50, align: 'center' },
@@ -148,9 +152,18 @@ export const Profile: React.FC<ProfileProps> = (props): JSX.Element => {
                                                         size='small'
                                                         color='primary'
                                                         onClick={() => {
-                                                            activateAd(row).then(() => {
-                                                                setRerender(cur => (cur + 1));
-                                                            });
+                                                            if (token) {
+                                                                request(`/api/ads/${row.id}`, {
+                                                                    method: 'PUT',
+                                                                    body: JSON.stringify({status: 'active'}),
+                                                                    headers: {
+                                                                        'Content-Type': 'application/json',
+                                                                        'authorization': token
+                                                                    }
+                                                                }).then(() => {
+                                                                    setRerender(prevState => prevState + 1);
+                                                                });
+                                                            }
                                                         }}
                                                     >
                                                         <Unarchive fontSize='small'/>
@@ -162,9 +175,18 @@ export const Profile: React.FC<ProfileProps> = (props): JSX.Element => {
                                                                 size='small'
                                                                 color='primary'
                                                                 onClick={() => {
-                                                                    sellAd(row).then(() => {
-                                                                        setRerender(cur => (cur + 1));
-                                                                    });
+                                                                    if (token) {
+                                                                        request(`/api/ads/${row.id}`, {
+                                                                            method: 'PUT',
+                                                                            body: JSON.stringify({status: 'sold'}),
+                                                                            headers: {
+                                                                                'Content-Type': 'application/json',
+                                                                                'authorization': token
+                                                                            }
+                                                                        }).then(() => {
+                                                                            setRerender(prevState => prevState + 1);
+                                                                        });
+                                                                    }
                                                                 }}
                                                             >
                                                                 <SellIcon fontSize='small'/>
@@ -174,9 +196,18 @@ export const Profile: React.FC<ProfileProps> = (props): JSX.Element => {
                                                                 size='small'
                                                                 color='primary'
                                                                 onClick={() => {
-                                                                    closeAd(row).then(() => {
-                                                                        setRerender(cur => (cur + 1));
-                                                                    });
+                                                                    if (token) {
+                                                                        request(`/api/ads/${row.id}`, {
+                                                                            method: 'PUT',
+                                                                            body: JSON.stringify({status: 'closed'}),
+                                                                            headers: {
+                                                                                'Content-Type': 'application/json',
+                                                                                'authorization': token
+                                                                            }
+                                                                        }).then(() => {
+                                                                            setRerender(prevState => prevState + 1);
+                                                                        });
+                                                                    }
                                                                 }}
                                                             >
                                                                 <Archive fontSize='small'/>
