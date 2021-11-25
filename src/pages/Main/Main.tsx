@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 import { toDate } from '../../utils';
 import Filter from '../../components/Filter/Filter';
 import { FilterContext } from '../../contexts/filter-context';
-import { useScreenSize } from '../../hooks/useScreenSize';
+import { useScreenSize } from '../../hooks';
 import { Ad } from '../../interfaces';
 
 export const Main: React.FC = (): JSX.Element => {

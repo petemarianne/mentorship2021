@@ -81,7 +81,7 @@ authRouter.post('/login',
             const token = jsonwebtoken.sign(
                 {userID: users[userIndex].id},
                 config.get('jwtSecret'),
-                {expiresIn: '15s'}
+                {expiresIn: '1h'}
             );
             return res.status(200).json({token, userID: users[userIndex].id});
         } catch (e) {

@@ -8,7 +8,7 @@ import AccountDropdown from './AccountDropdown/AccountDropdown';
 import DrawerMenu from './DrawerMenu/DrawerMenu';
 import { Link, Redirect, useLocation } from 'react-router-dom';
 import AdFormModal from '../AdFormModal/AdFormModal';
-import { useScreenSize } from '../../hooks/useScreenSize';
+import { useScreenSize } from '../../hooks';
 import { FilterContext } from '../../contexts/filter-context';
 import { AuthContext } from '../../contexts/auth-context';
 import LoginOrRegisterModal from './LoginOrRegisterModal/LoginOrRegisterModal';
@@ -153,7 +153,7 @@ const Header: React.FC = (): JSX.Element => {
                     aria-describedby='simple-modal-description'
                     className='modal'>
                     <div className='modal-content'>
-                        {sellerID ? <AdFormModal handleClose={handleClose}/> : <LoginOrRegisterModal handleClose={handleClose}/>}
+                        {sellerID ? <AdFormModal handleClose={handleClose} /> : <LoginOrRegisterModal handleClose={handleClose}/>}
                     </div>
                 </Modal>
                 {renderRedirect()}

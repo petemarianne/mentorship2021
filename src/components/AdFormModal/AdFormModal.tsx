@@ -7,9 +7,11 @@ import { validateAd } from '../../utils';
 import { Fields } from '../../interfaces';
 import PicSelect from '../PicUpload/PicSelect';
 import { AuthContext } from '../../contexts/auth-context';
+import { useFetchError } from '../../hooks';
+import { useErrorHandler } from 'react-error-boundary';
 
 interface AdFormModalProps {
-    handleClose: () => void,
+    handleClose: () => void
 };
 
 const AdFormModal: React.FC<AdFormModalProps> = (props): JSX.Element => {
@@ -28,13 +30,16 @@ const AdFormModal: React.FC<AdFormModalProps> = (props): JSX.Element => {
 
     const {token} = useContext(AuthContext);
 
+    const {request, error} = useFetchError();
+    useErrorHandler(error)
+
     const publish = async (): Promise<void> => {
         const storageRef = app.storage().ref();
         if (file && token) {
             const fileRef = storageRef.child(file.name);
             await fileRef.put(file);
             const fileUrl: string = await fileRef.getDownloadURL();
-            fetch('/api/ads', {
+            request('/api/ads', {
                 method: 'POST', body: JSON.stringify({
                     ...fields,
                     picture: fileUrl,
@@ -44,9 +49,10 @@ const AdFormModal: React.FC<AdFormModalProps> = (props): JSX.Element => {
                     },
                     status: 'active',
                 }), headers: {'Content-Type': 'application/json', 'authorization': token}
+            }).then(() => {
+                props.handleClose();
             });
         }
-        props.handleClose();
     };
 
     const handleTitle = (event: React.ChangeEvent<HTMLInputElement>): void => {
