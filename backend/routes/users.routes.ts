@@ -1,7 +1,5 @@
 import { Router } from 'express';
 import { users } from '../data/users';
-import jsonwebtoken, { UserIDJwtPayload } from 'jsonwebtoken';
-import config from 'config';
 
 const usersRouter = Router();
 
