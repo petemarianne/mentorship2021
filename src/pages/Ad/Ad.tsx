@@ -26,10 +26,7 @@ export const Ad: React.FC = (): JSX.Element => {
     });
     const [user, setUser] = useState<User>({
         avatar: '',
-        date: {
-            seconds: 0,
-            nanoseconds: 0,
-        },
+        date: new Date,
         email: '',
         id: '',
         name: '',
@@ -75,7 +72,7 @@ export const Ad: React.FC = (): JSX.Element => {
                 <div className='info-wrapper'>
                     <div className='username'>{user.name}</div>
                     <div className='ads-count'>Ads: {activeAds}</div>
-                    <div className='date'>On Dog Shop since {toDate(user.date).toLocaleString('default', {month: 'long',  year: 'numeric'})}</div>
+                    <div className='date'>On Dog Shop since {new Date(user.date).toLocaleString('default', {month: 'long',  year: 'numeric'})}</div>
                 </div>
             </Link>;
 

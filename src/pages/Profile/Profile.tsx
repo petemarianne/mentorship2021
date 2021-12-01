@@ -25,10 +25,7 @@ export const Profile: React.FC<ProfileProps> = (props): JSX.Element => {
     const [adsData, setAdsData] = useState<Ad[]>([]);
     const [user, setUser] = useState<User>({
         avatar: '',
-        date: {
-            seconds: 0,
-            nanoseconds: 0,
-        },
+        date: new Date,
         email: '',
         id: '',
         name: '',
@@ -95,7 +92,7 @@ export const Profile: React.FC<ProfileProps> = (props): JSX.Element => {
                         <div className='phone'>Phone number: {user.phone}</div>
                         <div className='email'>Email: {user.email}</div>
                         <div className='date'>
-                            Date of registration: {toDate(user.date).toLocaleString('default', {
+                            Date of registration: {new Date(user.date).toLocaleString('default', {
                             day: 'numeric',
                             month: 'long',
                             year: 'numeric'})}
@@ -109,7 +106,7 @@ export const Profile: React.FC<ProfileProps> = (props): JSX.Element => {
                     <div className='name'>{user.name}</div>
                     <div className='phone'>Phone number: {user.phone}</div>
                     <div className='email'>Email: {user.email}</div>
-                    <div className='date'>Date of registration: {toDate(user.date).toLocaleString('default', {
+                    <div className='date'>Date of registration: {new Date(user.date).toLocaleString('default', {
                         day: 'numeric',
                         month: 'long',
                         year: 'numeric'})}

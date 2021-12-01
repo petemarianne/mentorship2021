@@ -2,7 +2,7 @@ import { NumericDate } from './NumericDate';
 
 export interface User {
     avatar: string,
-    date: NumericDate,
+    date: Date,
     email: string,
     id: string,
     name: string,
