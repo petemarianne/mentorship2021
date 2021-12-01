@@ -1,22 +1,22 @@
 import { Router } from 'express';
-import { users } from '../data/users';
+import User from '../models/User';
 
 const usersRouter = Router();
 
 usersRouter.get('/users/:id', async (req, res) => {
     try {
-        const filteredUsers = users.filter(item => item.id === req.params.id);
-        if (filteredUsers.length === 0) {
+        const user = await User.findOne({id: req.params.id});
+        if (!user) {
             return res.status(404);
         }
         return res.status(200).json(
             {
-                avatar: filteredUsers[0].avatar,
-                date: filteredUsers[0].date,
-                email: filteredUsers[0].email,
-                id: filteredUsers[0].id,
-                name: filteredUsers[0].name,
-                phone: filteredUsers[0].phone
+                avatar: user.avatar,
+                date: user.date,
+                email: user.email,
+                id: user.id,
+                name: user.name,
+                phone: user.phone
             })
     } catch (e) {
         return res.status(500);

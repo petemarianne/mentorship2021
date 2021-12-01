@@ -12,7 +12,7 @@ export const ads: Ad[] = [
             "nanoseconds": 0
         },
         "picture": "https://firebasestorage.googleapis.com/v0/b/dog-shop-8c56c.appspot.com/o/Akita-Puppy.jpg?alt=media&token=ca0385f9-0373-4f20-b16d-c1a6bca1bef8",
-        "sellerID": "seller1",
+        "sellerID": "61a72bf122d07a76c4220c34",
         "status": "active",
         "price": 2000
     },
@@ -57,7 +57,7 @@ export const ads: Ad[] = [
             "nanoseconds": 0
         },
         "picture": "https://firebasestorage.googleapis.com/v0/b/dog-shop-8c56c.appspot.com/o/image-2.jpeg?alt=media&token=https://firebasestorage.googleapis.com/v0/b/dog-shop-8c56c.appspot.com/o/image-2.jpeg?alt=media&token=3d197ae6-adcf-469b-9460-7ac13e1e0488",
-        "sellerID": "seller1",
+        "sellerID": "61a72bf122d07a76c4220c34",
         "status": "closed",
         "price": 800
     },
@@ -162,7 +162,7 @@ export const ads: Ad[] = [
             "nanoseconds": 0
         },
         "picture": "https://firebasestorage.googleapis.com/v0/b/dog-shop-8c56c.appspot.com/o/german-shepherd-05.jpg?alt=media&token=8f675701-5114-4b27-9ffc-d73ae1555cba",
-        "sellerID": "seller1",
+        "sellerID": "61a72bf122d07a76c4220c34",
         "status": "sold",
         "price": 900
     },
@@ -207,7 +207,7 @@ export const ads: Ad[] = [
             "nanoseconds": 0
         },
         "picture": "https://firebasestorage.googleapis.com/v0/b/dog-shop-8c56c.appspot.com/o/90.jpeg?alt=media&token=6c79ac10-013c-43c9-b14b-35c0a91373ea",
-        "sellerID": "seller1",
+        "sellerID": "61a72bf122d07a76c4220c34",
         "status": "active",
         "price": 500
     },

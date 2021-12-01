@@ -6,6 +6,7 @@ import authRouter from './backend/routes/auth.routes';
 import { JwtPayload } from 'jsonwebtoken';
 import { MyOptionsJson } from "body-parser";
 import path from 'path';
+import mongoose, {AdvancedConnectOptions} from 'mongoose';
 
 const app = express();
 
@@ -18,6 +19,14 @@ declare module 'jsonwebtoken' {
 declare module 'body-parser' {
     export interface MyOptionsJson extends OptionsJson {
         extended: boolean
+    }
+}
+
+declare module 'mongoose' {
+    export interface AdvancedConnectOptions extends ConnectOptions {
+        useNewUrlParser: boolean,
+        useUnifiedTopology: boolean,
+        useCreateIndex: boolean
     }
 }
 
@@ -43,8 +52,14 @@ if (process.env.NODE_ENV === 'production') {
 
 const PORT = config.get('port') || 3000;
 
-const start = () => {
+const start = async () => {
     try {
+        const options: AdvancedConnectOptions = {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+            useCreateIndex: true
+        }
+        await mongoose.connect(config.get('mongoUri'));
         app.listen(PORT, () => console.log(`App has been started on port ${PORT}...`));
     } catch (e) {
         console.log('Server Error');
