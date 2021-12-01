@@ -5,8 +5,7 @@ import { useFetchError, useScreenSize } from '../../hooks';
 import { Archive, Unarchive } from '@material-ui/icons';
 import SellIcon from '@mui/icons-material/Sell';
 import { useParams } from 'react-router-dom';
-import { toDate } from '../../utils';
-import { Ad, NumericDate, User } from '../../interfaces';
+import { Ad,  User } from '../../interfaces';
 import { AuthContext } from '../../contexts/auth-context';
 import { useErrorHandler } from 'react-error-boundary';
 
@@ -38,7 +37,7 @@ export const Profile: React.FC<ProfileProps> = (props): JSX.Element => {
     const { sellerID, token } = useContext(AuthContext);
 
     useEffect(() => {
-        const userPromise = props.myProfile ? fetch(`api/users/${sellerID}`) : fetch(`api/users/seller${id}`);
+        const userPromise = props.myProfile ? fetch(`api/users/${sellerID}`) : fetch(`api/users/${id}`);
         userPromise.then(response => response.json()).then((data) => {
             setUser(data);
             return fetch(`api/ads?sellerID=${data.id}`);
@@ -64,10 +63,10 @@ export const Profile: React.FC<ProfileProps> = (props): JSX.Element => {
         columns.push({ id: 'action', label: 'Action', minWidth: 80, align: 'center'});
     }
 
-    const dateCell = (date: NumericDate | undefined): JSX.Element => {
+    const dateCell = (date: Date | undefined): JSX.Element => {
         return date ?
             <TableCell size='medium' align='center'>
-                {toDate(date).toLocaleString('default', {
+                {new Date(date).toLocaleString('default', {
                     day: 'numeric',
                     month: 'short',
                     year: 'numeric',
@@ -134,7 +133,7 @@ export const Profile: React.FC<ProfileProps> = (props): JSX.Element => {
                         {
                             adsData.slice(page * 5, page * 5 + 5).map((row) => {
                                 return (
-                                    <TableRow role='checkbox' tabIndex={-1} key={row.id}>
+                                    <TableRow role='checkbox' tabIndex={-1} key={row._id}>
                                         <TableCell size='medium' align='center'>{row.title}</TableCell>
                                         {dateCell(row.date)}
                                         {dateCell(row.saleDate)}
@@ -150,7 +149,7 @@ export const Profile: React.FC<ProfileProps> = (props): JSX.Element => {
                                                         color='primary'
                                                         onClick={() => {
                                                             if (token) {
-                                                                request(`/api/ads/${row.id}`, {
+                                                                request(`/api/ads/${row._id}`, {
                                                                     method: 'PUT',
                                                                     body: JSON.stringify({status: 'active'}),
                                                                     headers: {
@@ -173,7 +172,7 @@ export const Profile: React.FC<ProfileProps> = (props): JSX.Element => {
                                                                 color='primary'
                                                                 onClick={() => {
                                                                     if (token) {
-                                                                        request(`/api/ads/${row.id}`, {
+                                                                        request(`/api/ads/${row._id}`, {
                                                                             method: 'PUT',
                                                                             body: JSON.stringify({status: 'sold'}),
                                                                             headers: {
@@ -194,7 +193,7 @@ export const Profile: React.FC<ProfileProps> = (props): JSX.Element => {
                                                                 color='primary'
                                                                 onClick={() => {
                                                                     if (token) {
-                                                                        request(`/api/ads/${row.id}`, {
+                                                                        request(`/api/ads/${row._id}`, {
                                                                             method: 'PUT',
                                                                             body: JSON.stringify({status: 'closed'}),
                                                                             headers: {

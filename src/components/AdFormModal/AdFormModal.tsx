@@ -3,7 +3,7 @@ import './AdFormModal.scss';
 import { Button, CircularProgress, IconButton, InputBase } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import { app } from '../../firebase';
-import { validateAd } from '../../utils';
+import { validateAd } from '../../utils/validateAd';
 import { Fields } from '../../interfaces';
 import PicSelect from '../PicUpload/PicSelect';
 import { AuthContext } from '../../contexts/auth-context';
@@ -43,11 +43,6 @@ const AdFormModal: React.FC<AdFormModalProps> = (props): JSX.Element => {
                 method: 'POST', body: JSON.stringify({
                     ...fields,
                     picture: fileUrl,
-                    date: {
-                        seconds: new Date().getTime() / 1000,
-                        nanoseconds: 0,
-                    },
-                    status: 'active',
                 }), headers: {'Content-Type': 'application/json', 'authorization': token}
             }).then(() => {
                 props.handleClose();

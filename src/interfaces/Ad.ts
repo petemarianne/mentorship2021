@@ -1,17 +1,15 @@
-import { NumericDate } from './NumericDate';
-
 export interface Ad {
-    id: string,
+    _id: string,
     title: string,
     description: string,
     city: string,
     country: string,
-    date: NumericDate,
+    date: Date,
     picture: string,
     sellerID: string,
     status: string,
     price: number,
     docID?: string,
-    saleDate?: NumericDate,
-    closingDate?: NumericDate,
+    saleDate?: Date,
+    closingDate?: Date,
 }

@@ -4,7 +4,6 @@ import { CircularProgress } from '@material-ui/core';
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 import { Link } from 'react-router-dom';
-import { toDate } from '../../utils';
 import Filter from '../../components/Filter/Filter';
 import { FilterContext } from '../../contexts/filter-context';
 import { useScreenSize } from '../../hooks';
@@ -27,7 +26,7 @@ export const Main: React.FC = (): JSX.Element => {
         if (index < adsData.length && index >= (page - 1) * 10 && index < page * 10) {
             return (
                 <Link
-                    to={`/ad${item.id.substring(2)}`}
+                    to={`/ad${item._id}`}
                     style={{ textDecoration: 'none', color: 'black'}}
                     key={index}
                     className={loading ? 'ad-wrapper none' : 'ad-wrapper'}
@@ -39,7 +38,7 @@ export const Main: React.FC = (): JSX.Element => {
                         <div className='price'>{item.price}$</div>
                         <div className='location-date-wrapper'>
                             <div>{item.city}, {item.country}</div>
-                            <div>{toDate(item.date).toLocaleString('default', {day: 'numeric', month: 'short', hour: 'numeric', minute: 'numeric'}).toLowerCase()}</div>
+                            <div>{new Date(item.date).toLocaleString('default', {day: 'numeric', month: 'short', hour: 'numeric', minute: 'numeric'}).toLowerCase()}</div>
                         </div>
                     </div>
                 </Link>
@@ -88,6 +87,7 @@ export const Main: React.FC = (): JSX.Element => {
         } catch (e) {
             console.log('Something went wrong')
         }
+        //console.log(adsData[0]._id)
     }, [filter]);
 
     return (

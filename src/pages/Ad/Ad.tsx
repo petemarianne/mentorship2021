@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Button, Modal } from '@material-ui/core';
 import './Ad.scss';
-import { toDate } from '../../utils';
 import { useScreenSize } from '../../hooks';
 import { Link, useParams } from 'react-router-dom';
 import { User, Ad as AdInterface } from '../../interfaces';
@@ -10,15 +9,12 @@ import { AuthContext } from '../../contexts/auth-context';
 export const Ad: React.FC = (): JSX.Element => {
     const {desktop, tablet, mobile} = useScreenSize();
     const [ad, setAd] = useState<AdInterface>({
-        id: '',
+        _id: '',
         title: '',
         description: '',
         city: '',
         country: '',
-        date: {
-            seconds: 0,
-            nanoseconds: 0
-        },
+        date: new Date,
         picture: '',
         sellerID: '',
         status: '',
@@ -64,10 +60,10 @@ export const Ad: React.FC = (): JSX.Element => {
         setOpen(false);
     };
 
-    const pictureJSX = <div className='pic-wrapper' onClick={handleOpen}><img src={ad.picture} alt={'ad'}/></div>;
+    const pictureJSX = <div className='pic-wrapper' onClick={handleOpen}><img src={ad.picture} alt='ad'/></div>;
 
     const sellerInfoJSX =
-            <Link className='seller-info-wrapper' to={ad.sellerID === sellerID ? '/myprofile' : `/profile${ad.sellerID.substring(6)}`} style={{ color: 'black', textDecoration: 'none' }}>
+            <Link className='seller-info-wrapper' to={ad.sellerID === sellerID ? '/myprofile' : `/profile${ad.sellerID}`} style={{ color: 'black', textDecoration: 'none' }}>
                 <div className='avatar-wrapper'><img src={user.avatar} alt='User avatar'/></div>
                 <div className='info-wrapper'>
                     <div className='username'>{user.name}</div>
@@ -96,7 +92,7 @@ export const Ad: React.FC = (): JSX.Element => {
                             <div className='breed'>{ad.title}</div>
                             <div className='location'>{ad.city}, {ad.country}</div>
                             <div className='price'>{ad.price}$</div>
-                            <div className='date'>published on {toDate(ad.date).toLocaleString('default', {day: 'numeric', month: 'long', year: 'numeric', hour: 'numeric', minute: 'numeric'})}</div>
+                            <div className='date'>published on {new Date(ad.date).toLocaleString('default', {day: 'numeric', month: 'long', year: 'numeric', hour: 'numeric', minute: 'numeric'})}</div>
                         </div>
                         <div className='buttons-seller-info-wrapper'>
                             {buttonsJSX}
@@ -123,7 +119,7 @@ export const Ad: React.FC = (): JSX.Element => {
                 <div className='ad-page-tablet-wrapper'>
                     <div className='pic-wrapper-wrapper'>{pictureJSX}</div>
                     <div className='info-wrapper'>
-                        <div className='date'>{toDate(ad.date).toLocaleString('default', {day: 'numeric', month: 'long', year: 'numeric', hour: 'numeric', minute: 'numeric'})}</div>
+                        <div className='date'>{new Date(ad.date).toLocaleString('default', {day: 'numeric', month: 'long', year: 'numeric', hour: 'numeric', minute: 'numeric'})}</div>
                         <div className='breed-location-price-buttons-wrapper'>
                             <div className='breed-location-price-wrapper'>
                                 <div className='breed'>{ad.title}</div>
@@ -144,7 +140,7 @@ export const Ad: React.FC = (): JSX.Element => {
                 <div className='ad-page-mobile-wrapper'>
                     <div className='pic-wrapper-wrapper'>{pictureJSX}</div>
                     <div className='info-wrapper'>
-                        <div className='date'>{toDate(ad.date).toLocaleString('default', {day: 'numeric', month: 'long', year: 'numeric', hour: 'numeric', minute: 'numeric'})}</div>
+                        <div className='date'>{new Date(ad.date).toLocaleString('default', {day: 'numeric', month: 'long', year: 'numeric', hour: 'numeric', minute: 'numeric'})}</div>
                         <div className='breed-location-price-wrapper'>
                             <div className='breed-location-wrapper'>
                                 <div className='breed'>{ad.title}</div>

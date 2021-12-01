@@ -1,5 +1,3 @@
-import { NumericDate } from './NumericDate';
-
 export interface User {
     avatar: string,
     date: Date,

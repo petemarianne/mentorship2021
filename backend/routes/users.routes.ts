@@ -5,7 +5,7 @@ const usersRouter = Router();
 
 usersRouter.get('/users/:id', async (req, res) => {
     try {
-        const user = await User.findOne({id: req.params.id});
+        const user = await User.findOne({_id: req.params.id});
         if (!user) {
             return res.status(404);
         }

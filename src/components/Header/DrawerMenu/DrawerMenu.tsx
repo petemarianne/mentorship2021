@@ -47,7 +47,7 @@ const DrawerMenu: React.FC<DrawerMenuProps> = (props): JSX.Element => {
                     {sellerID ?
                         <>
                             <Divider className='drawer-divider'/>
-                            <Button className='my-account-button' variant='contained' color='secondary' component={Link} to={'/profile'}>My profile</Button>
+                            <Button className='my-account-button' variant='contained' color='secondary' component={Link} to={'/myprofile'} onClick={props.closeMenu}>My profile</Button>
                             <Divider style={{backgroundColor: 'transparent'}} />
                             <Button className='logout-button' variant='contained' color='secondary' onClick={() =>{
                                 logout();
