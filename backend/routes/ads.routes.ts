@@ -54,7 +54,16 @@ adsRouter.post('/ads', async (req, res) => {
 
             await ad.save();
 
-            return res.status(201);
+            return res.status(201).json({
+                title: req.body.title,
+                country: req.body.country,
+                city: req.body.city,
+                description: req.body.description,
+                price: req.body.price,
+                date: Date.now(),
+                status: 'active',
+                sellerID: parsedToken.userID
+            });
         } catch (e) {
             return res.status(401).send('Invalid token');
         }
