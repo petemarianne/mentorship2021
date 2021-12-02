@@ -14,7 +14,7 @@ import {
 import { useFetchError, useScreenSize } from '../../hooks';
 import { Archive, Unarchive, Edit } from '@material-ui/icons';
 import SellIcon from '@mui/icons-material/Sell';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { Ad,  User } from '../../interfaces';
 import { AuthContext } from '../../contexts/auth-context';
 import { useErrorHandler } from 'react-error-boundary';
@@ -163,7 +163,11 @@ export const Profile: React.FC<ProfileProps> = (props): JSX.Element => {
                                                 : null
                                             }
                                         </TableCell>
-                                        <TableCell size='medium' align='center' style={{padding: '5px'}}>{row.title}</TableCell>
+                                        <TableCell size='medium' align='center' style={{padding: '5px'}}>
+                                            <Link to={`/ad${row._id}`} style={{ textDecoration: 'none', color: 'black'}}>
+                                                {row.title}
+                                            </Link>
+                                        </TableCell>
                                         {dateCell(row.date)}
                                         {dateCell(row.saleDate)}
                                         {dateCell(row.closingDate)}
