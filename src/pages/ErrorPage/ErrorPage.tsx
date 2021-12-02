@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './ErrorPage.scss';
 import logo from '../../assets/images/logo.svg';
 import { Link } from 'react-router-dom';
@@ -12,6 +12,12 @@ interface ErrorPageProps {
 export const ErrorPage: React.FC<ErrorPageProps> = (props): JSX.Element => {
     const pathname = useLocation().pathname;
 
+    useEffect(() => {
+        if (props.is401) {
+            setTimeout(() => window.location.href = '/', 5000);
+        }
+    });
+
     return (
         <>
             <div className='logo404-wrapper'>
@@ -23,7 +29,7 @@ export const ErrorPage: React.FC<ErrorPageProps> = (props): JSX.Element => {
                 <>
                     <div className='message-wrapper'>
                         <div>Oops, seems like this action is forbidden for you now because your session is over!</div>
-                        <div>Please, refresh the page.</div>
+                        <div>In 5 seconds you'll be redirected to the home page...</div>
                     </div>
                     <div className='button-wrapper' />
                 </>

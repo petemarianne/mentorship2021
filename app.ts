@@ -6,6 +6,7 @@ import authRouter from './backend/routes/auth.routes';
 import { JwtPayload } from 'jsonwebtoken';
 import { MyOptionsJson } from "body-parser";
 import path from 'path';
+import mongoose from 'mongoose';
 
 const app = express();
 
@@ -43,8 +44,9 @@ if (process.env.NODE_ENV === 'production') {
 
 const PORT = config.get('port') || 3000;
 
-const start = () => {
+const start = async () => {
     try {
+        await mongoose.connect(config.get('mongoUri'));
         app.listen(PORT, () => console.log(`App has been started on port ${PORT}...`));
     } catch (e) {
         console.log('Server Error');
