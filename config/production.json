@@ -1,4 +1,5 @@
 {
   "port": 2300,
-  "jwtSecret": "dog shop by ppiatrovich"
+  "jwtSecret": "dog shop by ppiatrovich",
+  "mongoUri": "mongodb+srv://ppiatrovich:kuvhy4-jydTok-tyxxed@dogshop.fdwfw.mongodb.net/DogShop?retryWrites=true&w=majority"
 }
