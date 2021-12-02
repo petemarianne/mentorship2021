@@ -1,23 +1,32 @@
 import { Router } from 'express';
 import { filterAds } from '../utils/filterAds';
 import { comparator } from '../utils/comparatorAds';
-import jsonwebtoken, { UserIDJwtPayload } from 'jsonwebtoken';
+import jsonwebtoken, { JwtPayload, UserIDJwtPayload } from 'jsonwebtoken';
 import config from 'config';
 import Ad from '../models/Ad';
 import User from '../models/User';
 
 const adsRouter = Router();
 
+declare module 'jsonwebtoken' {
+    export interface UserIDJwtPayload extends JwtPayload {
+        userID: string
+    }
+}
+
 adsRouter.get('/ads', async (req, res) => {
     try {
         if (req.query.sellerID) {
-            const ads = await Ad.find({sellerID: req.query.sellerID});
-            return res.status(200).json(ads);
+            Ad.find({sellerID: req.query.sellerID}, (err, ads) => {
+                const filteredAds = ads.sort((item1, item2) => comparator(item1, item2, 'dateDown'));
+                return res.status(200).json(filteredAds);
+            });
+        } else {
+            Ad.find({}, (err, ads) => {
+                const filteredAds = ads.filter(item => filterAds(item, req.query)).sort((item1, item2) => comparator(item1, item2, req.query.sort));
+                return res.status(200).json(filteredAds);
+            });
         }
-        Ad.find({}, (err, ads) => {
-            const filteredAds = ads.filter(item => filterAds(item, req.query)).sort((item1, item2) => comparator(item1, item2, req.query.sort));
-            return res.status(200).json([...filteredAds]);
-        });
     } catch (e) {
         return res.status(500);
     }
@@ -86,37 +95,43 @@ adsRouter.put('/ads/:id', async (req, res) => {
             if (ad.sellerID.toString() !== parsedToken.userID) {
                 return res.status(403).send('Invalid token');
             }
-            switch (req.body.status) {
-                case 'closed':
-                    Ad.findByIdAndUpdate({_id: req.params.id}, {
-                        status: 'closed',
-                        saleDate: null,
-                        closingDate: Date.now()
-                    })
-                        .then(() => Ad.findOne({_id: req.params.id}))
-                        .then(() => res.status(200).json({status: 'closed'}));
-                    break;
-                case 'active':
-                    Ad.findByIdAndUpdate({_id: req.params.id}, {
-                        status: 'active',
-                        saleDate: null,
-                        closingDate: null
-                    })
-                        .then(() => Ad.findOne({_id: req.params.id}))
-                        .then(() => res.status(200).json({status: 'active'}));
-                    break;
-                case 'sold':
-                    Ad.findByIdAndUpdate({_id: req.params.id}, {
-                        status: 'sold',
-                        saleDate: Date.now(),
-                        closingDate: null,
-                    })
-                        .then(() => Ad.findOne({_id: req.params.id}))
-                        .then(() =>  res.status(200).json({status: 'sold'}));
-                    break;
-                default:
-                    return res.status(500);
+            if (req.body.status) {
+                switch (req.body.status) {
+                    case 'closed':
+                        Ad.findByIdAndUpdate({_id: req.params.id}, {
+                            status: 'closed',
+                            saleDate: null,
+                            closingDate: Date.now()
+                        })
+                            .then(() => Ad.findOne({_id: req.params.id}))
+                            .then(() => res.status(200).json({status: 'closed'}));
+                        break;
+                    case 'active':
+                        Ad.findByIdAndUpdate({_id: req.params.id}, {
+                            status: 'active',
+                            date: Date.now(),
+                            saleDate: null,
+                            closingDate: null
+                        })
+                            .then(() => Ad.findOne({_id: req.params.id}))
+                            .then(() => res.status(200).json({status: 'active'}));
+                        break;
+                    case 'sold':
+                        Ad.findByIdAndUpdate({_id: req.params.id}, {
+                            status: 'sold',
+                            saleDate: Date.now(),
+                            closingDate: null,
+                        })
+                            .then(() => Ad.findOne({_id: req.params.id}))
+                            .then(() => res.status(200).json({status: 'sold'}));
+                        break;
+                    default:
+                        return res.status(500);
+                }
             }
+            Ad.findByIdAndUpdate({_id: req.params.id}, {...req.body, date: Date.now()})
+                .then(() => Ad.findOne({_id: req.params.id}))
+                .then(() => res.status(200).json({...req.body, id: req.params.id}));
         } catch (e) {
             return res.status(401).send('Invalid token');
         }

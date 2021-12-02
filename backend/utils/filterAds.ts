@@ -6,7 +6,7 @@ export const filterAds = (item: Ad, filter: any) => {
     }
     let result = true;
     if (filter.breed !== '') {
-        if (item.title.toLowerCase().indexOf(filter.breed.toLowerCase()) === -1 && item.description.toLowerCase().indexOf(filter.breed.toLowerCase()) === -1) {
+        if (item.title.toLowerCase().indexOf(filter.breed?.toLowerCase()) === -1 && item.description.toLowerCase().indexOf(filter.breed?.toLowerCase()) === -1) {
             return false;
         } else {
             result = !!(item.title.toLowerCase().indexOf(filter.breed.toLowerCase()) || item.description.toLowerCase().indexOf(filter.breed.toLowerCase()));

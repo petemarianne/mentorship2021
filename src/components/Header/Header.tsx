@@ -83,7 +83,7 @@ const Header: React.FC = (): JSX.Element => {
         if (sellerID && token) {
             fetch(`api/users/${sellerID}`).then(response => response.json()).then(data => setLoggedInUsersAvatar(data.avatar));
         }
-    }, [sellerID, token]);
+    }, [sellerID, token, open]);
 
     return (
         <AppBar color='inherit' position='static' className='header-wrapper' elevation={0}>

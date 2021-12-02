@@ -1,13 +1,24 @@
 import React, { useContext, useEffect, useState } from 'react';
 import './Profile.scss';
-import { IconButton, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow } from '@material-ui/core';
+import {
+    IconButton,
+    Modal,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TablePagination,
+    TableRow
+} from '@material-ui/core';
 import { useFetchError, useScreenSize } from '../../hooks';
-import { Archive, Unarchive } from '@material-ui/icons';
+import { Archive, Unarchive, Edit } from '@material-ui/icons';
 import SellIcon from '@mui/icons-material/Sell';
 import { useParams } from 'react-router-dom';
 import { Ad,  User } from '../../interfaces';
 import { AuthContext } from '../../contexts/auth-context';
 import { useErrorHandler } from 'react-error-boundary';
+import AdFormModal from '../../components/AdFormModal/AdFormModal';
 
 interface ProfileProps {
     myProfile?: boolean,
@@ -33,6 +44,8 @@ export const Profile: React.FC<ProfileProps> = (props): JSX.Element => {
     const { id } = useParams<{id: string}>();
     const [rerender, setRerender] = useState(0);
     const [page, setPage] = useState<number>(0);
+    const [open, setOpen] = useState<boolean>(false);
+    const [adToEditID, setAdToEditID] = useState<string>('');
 
     const { sellerID, token } = useContext(AuthContext);
 
@@ -43,7 +56,7 @@ export const Profile: React.FC<ProfileProps> = (props): JSX.Element => {
             return fetch(`api/ads?sellerID=${data.id}`);
         }).then(response => response.json()).then(data => setAdsData(data));
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [rerender, sellerID]);
+    }, [rerender, sellerID, open]);
 
     const {desktop} = useScreenSize();
 
@@ -52,7 +65,7 @@ export const Profile: React.FC<ProfileProps> = (props): JSX.Element => {
 
     const columns: Column[] = [
         { id: 'title', label: 'Title', minWidth: 50, align: 'center' },
-        { id: 'publication-date', label: 'Publication date', minWidth: 50, align: 'center'},
+        { id: 'publication-date', label: 'Last edit date', minWidth: 50, align: 'center'},
         { id: 'sale-date', label: 'Sale date', minWidth: 50, align: 'center'},
         { id: 'closing-date', label: 'Closing date', minWidth: 50, align: 'center'},
         { id: 'status', label: 'Status', minWidth: 40, align: 'center'},
@@ -60,6 +73,7 @@ export const Profile: React.FC<ProfileProps> = (props): JSX.Element => {
     ];
 
     if (props.myProfile) {
+        columns.unshift({id: 'edit', label: 'Edit', minWidth: 10, align: 'center'});
         columns.push({ id: 'action', label: 'Action', minWidth: 80, align: 'center'});
     }
 
@@ -134,7 +148,22 @@ export const Profile: React.FC<ProfileProps> = (props): JSX.Element => {
                             adsData.slice(page * 5, page * 5 + 5).map((row) => {
                                 return (
                                     <TableRow role='checkbox' tabIndex={-1} key={row._id}>
-                                        <TableCell size='medium' align='center'>{row.title}</TableCell>
+                                        <TableCell size='medium' align='center'>
+                                            {props.myProfile && row.status !== 'sold' ?
+                                                <IconButton
+                                                    aria-label='lose'
+                                                    size='small'
+                                                    color='primary'
+                                                    onClick={() => {
+                                                        setAdToEditID(row._id);
+                                                        setOpen(true);
+                                                    }}>
+                                                    <Edit fontSize='small'/>
+                                                </IconButton>
+                                                : null
+                                            }
+                                        </TableCell>
+                                        <TableCell size='medium' align='center' style={{padding: '5px'}}>{row.title}</TableCell>
                                         {dateCell(row.date)}
                                         {dateCell(row.saleDate)}
                                         {dateCell(row.closingDate)}
@@ -227,6 +256,18 @@ export const Profile: React.FC<ProfileProps> = (props): JSX.Element => {
                 onPageChange={handleChangePage}
                 className='table-pagination'
             />
+            {props.myProfile ?
+                <Modal
+                    open={open}
+                    onClose={() => {setOpen(false)}}
+                    aria-labelledby='simple-modal-title'
+                    aria-describedby='simple-modal-description'
+                    className='modal'>
+                    <div className='modal-content'>
+                        <AdFormModal handleClose={() => {setOpen(false)}} adToEditID={adToEditID}/>
+                    </div>
+                </Modal>
+            : null}
         </div>
     );
 };
