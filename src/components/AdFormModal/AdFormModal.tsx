@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import './AdFormModal.scss';
 import { Button, CircularProgress, IconButton, InputBase } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
@@ -11,13 +11,15 @@ import { useFetchError } from '../../hooks';
 import { useErrorHandler } from 'react-error-boundary';
 
 interface AdFormModalProps {
-    handleClose: () => void
+    handleClose: () => void,
+    adToEditID?: string
 };
 
 const AdFormModal: React.FC<AdFormModalProps> = (props): JSX.Element => {
     const [loading, setLoading] = useState<boolean>(false);
     const [validate, setValidate] = useState<boolean>(true);
     const [file, setFile] = useState<File>();
+    const [fileName, setFileName] = useState<string>('');
     const [fields, setFields] = useState<Fields>(
         {
             title: '',
@@ -26,12 +28,52 @@ const AdFormModal: React.FC<AdFormModalProps> = (props): JSX.Element => {
             description: '',
             price: '',
         }
-    )
+    );
 
     const {token} = useContext(AuthContext);
 
+    useEffect(() => {
+        if (props.adToEditID) {
+            fetch(`api/ads/${props.adToEditID}`).then(response => response.json()).then((data) => {
+                setFields({
+                    title: data.title,
+                    country: data.country,
+                    city: data.city,
+                    description: data.description,
+                    price: data.price,
+                })
+                setFileName(data.picture.substring(73).substring(0, data.picture.substring(73).search(/\?alt/i)));
+            });
+        }
+    }, []);
+
     const {request, error} = useFetchError();
     useErrorHandler(error)
+
+    const edit = async (): Promise<void> => {
+        const storageRef = app.storage().ref();
+        if (file && token) {
+            const fileRef = storageRef.child(file.name);
+            await fileRef.put(file);
+            const fileUrl: string = await fileRef.getDownloadURL();
+            request(`/api/ads/${props.adToEditID}`, {
+                method: 'PUT', body: JSON.stringify({
+                    ...fields,
+                    picture: fileUrl,
+                }), headers: {'Content-Type': 'application/json', 'authorization': token}
+            }).then(() => {
+                props.handleClose();
+            });
+        } else if (token) {
+            request(`/api/ads/${props.adToEditID}`, {
+                method: 'PUT', body: JSON.stringify({
+                    ...fields
+                }), headers: {'Content-Type': 'application/json', 'authorization': token}
+            }).then(() => {
+                props.handleClose();
+            });
+        }
+    };
 
     const publish = async (): Promise<void> => {
         const storageRef = app.storage().ref();
@@ -77,12 +119,20 @@ const AdFormModal: React.FC<AdFormModalProps> = (props): JSX.Element => {
                     <CloseIcon fontSize='medium'/>
                 </IconButton>
             </div>
-            <div className='modal-header'>NEW AD FORM</div>
+            <div className='modal-header'>{props.adToEditID ? 'EDIT YOUR AD' : 'NEW AD FORM'}</div>
             <form onSubmit={(event) => {
                 event.preventDefault();
-                if (validateAd(file, fields)) {
+                if (validateAd(file, fields, !!props.adToEditID)) {
                     setLoading(true);
-                    publish().then(() => {setLoading(false)});
+                    if (props.adToEditID) {
+                        edit().then(() => {
+                            setLoading(false)
+                        });
+                    } else {
+                        publish().then(() => {
+                            setLoading(false)
+                        });
+                    }
                 } else {
                     setValidate(false)
                 }
@@ -123,10 +173,11 @@ const AdFormModal: React.FC<AdFormModalProps> = (props): JSX.Element => {
                             color='primary'
                             data-testid='publish-button'
                         >
-                            {!loading ? 'Publish' : <CircularProgress color='inherit' size='25px' data-testid='loading'/>}
+                            {!loading ? props.adToEditID ? 'Edit' : 'Publish' : <CircularProgress color='inherit' size='25px' data-testid='loading'/>}
                         </Button>
                     </div>
-                    <PicSelect file={file} onFileSelect={setFile} />
+                    {fileName ? <PicSelect file={file} onFileSelect={setFile} fileName={fileName}/> : null}
+                    {!fileName ? <PicSelect file={file} onFileSelect={setFile} /> : null}
                 </div>
             </form>
         </div>

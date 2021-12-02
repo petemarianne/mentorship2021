@@ -3,18 +3,11 @@ import config from 'config';
 import adsRouter from './backend/routes/ads.routes';
 import usersRouter from './backend/routes/users.routes';
 import authRouter from './backend/routes/auth.routes';
-import { JwtPayload } from 'jsonwebtoken';
 import { MyOptionsJson } from "body-parser";
 import path from 'path';
 import mongoose from 'mongoose';
 
 const app = express();
-
-declare module 'jsonwebtoken' {
-    export interface UserIDJwtPayload extends JwtPayload {
-        userID: string
-    }
-}
 
 declare module 'body-parser' {
     export interface MyOptionsJson extends OptionsJson {

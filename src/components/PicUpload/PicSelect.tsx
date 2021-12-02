@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button } from '@material-ui/core';
 
 interface PicSelectProps {
     file?: File,
-    onFileSelect: (file: File) => void
+    onFileSelect: (file: File) => void,
+    fileName?: string
 };
 
 const PicSelect: React.FC<PicSelectProps> = (props): JSX.Element => {
@@ -37,10 +38,16 @@ const PicSelect: React.FC<PicSelectProps> = (props): JSX.Element => {
         }
     };
 
+    useEffect(() => {
+        if (props.fileName) {
+            setSelected(true);
+        }
+    },[]);
+
     const uploadedJSX =
         <>
             <div>Uploaded!</div>
-            <div className='file-name'>{props.file?.name}</div>
+            <div className='file-name'>{props.fileName ? props.fileName : props.file?.name}</div>
             <Button variant='contained' color='primary' component='label' className='re-upload-file-button'>
                 Upload Another File
                 <input data-testid='upload-another-file' type='file' onChange={onFileChange} hidden/>
