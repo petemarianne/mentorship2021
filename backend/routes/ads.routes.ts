@@ -82,28 +82,28 @@ adsRouter.put('/ads/:id', async (req, res) => {
                     Ad.findByIdAndUpdate({_id: req.params.id}, {
                         status: 'closed',
                         saleDate: null,
-                        closingDate: Date.now(),
-                    }).then(() => {Ad.findOne({_id: req.params.id})}).then(() => {
-                        return res.status(200).json({status: 'closed'});
-                    });
+                        closingDate: Date.now()
+                    })
+                        .then(() => Ad.findOne({_id: req.params.id}))
+                        .then(() => res.status(200).json({status: 'closed'}));
                     break;
                 case 'active':
                     Ad.findByIdAndUpdate({_id: req.params.id}, {
                         status: 'active',
                         saleDate: null,
                         closingDate: null
-                    }).then(() => {Ad.findOne({_id: req.params.id})}).then(() => {
-                        return res.status(200).json({status: 'active'});
-                    });
+                    })
+                        .then(() => Ad.findOne({_id: req.params.id}))
+                        .then(() => res.status(200).json({status: 'active'}));
                     break;
                 case 'sold':
                     Ad.findByIdAndUpdate({_id: req.params.id}, {
                         status: 'sold',
                         saleDate: Date.now(),
                         closingDate: null,
-                    }).then(() => {Ad.findOne({_id: req.params.id})}).then(() => {
-                        return res.status(200).json({status: 'sold'});
-                    });
+                    })
+                        .then(() => Ad.findOne({_id: req.params.id}))
+                        .then(() =>  res.status(200).json({status: 'sold'}));
                     break;
                 default:
                     return res.status(500);
