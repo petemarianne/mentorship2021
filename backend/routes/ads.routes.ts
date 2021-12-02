@@ -128,10 +128,11 @@ adsRouter.put('/ads/:id', async (req, res) => {
                     default:
                         return res.status(500);
                 }
+            } else {
+                Ad.findByIdAndUpdate({_id: req.params.id}, {...req.body, date: Date.now()})
+                    .then(() => Ad.findOne({_id: req.params.id}))
+                    .then(() => res.status(200).json({...req.body, id: req.params.id}));
             }
-            Ad.findByIdAndUpdate({_id: req.params.id}, {...req.body, date: Date.now()})
-                .then(() => Ad.findOne({_id: req.params.id}))
-                .then(() => res.status(200).json({...req.body, id: req.params.id}));
         } catch (e) {
             return res.status(401).send('Invalid token');
         }
