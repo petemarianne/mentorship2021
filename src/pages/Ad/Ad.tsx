@@ -74,12 +74,12 @@ export const Ad: React.FC = (): JSX.Element => {
 
     const buttonsJSX =
         <>
-            <div className='call-button-wrapper'>
+            <a className='call-button-wrapper' href={`tel:${user.phone.substring(1)}`} style={{textDecoration: 'none'}}>
                 <Button color='primary' variant='contained' className='call-button'>Call</Button>
-            </div>
-            <div className='email-button-wrapper'>
+            </a>
+            <a className='email-button-wrapper' href={`mailto:${user.email}`} style={{textDecoration: 'none'}}>
                 <Button color='primary' variant='outlined' className='email-button'>Email</Button>
-            </div>
+            </a>
         </>;
 
     return (

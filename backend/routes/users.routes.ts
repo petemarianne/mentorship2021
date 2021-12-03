@@ -31,7 +31,6 @@ usersRouter.put('/users/:id', async (req, res) => {
             return res.status(401).send('Access revoked!');
         }
         try {
-            console.log('...');
             const parsedToken = <UserIDJwtPayload>jsonwebtoken.verify(req.headers['authorization'], config.get('jwtSecret'));
             const user = await User.findOne({_id: req.params.id});
             if (!user) {

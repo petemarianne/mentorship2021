@@ -105,15 +105,18 @@ export const Profile: React.FC<ProfileProps> = (props): JSX.Element => {
                     <div>
                         <div className='name-edit-button'>
                             <div className='name'>{user.name}</div>
-                            <IconButton
-                                aria-label='lose'
-                                size='small'
-                                color='primary'
-                                className='edit-button'
-                                onClick={() => setOpenEditUser(true)}
-                            >
-                                <Edit fontSize='small'/>
-                            </IconButton>
+                            {props.myProfile ?
+                                <IconButton
+                                    aria-label='lose'
+                                    size='small'
+                                    color='primary'
+                                    className='edit-button'
+                                    onClick={() => setOpenEditUser(true)}
+                                >
+                                    <Edit fontSize='small'/>
+                                </IconButton>
+                                : null
+                            }
                         </div>
                         <div className='phone'>Phone number: {user.phone}</div>
                         <div className='email'>Email: {user.email}</div>
@@ -131,15 +134,18 @@ export const Profile: React.FC<ProfileProps> = (props): JSX.Element => {
                     <div className='avatar'><img src={user.avatar} alt='avatar'/></div>
                     <div className='name-edit-button'>
                         <div className='name'>{user.name}</div>
-                        <IconButton
-                            aria-label='lose'
-                            size='small'
-                            color='primary'
-                            className='edit-button'
-                            onClick={() => setOpenEditUser(true)}
-                        >
-                            <Edit fontSize='small'/>
-                        </IconButton>
+                        {props.myProfile ?
+                            <IconButton
+                                aria-label='lose'
+                                size='small'
+                                color='primary'
+                                className='edit-button'
+                                onClick={() => setOpenEditUser(true)}
+                            >
+                                <Edit fontSize='small'/>
+                            </IconButton>
+                            : null
+                        }
                     </div>
                     <div className='phone'>Phone number: {user.phone}</div>
                     <div className='email'>Email: {user.email}</div>
@@ -172,8 +178,8 @@ export const Profile: React.FC<ProfileProps> = (props): JSX.Element => {
                             adsData.slice(page * 5, page * 5 + 5).map((row) => {
                                 return (
                                     <TableRow role='checkbox' tabIndex={-1} key={row._id}>
-                                        <TableCell size='medium' align='center'>
-                                            {props.myProfile && row.status !== 'sold' ?
+                                        {props.myProfile && row.status !== 'sold' ?
+                                            <TableCell size='medium' align='center'>
                                                 <IconButton
                                                     aria-label='lose'
                                                     size='small'
@@ -184,9 +190,10 @@ export const Profile: React.FC<ProfileProps> = (props): JSX.Element => {
                                                     }}>
                                                     <Edit fontSize='small'/>
                                                 </IconButton>
-                                                : null
-                                            }
-                                        </TableCell>
+                                            </TableCell>
+                                            : null
+                                        }
+                                        {props.myProfile && row.status == 'sold' ? <TableCell size='medium' align='center' /> : null}
                                         <TableCell size='medium' align='center' style={{padding: '5px'}}>
                                             <Link to={`/ad${row._id}`} style={{ textDecoration: 'none', color: 'black'}}>
                                                 {row.title}
