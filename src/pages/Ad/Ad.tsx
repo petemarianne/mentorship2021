@@ -4,7 +4,7 @@ import './Ad.scss';
 import { useScreenSize } from '../../hooks';
 import { Link, useParams } from 'react-router-dom';
 import { User, Ad as AdInterface } from '../../interfaces';
-import { AuthContext } from '../../contexts/auth-context';
+import { AuthContext } from '../../contexts';
 
 export const Ad: React.FC = (): JSX.Element => {
     const {desktop, tablet, mobile} = useScreenSize();

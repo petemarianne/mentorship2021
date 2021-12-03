@@ -5,7 +5,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import './DrawerMenu.scss';
 import Filter from '../../Filter/Filter';
 import LoginOrRegisterModal from '../LoginOrRegisterModal/LoginOrRegisterModal';
-import { AuthContext } from '../../../contexts/auth-context';
+import { AuthContext } from '../../../contexts';
 
 interface DrawerMenuProps {
     avatar: string,

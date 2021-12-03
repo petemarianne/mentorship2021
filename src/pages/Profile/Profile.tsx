@@ -16,7 +16,7 @@ import { Archive, Unarchive, Edit } from '@material-ui/icons';
 import SellIcon from '@mui/icons-material/Sell';
 import { Link, useParams } from 'react-router-dom';
 import { Ad,  User } from '../../interfaces';
-import { AuthContext } from '../../contexts/auth-context';
+import { AuthContext } from '../../contexts';
 import { useErrorHandler } from 'react-error-boundary';
 import AdFormModal from '../../components/AdFormModal/AdFormModal';
 import Registration from '../../components/Header/LoginOrRegisterModal/Registration/Registration';

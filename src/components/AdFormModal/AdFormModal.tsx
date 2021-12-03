@@ -6,7 +6,7 @@ import { app } from '../../firebase';
 import { validateAd } from '../../utils/validateAd';
 import { Fields } from '../../interfaces';
 import PicSelect from '../PicUpload/PicSelect';
-import { AuthContext } from '../../contexts/auth-context';
+import { AuthContext } from '../../contexts';
 import { useFetchError } from '../../hooks';
 import { useErrorHandler } from 'react-error-boundary';
 

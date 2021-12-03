@@ -1,6 +1,6 @@
 import React, { FormEvent, useContext, useState } from 'react';
 import { InputBase, Button, CircularProgress } from '@material-ui/core';
-import { AuthContext } from '../../../../contexts/auth-context';
+import { AuthContext } from '../../../../contexts';
 
 interface RegistrationProps {
     onCloseModal: () => void,

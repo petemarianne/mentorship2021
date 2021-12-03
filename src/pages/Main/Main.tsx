@@ -5,10 +5,9 @@ import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 import { Link } from 'react-router-dom';
 import Filter from '../../components/Filter/Filter';
-import { FilterContext } from '../../contexts/filter-context';
+import { FilterContext, AuthContext } from '../../contexts';
 import { useScreenSize } from '../../hooks';
 import { Ad } from '../../interfaces';
-import { AuthContext } from '../../contexts/auth-context';
 
 export const Main: React.FC = (): JSX.Element => {
     const [adsData, setAdsData] = useState<Ad[]>([]);
