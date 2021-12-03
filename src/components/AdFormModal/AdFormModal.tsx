@@ -6,7 +6,7 @@ import { app } from '../../firebase';
 import { validateAd } from '../../utils/validateAd';
 import { Fields } from '../../interfaces';
 import PicSelect from '../PicUpload/PicSelect';
-import { AuthContext } from '../../contexts';
+import { AuthContext, RerenderContext } from '../../contexts';
 import { useFetchError } from '../../hooks';
 import { useErrorHandler } from 'react-error-boundary';
 
@@ -31,6 +31,7 @@ const AdFormModal: React.FC<AdFormModalProps> = (props): JSX.Element => {
     );
 
     const {token} = useContext(AuthContext);
+    const {setRerender} = useContext(RerenderContext);
 
     useEffect(() => {
         if (props.adToEditID && !file) {
@@ -90,6 +91,7 @@ const AdFormModal: React.FC<AdFormModalProps> = (props): JSX.Element => {
                     picture: fileUrl,
                 }), headers: {'Content-Type': 'application/json', 'authorization': token}
             }).then(() => {
+                setRerender(prevState => (!prevState));
                 props.handleClose();
             });
         }

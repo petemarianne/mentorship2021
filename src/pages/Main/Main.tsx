@@ -5,7 +5,7 @@ import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 import { Link } from 'react-router-dom';
 import Filter from '../../components/Filter/Filter';
-import { FilterContext, AuthContext } from '../../contexts';
+import { FilterContext, AuthContext, RerenderContext } from '../../contexts';
 import { useScreenSize } from '../../hooks';
 import { Ad } from '../../interfaces';
 
@@ -17,6 +17,7 @@ export const Main: React.FC = (): JSX.Element => {
     const {filter, setFilterState} = useContext(FilterContext);
 
     const {sellerID} = useContext(AuthContext);
+    const {rerender} = useContext(RerenderContext);
 
     const {desktop} = useScreenSize();
 
@@ -80,20 +81,15 @@ export const Main: React.FC = (): JSX.Element => {
     }, [setFilterState]);
 
     useEffect(() => {
-        try {
-            setLoading(true);
-            setPage(1);
-            fetch(`api/ads?breed=${filter.breed}&country=${filter.country}&city=${filter.city}&priceFrom=${filter.priceFrom}&priceTo=${filter.priceTo}&sort=${filter.sort}`).then(response => response.json()).then((data) => {
-                    setAdsData(data);
-                    setTimeout(() => {
-                        setLoading(false);
-                    }, 1300);
-                });
-        } catch (e) {
-            console.log('Something went wrong')
-        }
-        //console.log(adsData[0]._id)
-    }, [filter]);
+        setLoading(true);
+        setPage(1);
+        fetch(`api/ads?breed=${filter.breed}&country=${filter.country}&city=${filter.city}&priceFrom=${filter.priceFrom}&priceTo=${filter.priceTo}&sort=${filter.sort}`).then(response => response.json()).then((data) => {
+            setAdsData(data);
+            setTimeout(() => {
+                setLoading(false);
+                }, 1300);
+        });
+    }, [filter, rerender]);
 
     return (
         <>
