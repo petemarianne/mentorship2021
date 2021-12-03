@@ -193,6 +193,7 @@ export const Profile: React.FC<ProfileProps> = (props): JSX.Element => {
                                             </TableCell>
                                             : null
                                         }
+                                        {props.myProfile && row.status == 'sold' ? <TableCell size='medium' align='center' /> : null}
                                         <TableCell size='medium' align='center' style={{padding: '5px'}}>
                                             <Link to={`/ad${row._id}`} style={{ textDecoration: 'none', color: 'black'}}>
                                                 {row.title}
