@@ -245,7 +245,7 @@ const Registration: React.FC<RegistrationProps> = (props): JSX.Element => {
                 {validation.allFields === AllFieldsValidation.NotAllFieldsFilled ? <div className='validation-registration'>Fill in all the fields!</div> : null}
                 <div className='button-wrapper'>
                     <Button type='submit' className='button' variant='contained' color='primary'>
-                        {!loading ? 'Register' : <CircularProgress color='inherit' size='25px' data-testid='loading'/>}
+                        {!loading ? props.userData ? 'Edit' : 'Register' : <CircularProgress color='inherit' size='25px' data-testid='loading'/>}
                     </Button>
                 </div>
             </form>
