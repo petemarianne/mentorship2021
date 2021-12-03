@@ -206,74 +206,72 @@ export const Profile: React.FC<ProfileProps> = (props): JSX.Element => {
                                         <TableCell size='medium' align='center'>{row.price}</TableCell>
                                         {props.myProfile ?
                                             <TableCell size='medium' align='center'>
-                                                {row.status === 'closed' ?
-                                                    <IconButton
-                                                        aria-label='lose'
-                                                        size='small'
-                                                        color='primary'
-                                                        onClick={() => {
-                                                            if (token) {
-                                                                request(`/api/ads/${row._id}`, {
-                                                                    method: 'PUT',
-                                                                    body: JSON.stringify({status: 'active'}),
-                                                                    headers: {
-                                                                        'Content-Type': 'application/json',
-                                                                        'authorization': token
-                                                                    }
-                                                                }).then(() => {
-                                                                    setRerender(prevState => prevState + 1);
-                                                                });
-                                                            }
-                                                        }}
-                                                    >
-                                                        <Unarchive fontSize='small'/>
-                                                    </IconButton> :
-                                                    row.status === 'active' ?
-                                                        <>
-                                                            <IconButton
-                                                                aria-label='lose'
-                                                                size='small'
-                                                                color='primary'
-                                                                onClick={() => {
-                                                                    if (token) {
-                                                                        request(`/api/ads/${row._id}`, {
-                                                                            method: 'PUT',
-                                                                            body: JSON.stringify({status: 'sold'}),
-                                                                            headers: {
-                                                                                'Content-Type': 'application/json',
-                                                                                'authorization': token
-                                                                            }
-                                                                        }).then(() => {
-                                                                            setRerender(prevState => prevState + 1);
-                                                                        });
-                                                                    }
-                                                                }}
-                                                            >
-                                                                <SellIcon fontSize='small'/>
-                                                            </IconButton>
-                                                            <IconButton
-                                                                aria-label='lose'
-                                                                size='small'
-                                                                color='primary'
-                                                                onClick={() => {
-                                                                    if (token) {
-                                                                        request(`/api/ads/${row._id}`, {
-                                                                            method: 'PUT',
-                                                                            body: JSON.stringify({status: 'closed'}),
-                                                                            headers: {
-                                                                                'Content-Type': 'application/json',
-                                                                                'authorization': token
-                                                                            }
-                                                                        }).then(() => {
-                                                                            setRerender(prevState => prevState + 1);
-                                                                        });
-                                                                    }
-                                                                }}
-                                                            >
-                                                                <Archive fontSize='small'/>
-                                                            </IconButton>
-                                                        </> : null
-                                                }
+                                                <IconButton
+                                                    aria-label='lose'
+                                                    size='small'
+                                                    color='primary'
+                                                    disabled={row.status !== 'closed'}
+                                                    onClick={() => {
+                                                        if (token) {
+                                                            request(`/api/ads/${row._id}`, {
+                                                                method: 'PUT',
+                                                                body: JSON.stringify({status: 'active'}),
+                                                                headers: {
+                                                                    'Content-Type': 'application/json',
+                                                                    'authorization': token
+                                                                }
+                                                            }).then(() => {
+                                                                setRerender(prevState => prevState + 1);
+                                                            });
+                                                        }
+                                                    }}
+                                                >
+                                                    <Unarchive fontSize='small' color={row.status !== 'closed' ? 'disabled' : undefined}/>
+                                                </IconButton>
+                                                <IconButton
+                                                    aria-label='lose'
+                                                    size='small'
+                                                    color='primary'
+                                                    disabled={row.status !== 'active'}
+                                                    onClick={() => {
+                                                        if (token) {
+                                                            request(`/api/ads/${row._id}`, {
+                                                                method: 'PUT',
+                                                                body: JSON.stringify({status: 'sold'}),
+                                                                headers: {
+                                                                    'Content-Type': 'application/json',
+                                                                    'authorization': token
+                                                                }
+                                                            }).then(() => {
+                                                                setRerender(prevState => prevState + 1);
+                                                            });
+                                                        }
+                                                    }}
+                                                >
+                                                    <SellIcon fontSize='small' color={row.status !== 'active' ? 'disabled' : undefined}/>
+                                                </IconButton>
+                                                <IconButton
+                                                    aria-label='lose'
+                                                    size='small'
+                                                    color='primary'
+                                                    disabled={row.status !== 'active'}
+                                                    onClick={() => {
+                                                        if (token) {
+                                                            request(`/api/ads/${row._id}`, {
+                                                                method: 'PUT',
+                                                                body: JSON.stringify({status: 'closed'}),
+                                                                headers: {
+                                                                    'Content-Type': 'application/json',
+                                                                    'authorization': token
+                                                                }
+                                                            }).then(() => {
+                                                                setRerender(prevState => prevState + 1);
+                                                            });
+                                                        }
+                                                    }}
+                                                >
+                                                    <Archive fontSize='small' color={row.status !== 'active' ? 'disabled' : undefined}/>
+                                                </IconButton>
                                             </TableCell> : null
                                         }
                                     </TableRow>
