@@ -67,7 +67,7 @@ export const Profile: React.FC<ProfileProps> = (props): JSX.Element => {
 
     const columns: Column[] = [
         { id: 'title', label: 'Title', minWidth: 50, align: 'center' },
-        { id: 'publication-date', label: 'Last edit date', minWidth: 50, align: 'center'},
+        { id: 'publication-date', label: 'Publication date', minWidth: 50, align: 'center'},
         { id: 'sale-date', label: 'Sale date', minWidth: 50, align: 'center'},
         { id: 'closing-date', label: 'Closing date', minWidth: 50, align: 'center'},
         { id: 'status', label: 'Status', minWidth: 40, align: 'center'},
