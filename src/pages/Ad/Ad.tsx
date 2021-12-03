@@ -75,10 +75,10 @@ export const Ad: React.FC = (): JSX.Element => {
     const buttonsJSX =
         <>
             <div className='call-button-wrapper'>
-                <Button color='primary' variant='contained' className='call-button'>Call</Button>
+                <Button color='primary' variant='contained' className='call-button' onClick={() => window.open(`tel:${user.phone.substring(1)}`)}>Call</Button>
             </div>
             <div className='email-button-wrapper'>
-                <Button color='primary' variant='outlined' className='email-button'>Email</Button>
+                <Button color='primary' variant='outlined' className='email-button' onClick={() => window.open(`mailto:${user.email}`)}>Email</Button>
             </div>
         </>;
 
