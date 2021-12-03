@@ -8,6 +8,7 @@ import Filter from '../../components/Filter/Filter';
 import { FilterContext } from '../../contexts/filter-context';
 import { useScreenSize } from '../../hooks';
 import { Ad } from '../../interfaces';
+import { AuthContext } from '../../contexts/auth-context';
 
 export const Main: React.FC = (): JSX.Element => {
     const [adsData, setAdsData] = useState<Ad[]>([]);
@@ -15,6 +16,8 @@ export const Main: React.FC = (): JSX.Element => {
     const [page, setPage] = useState<number>(1);
 
     const {filter, setFilterState} = useContext(FilterContext);
+
+    const {sellerID} = useContext(AuthContext);
 
     const {desktop} = useScreenSize();
 
@@ -33,7 +36,10 @@ export const Main: React.FC = (): JSX.Element => {
                 >
                     <div className='pic-wrapper'><img src={item.picture} alt='dog'/></div>
                     <div className='info-wrapper'>
-                        <div className='breed'>{item.title}</div>
+                        <div className='breed-owner-wrapper'>
+                            <div className='breed'>{item.title}</div>
+                            {item.sellerID === sellerID ? <div className='owner'>owner</div> : null}
+                        </div>
                         <div className='description'>{item.description}</div>
                         <div className='price'>{item.price}$</div>
                         <div className='location-date-wrapper'>
