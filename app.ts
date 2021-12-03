@@ -6,8 +6,15 @@ import authRouter from './backend/routes/auth.routes';
 import { MyOptionsJson } from "body-parser";
 import path from 'path';
 import mongoose from 'mongoose';
+import { JwtPayload } from 'jsonwebtoken';
 
 const app = express();
+
+declare module 'jsonwebtoken' {
+    export interface UserIDJwtPayload extends JwtPayload {
+        userID: string
+    }
+}
 
 declare module 'body-parser' {
     export interface MyOptionsJson extends OptionsJson {

@@ -33,7 +33,7 @@ const AdFormModal: React.FC<AdFormModalProps> = (props): JSX.Element => {
     const {token} = useContext(AuthContext);
 
     useEffect(() => {
-        if (props.adToEditID) {
+        if (props.adToEditID && !file) {
             fetch(`api/ads/${props.adToEditID}`).then(response => response.json()).then((data) => {
                 setFields({
                     title: data.title,
@@ -45,7 +45,10 @@ const AdFormModal: React.FC<AdFormModalProps> = (props): JSX.Element => {
                 setFileName(data.picture.substring(73).substring(0, data.picture.substring(73).search(/\?alt/i)));
             });
         }
-    }, []);
+        if (file) {
+            setFileName(file.name);
+        }
+    }, [file]);
 
     const {request, error} = useFetchError();
     useErrorHandler(error)
