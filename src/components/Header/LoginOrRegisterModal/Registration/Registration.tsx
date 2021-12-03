@@ -35,7 +35,7 @@ const Registration: React.FC<RegistrationProps> = (props): JSX.Element => {
     });
     const [file, setFile] = useState<File>();
     const [loading, setLoading] = useState<boolean>(false);
-    const [fileName, setFileName] = useState<string | undefined>('');
+    const [fileName, setFileName] = useState<string>('');
     const [validation, setValidation] = useState<{
         email: boolean,
         password: boolean,
