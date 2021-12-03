@@ -16,7 +16,7 @@ import { Archive, Unarchive, Edit } from '@material-ui/icons';
 import SellIcon from '@mui/icons-material/Sell';
 import { Link, useParams } from 'react-router-dom';
 import { Ad,  User } from '../../interfaces';
-import { AuthContext } from '../../contexts';
+import { AuthContext, RerenderContext } from '../../contexts';
 import { useErrorHandler } from 'react-error-boundary';
 import AdFormModal from '../../components/AdFormModal/AdFormModal';
 import Registration from '../../components/Header/LoginOrRegisterModal/Registration/Registration';
@@ -43,13 +43,13 @@ export const Profile: React.FC<ProfileProps> = (props): JSX.Element => {
         phone: '',
     });
     const { id } = useParams<{id: string}>();
-    const [rerender, setRerender] = useState(0);
     const [page, setPage] = useState<number>(0);
     const [openEditAd, setOpenEditAd] = useState<boolean>(false);
     const [openEditUser, setOpenEditUser] = useState<boolean>(false);
     const [adToEditID, setAdToEditID] = useState<string>('');
 
     const { sellerID, token } = useContext(AuthContext);
+    const {rerender, setRerender} = useContext(RerenderContext);
 
     useEffect(() => {
         const userPromise = props.myProfile ? fetch(`api/users/${sellerID}`) : fetch(`api/users/${id}`);
@@ -221,7 +221,7 @@ export const Profile: React.FC<ProfileProps> = (props): JSX.Element => {
                                                                     'authorization': token
                                                                 }
                                                             }).then(() => {
-                                                                setRerender(prevState => prevState + 1);
+                                                                setRerender(prevState => !prevState);
                                                             });
                                                         }
                                                     }}
@@ -243,7 +243,7 @@ export const Profile: React.FC<ProfileProps> = (props): JSX.Element => {
                                                                     'authorization': token
                                                                 }
                                                             }).then(() => {
-                                                                setRerender(prevState => prevState + 1);
+                                                                setRerender(prevState => !prevState);
                                                             });
                                                         }
                                                     }}
@@ -265,7 +265,7 @@ export const Profile: React.FC<ProfileProps> = (props): JSX.Element => {
                                                                     'authorization': token
                                                                 }
                                                             }).then(() => {
-                                                                setRerender(prevState => prevState + 1);
+                                                                setRerender(prevState => !prevState);
                                                             });
                                                         }
                                                     }}
