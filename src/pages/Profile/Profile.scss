@@ -20,9 +20,16 @@
       }
     }
 
-    .name {
-      font-size: 36px;
-      margin-bottom: 25px;
+    .name-edit-button {
+      display: flex;
+
+      .name {
+        font-size: 36px;
+      }
+
+      .edit-button {
+        margin-left: 5px;
+      }
     }
 
     .phone,
@@ -30,6 +37,10 @@
       font-size: 16px;
       color: rgba(0, 0, 0, 0.51);
       margin-bottom: 5px;
+    }
+
+    .phone {
+      margin-top: 25px;
     }
 
     .date {
@@ -60,9 +71,18 @@
       }
     }
 
-    .name {
-      font-size: 36px;
-      text-align: center;
+    .name-edit-button {
+      display: flex;
+      justify-content: center;
+
+      .name {
+        font-size: 36px;
+        text-align: center;
+      }
+
+      .edit-button {
+        margin-left: 5px;
+      }
     }
 
     .phone,
@@ -108,5 +128,94 @@
   .table-button {
     height: 25px;
     width: 125px;
+  }
+}
+
+.modal-content {
+  height: auto;
+
+  .close-icon-button-wrapper {
+    display: flex;
+    justify-content: right;
+    padding: 0;
+    margin: -15px -15px 0 0;
+  }
+
+  .edit-profile {
+    text-align: center;
+    font-size: 22px;
+    color: #d27a3d;
+    margin-bottom: 25px;
+    margin-top: -10px;
+    font-weight: bold;
+  }
+
+  .label {
+    margin-left: 25px;
+    font-size: 18px;
+  }
+
+  .input {
+    border: 1px solid rgba(0, 0, 0, 0.51);
+    border-radius: 5px;
+    padding: 0 10px;
+    margin: 9px 25px 15px;
+  }
+
+  .validation {
+    font-size: 14px;
+    color: #d00000;
+    margin: -5px 25px;
+  }
+
+  .validation-registration {
+    font-size: 14px;
+    color: #d00000;
+    margin: -10px 25px 15px;
+  }
+
+  .input.validate {
+    border: 1px solid #d00000;
+  }
+
+  .button-wrapper {
+    display: flex;
+    justify-content: center;
+    margin: 40px 25px 10px;
+
+    .button {
+      width: 100%;
+    }
+  }
+
+  .drag-and-drop-wrapper {
+    border: #d27a3d 1px dashed;
+    margin: 20px 25px 15px 20px;
+    text-align: center;
+    color: #d27a3d;
+    padding: 35px 0;
+    font-size: 18px;
+
+    .upload-file-button {
+      font-size: 14px;
+      margin-top: 5px;
+      height: 30px;
+      width: 160px;
+    }
+
+    .file-name {
+      width: 200px;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      margin: 0 auto;
+      white-space: nowrap;
+    }
+
+    .re-upload-file-button {
+      font-size: 10px;
+      margin-top: 5px;
+      height: 25px;
+      width: 150px;
+    }
   }
 }

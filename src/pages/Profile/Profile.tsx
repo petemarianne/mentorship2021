@@ -19,6 +19,7 @@ import { Ad,  User } from '../../interfaces';
 import { AuthContext } from '../../contexts/auth-context';
 import { useErrorHandler } from 'react-error-boundary';
 import AdFormModal from '../../components/AdFormModal/AdFormModal';
+import Registration from '../../components/Header/LoginOrRegisterModal/Registration/Registration';
 
 interface ProfileProps {
     myProfile?: boolean,
@@ -44,7 +45,8 @@ export const Profile: React.FC<ProfileProps> = (props): JSX.Element => {
     const { id } = useParams<{id: string}>();
     const [rerender, setRerender] = useState(0);
     const [page, setPage] = useState<number>(0);
-    const [open, setOpen] = useState<boolean>(false);
+    const [openEditAd, setOpenEditAd] = useState<boolean>(false);
+    const [openEditUser, setOpenEditUser] = useState<boolean>(false);
     const [adToEditID, setAdToEditID] = useState<string>('');
 
     const { sellerID, token } = useContext(AuthContext);
@@ -56,7 +58,7 @@ export const Profile: React.FC<ProfileProps> = (props): JSX.Element => {
             return fetch(`api/ads?sellerID=${data.id}`);
         }).then(response => response.json()).then(data => setAdsData(data));
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [rerender, sellerID, open]);
+    }, [rerender, sellerID, openEditUser, openEditAd]);
 
     const {desktop} = useScreenSize();
 
@@ -101,7 +103,18 @@ export const Profile: React.FC<ProfileProps> = (props): JSX.Element => {
                 <div className='profile-info'>
                     <div className='avatar'><img src={user.avatar} alt='avatar'/></div>
                     <div>
-                        <div className='name'>{user.name}</div>
+                        <div className='name-edit-button'>
+                            <div className='name'>{user.name}</div>
+                            <IconButton
+                                aria-label='lose'
+                                size='small'
+                                color='primary'
+                                className='edit-button'
+                                onClick={() => setOpenEditUser(true)}
+                            >
+                                <Edit fontSize='small'/>
+                            </IconButton>
+                        </div>
                         <div className='phone'>Phone number: {user.phone}</div>
                         <div className='email'>Email: {user.email}</div>
                         <div className='date'>
@@ -116,7 +129,18 @@ export const Profile: React.FC<ProfileProps> = (props): JSX.Element => {
             {!desktop && (
                 <div className='profile-info-mobile'>
                     <div className='avatar'><img src={user.avatar} alt='avatar'/></div>
-                    <div className='name'>{user.name}</div>
+                    <div className='name-edit-button'>
+                        <div className='name'>{user.name}</div>
+                        <IconButton
+                            aria-label='lose'
+                            size='small'
+                            color='primary'
+                            className='edit-button'
+                            onClick={() => setOpenEditUser(true)}
+                        >
+                            <Edit fontSize='small'/>
+                        </IconButton>
+                    </div>
                     <div className='phone'>Phone number: {user.phone}</div>
                     <div className='email'>Email: {user.email}</div>
                     <div className='date'>Date of registration: {new Date(user.date).toLocaleString('default', {
@@ -156,7 +180,7 @@ export const Profile: React.FC<ProfileProps> = (props): JSX.Element => {
                                                     color='primary'
                                                     onClick={() => {
                                                         setAdToEditID(row._id);
-                                                        setOpen(true);
+                                                        setOpenEditAd(true);
                                                     }}>
                                                     <Edit fontSize='small'/>
                                                 </IconButton>
@@ -261,16 +285,28 @@ export const Profile: React.FC<ProfileProps> = (props): JSX.Element => {
                 className='table-pagination'
             />
             {props.myProfile ?
-                <Modal
-                    open={open}
-                    onClose={() => {setOpen(false)}}
-                    aria-labelledby='simple-modal-title'
-                    aria-describedby='simple-modal-description'
-                    className='modal'>
-                    <div className='modal-content'>
-                        <AdFormModal handleClose={() => {setOpen(false)}} adToEditID={adToEditID}/>
-                    </div>
-                </Modal>
+                <>
+                    <Modal
+                        open={openEditAd}
+                        onClose={() => {setOpenEditAd(false)}}
+                        aria-labelledby='simple-modal-title'
+                        aria-describedby='simple-modal-description'
+                        className='modal'>
+                        <div className='modal-content'>
+                            <AdFormModal handleClose={() => {setOpenEditAd(false)}} adToEditID={adToEditID}/>
+                        </div>
+                    </Modal>
+                    <Modal
+                        open={openEditUser}
+                        onClose={() => {setOpenEditUser(false)}}
+                        aria-labelledby='simple-modal-title'
+                        aria-describedby='simple-modal-description'
+                        className='modal'>
+                        <div className='modal-content'>
+                            <Registration onCloseModal={() => {setOpenEditUser(false)}} userData={user}/>
+                        </div>
+                    </Modal>
+                </>
             : null}
         </div>
     );

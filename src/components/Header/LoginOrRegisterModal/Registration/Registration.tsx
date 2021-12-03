@@ -1,11 +1,16 @@
-import React, { FormEvent, useContext, useState } from 'react';
-import { Button, CircularProgress, InputBase } from '@material-ui/core';
+import React, { useContext, useEffect, useState } from 'react';
+import { Button, CircularProgress, IconButton, InputBase } from '@material-ui/core';
 import PicSelect from '../../../PicUpload/PicSelect';
 import { app } from '../../../../firebase';
 import { AuthContext } from '../../../../contexts/auth-context';
+import CloseIcon from '@material-ui/icons/Close';
+import { User } from '../../../../interfaces';
+import { useFetchError } from '../../../../hooks';
+import { useErrorHandler } from 'react-error-boundary';
 
 interface RegistrationProps {
     onCloseModal: () => void,
+    userData?: User
 }
 
 enum AllFieldsValidation {
@@ -30,6 +35,7 @@ const Registration: React.FC<RegistrationProps> = (props): JSX.Element => {
     });
     const [file, setFile] = useState<File>();
     const [loading, setLoading] = useState<boolean>(false);
+    const [fileName, setFileName] = useState<string>('');
     const [validation, setValidation] = useState<{
         email: boolean,
         password: boolean,
@@ -46,7 +52,17 @@ const Registration: React.FC<RegistrationProps> = (props): JSX.Element => {
         usedEmail: true,
     });
 
-    const {login} = useContext(AuthContext);
+    const {login, token, sellerID} = useContext(AuthContext);
+
+    useEffect(() => {
+        if (props.userData) {
+            setFields(prevState => ({...prevState, name: props.userData!.name, phone: props.userData!.phone}));
+            setFileName(props.userData!.avatar.substring(73).substring(0, props.userData!.avatar.substring(73).search(/\?alt/i)));
+        }
+        if (file) {
+            setFileName(file.name);
+        }
+    }, [file]);
 
     const handleEmail = (event: React.ChangeEvent<HTMLInputElement>): void => {
         setFields(current => ({...current, email: event.target.value}));
@@ -68,8 +84,37 @@ const Registration: React.FC<RegistrationProps> = (props): JSX.Element => {
         setFields(current => ({...current, phone: event.target.value}));
     };
 
-    const onSubmit = async (event: FormEvent<HTMLFormElement>): Promise<void> => {
-        event.preventDefault();
+    const {request, error} = useFetchError();
+    useErrorHandler(error)
+
+    const edit = async (): Promise<void> => {
+        const storageRef = app.storage().ref();
+        if (file && token) {
+            const fileRef = storageRef.child(file.name);
+            await fileRef.put(file);
+            const fileUrl: string = await fileRef.getDownloadURL();
+            request(`/api/users/${sellerID}`, {
+                method: 'PUT', body: JSON.stringify({
+                    avatar: fileUrl,
+                    name: fields.name,
+                    phone: fields.phone
+                }), headers: {'Content-Type': 'application/json', 'authorization': token}
+            }).then(() => {
+                props.onCloseModal();
+            });
+        } else if (token) {
+            request(`/api/users/${sellerID}`, {
+                method: 'PUT', body: JSON.stringify({
+                    name: fields.name,
+                    phone: fields.phone
+                }), headers: {'Content-Type': 'application/json', 'authorization': token}
+            }).then(() => {
+                props.onCloseModal();
+            });
+        }
+    };
+
+    const onSubmit = async (): Promise<void> => {
         let flag = false;
         if (validation.allFields !== AllFieldsValidation.AllFieldsFilled) {
             for (let key in fields) {
@@ -146,43 +191,65 @@ const Registration: React.FC<RegistrationProps> = (props): JSX.Element => {
     };
 
     return (
-        <form className='login-wrapper' onSubmit={(e) => {
-            setLoading(true);
-            onSubmit(e).then(() => setLoading(false));
-        }}>
-            <div className='label'>Email</div>
-            <div className={!validation.email ? 'input validate' : 'input'}>
-                <InputBase value={fields.email} onChange={handleEmail} fullWidth/>
-            </div>
-            {!validation.email ? <div className='validation-registration'>Incorrect email!</div> : null}
-            {!validation.usedEmail ? <div className='validation-registration'>This email is already used!</div> : null}
-            <div className='label'>Password</div>
-            <div className={!validation.password || !validation.repeatedPassword ? 'input validate' : 'input'}>
-                <InputBase type='password' value={fields.password} onChange={handlePassword} fullWidth/>
-            </div>
-            {!validation.password ? <div className='validation-registration'>The password must contain at least 6 characters!</div> : null}
-            <div className='label'>Repeat password</div>
-            <div className={!validation.repeatedPassword ? 'input validate' : 'input'}>
-                <InputBase type='password' value={fields.repeatedPassword} onChange={handleRepeatedPassword} fullWidth/>
-            </div>
-            {!validation.repeatedPassword ? <div className='validation-registration'>Password don't match!</div> : null}
-            <div className='label'>Name</div>
-            <div className='input'>
-                <InputBase value={fields.name} onChange={handleName} fullWidth/>
-            </div>
-            <div className='label'>Phone number</div>
-            <div className={!validation.phone ? 'input validate' : 'input'}>
-                <InputBase value={fields.phone} onChange={handlePhone} fullWidth/>
-            </div>
-            {!validation.phone ? <div className='validation-registration'>Incorrect phone number!</div> : null}
-            <PicSelect file={file} onFileSelect={setFile} />
-            {validation.allFields === AllFieldsValidation.NotAllFieldsFilled ? <div className='validation-registration'>Fill in all the fields!</div> : null}
-            <div className='button-wrapper'>
-                <Button type='submit' className='button' variant='contained' color='primary'>
-                    {!loading ? 'Register' : <CircularProgress color='inherit' size='25px' data-testid='loading'/>}
-                </Button>
-            </div>
-        </form>
+        <>
+            {props.userData ?
+                <>
+                    <div className='close-icon-button-wrapper'>
+                        <IconButton id='modal-close-button' aria-label='lose' size='medium' onClick={props.onCloseModal} data-testid='close-button'>
+                            <CloseIcon fontSize='medium'/>
+                        </IconButton>
+                    </div>
+                    <div className='edit-profile'>EDIT PROFILE</div>
+                </>
+                : null}
+            <form className='login-wrapper' onSubmit={(event) => {
+                event.preventDefault();
+                setLoading(true);
+                if (props.userData) {
+                    edit().then(() => setLoading(false));
+                } else {
+                    onSubmit().then(() => setLoading(false));
+                }
+            }}>
+                {!props.userData ?
+                    <>
+                        <div className='label'>Email</div>
+                        <div className={!validation.email ? 'input validate' : 'input'}>
+                            <InputBase value={fields.email} onChange={handleEmail} fullWidth/>
+                        </div>
+                        {!validation.email ? <div className='validation-registration'>Incorrect email!</div> : null}
+                        {!validation.usedEmail ? <div className='validation-registration'>This email is already used!</div> : null}
+                        <div className='label'>Password</div>
+                        <div className={!validation.password || !validation.repeatedPassword ? 'input validate' : 'input'}>
+                            <InputBase type='password' value={fields.password} onChange={handlePassword} fullWidth/>
+                        </div>
+                        {!validation.password ? <div className='validation-registration'>The password must contain at least 6 characters!</div> : null}
+                        <div className='label'>Repeat password</div>
+                        <div className={!validation.repeatedPassword ? 'input validate' : 'input'}>
+                            <InputBase type='password' value={fields.repeatedPassword} onChange={handleRepeatedPassword} fullWidth/>
+                        </div>
+                        {!validation.repeatedPassword ? <div className='validation-registration'>Password don't match!</div> : null}
+                    </>
+                    : null}
+                <div className='label'>Name</div>
+                <div className='input'>
+                    <InputBase value={fields.name} onChange={handleName} fullWidth/>
+                </div>
+                <div className='label'>Phone number</div>
+                <div className={!validation.phone ? 'input validate' : 'input'}>
+                    <InputBase value={fields.phone} onChange={handlePhone} fullWidth/>
+                </div>
+                {!validation.phone ? <div className='validation-registration'>Incorrect phone number!</div> : null}
+                {fileName ? <PicSelect file={file} onFileSelect={setFile} fileName={fileName}/> : null}
+                {!fileName ? <PicSelect file={file} onFileSelect={setFile} /> : null}
+                {validation.allFields === AllFieldsValidation.NotAllFieldsFilled ? <div className='validation-registration'>Fill in all the fields!</div> : null}
+                <div className='button-wrapper'>
+                    <Button type='submit' className='button' variant='contained' color='primary'>
+                        {!loading ? 'Register' : <CircularProgress color='inherit' size='25px' data-testid='loading'/>}
+                    </Button>
+                </div>
+            </form>
+        </>
     );
 }
 

@@ -41,7 +41,7 @@
     "server": "nodemon app.ts",
     "client": "react-scripts start --prefix client",
     "client:build": "react-scripts build --prefix client",
-    "test": "react-scripts test --prefix client",
+    "test": "react-scripts test",
     "eject": "react-scripts eject --prefix client",
     "dev": "run-p server client"
   },

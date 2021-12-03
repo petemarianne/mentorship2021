@@ -1,18 +1,12 @@
 import { Router } from 'express';
 import { filterAds } from '../utils/filterAds';
 import { comparator } from '../utils/comparatorAds';
-import jsonwebtoken, { JwtPayload, UserIDJwtPayload } from 'jsonwebtoken';
+import jsonwebtoken, { UserIDJwtPayload } from 'jsonwebtoken';
 import config from 'config';
 import Ad from '../models/Ad';
 import User from '../models/User';
 
 const adsRouter = Router();
-
-declare module 'jsonwebtoken' {
-    export interface UserIDJwtPayload extends JwtPayload {
-        userID: string
-    }
-}
 
 adsRouter.get('/ads', async (req, res) => {
     try {
