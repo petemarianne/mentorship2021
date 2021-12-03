@@ -178,7 +178,7 @@ export const Profile: React.FC<ProfileProps> = (props): JSX.Element => {
                             adsData.slice(page * 5, page * 5 + 5).map((row) => {
                                 return (
                                     <TableRow role='checkbox' tabIndex={-1} key={row._id}>
-                                        {props.myProfile && row.status !== 'sold' ?
+                                        {props.myProfile && row.status === 'active' ?
                                             <TableCell size='medium' align='center'>
                                                 <IconButton
                                                     aria-label='lose'
@@ -193,7 +193,7 @@ export const Profile: React.FC<ProfileProps> = (props): JSX.Element => {
                                             </TableCell>
                                             : null
                                         }
-                                        {props.myProfile && row.status == 'sold' ? <TableCell size='medium' align='center' /> : null}
+                                        {props.myProfile && row.status !== 'active' ? <TableCell size='medium' align='center' /> : null}
                                         <TableCell size='medium' align='center' style={{padding: '5px'}}>
                                             <Link to={`/ad${row._id}`} style={{ textDecoration: 'none', color: 'black'}}>
                                                 {row.title}

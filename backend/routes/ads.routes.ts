@@ -103,7 +103,6 @@ adsRouter.put('/ads/:id', async (req, res) => {
                     case 'active':
                         Ad.findByIdAndUpdate({_id: req.params.id}, {
                             status: 'active',
-                            date: Date.now(),
                             saleDate: null,
                             closingDate: null
                         })
