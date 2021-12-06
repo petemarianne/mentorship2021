@@ -122,7 +122,7 @@ adsRouter.put('/ads/:id', async (req, res) => {
                         return res.status(500);
                 }
             } else {
-                Ad.findByIdAndUpdate({_id: req.params.id}, {...req.body, date: Date.now()})
+                Ad.findByIdAndUpdate({_id: req.params.id}, {...req.body})
                     .then(() => Ad.findOne({_id: req.params.id}))
                     .then(() => res.status(200).json({...req.body, id: req.params.id}));
             }
