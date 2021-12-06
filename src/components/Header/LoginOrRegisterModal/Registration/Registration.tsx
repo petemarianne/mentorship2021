@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Button, CircularProgress, IconButton, InputBase } from '@material-ui/core';
 import PicSelect from '../../../PicUpload/PicSelect';
 import { app } from '../../../../firebase';
-import { AuthContext } from '../../../../contexts/auth-context';
+import { AuthContext } from '../../../../contexts';
 import CloseIcon from '@material-ui/icons/Close';
 import { User } from '../../../../interfaces';
 import { useFetchError } from '../../../../hooks';

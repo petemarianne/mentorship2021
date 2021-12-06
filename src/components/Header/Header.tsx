@@ -9,8 +9,7 @@ import DrawerMenu from './DrawerMenu/DrawerMenu';
 import { Link, Redirect, useLocation } from 'react-router-dom';
 import AdFormModal from '../AdFormModal/AdFormModal';
 import { useScreenSize } from '../../hooks';
-import { FilterContext } from '../../contexts/filter-context';
-import { AuthContext } from '../../contexts/auth-context';
+import { FilterContext, AuthContext } from '../../contexts';
 import LoginOrRegisterModal from './LoginOrRegisterModal/LoginOrRegisterModal';
 
 const Header: React.FC = (): JSX.Element => {
