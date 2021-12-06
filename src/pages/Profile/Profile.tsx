@@ -16,7 +16,7 @@ import { Archive, Unarchive, Edit } from '@material-ui/icons';
 import SellIcon from '@mui/icons-material/Sell';
 import { Link, useParams } from 'react-router-dom';
 import { Ad,  User } from '../../interfaces';
-import { AuthContext } from '../../contexts/auth-context';
+import { AuthContext, RerenderContext } from '../../contexts';
 import { useErrorHandler } from 'react-error-boundary';
 import AdFormModal from '../../components/AdFormModal/AdFormModal';
 import Registration from '../../components/Header/LoginOrRegisterModal/Registration/Registration';
@@ -28,7 +28,7 @@ interface ProfileProps {
 interface Column {
     id: string,
     label: string,
-    minWidth: number,
+    width: number,
     align: 'center' | 'left' | 'right' | 'justify' | 'inherit' | undefined,
 }
 
@@ -43,13 +43,13 @@ export const Profile: React.FC<ProfileProps> = (props): JSX.Element => {
         phone: '',
     });
     const { id } = useParams<{id: string}>();
-    const [rerender, setRerender] = useState(0);
     const [page, setPage] = useState<number>(0);
     const [openEditAd, setOpenEditAd] = useState<boolean>(false);
     const [openEditUser, setOpenEditUser] = useState<boolean>(false);
     const [adToEditID, setAdToEditID] = useState<string>('');
 
     const { sellerID, token } = useContext(AuthContext);
+    const {rerender, setRerender} = useContext(RerenderContext);
 
     useEffect(() => {
         const userPromise = props.myProfile ? fetch(`api/users/${sellerID}`) : fetch(`api/users/${id}`);
@@ -66,17 +66,17 @@ export const Profile: React.FC<ProfileProps> = (props): JSX.Element => {
     useErrorHandler(error)
 
     const columns: Column[] = [
-        { id: 'title', label: 'Title', minWidth: 50, align: 'center' },
-        { id: 'publication-date', label: 'Last edit date', minWidth: 50, align: 'center'},
-        { id: 'sale-date', label: 'Sale date', minWidth: 50, align: 'center'},
-        { id: 'closing-date', label: 'Closing date', minWidth: 50, align: 'center'},
-        { id: 'status', label: 'Status', minWidth: 40, align: 'center'},
-        { id: 'price', label: 'Price', minWidth: 40, align: 'center'},
+        { id: 'title', label: 'Title', width: 50, align: 'center' },
+        { id: 'publication-date', label: 'Publication date', width: 50, align: 'center'},
+        { id: 'sale-date', label: 'Sale date', width: 50, align: 'center'},
+        { id: 'closing-date', label: 'Closing date', width: 65, align: 'center'},
+        { id: 'status', label: 'Status', width: 40, align: 'center'},
+        { id: 'price', label: 'Price', width: 40, align: 'center'},
     ];
 
     if (props.myProfile) {
-        columns.unshift({id: 'edit', label: 'Edit', minWidth: 10, align: 'center'});
-        columns.push({ id: 'action', label: 'Action', minWidth: 80, align: 'center'});
+        columns.unshift({id: 'edit', label: 'Edit', width: 10, align: 'center'});
+        columns.push({ id: 'action', label: 'Action', width: 80, align: 'center'});
     }
 
     const dateCell = (date: Date | undefined): JSX.Element => {
@@ -165,7 +165,7 @@ export const Profile: React.FC<ProfileProps> = (props): JSX.Element => {
                                     <TableCell
                                         key={column.id}
                                         align={column.align}
-                                        style={{minWidth: column.minWidth}}
+                                        style={{width: column.width}}
                                     >
                                         {column.label}
                                     </TableCell>
@@ -221,7 +221,7 @@ export const Profile: React.FC<ProfileProps> = (props): JSX.Element => {
                                                                     'authorization': token
                                                                 }
                                                             }).then(() => {
-                                                                setRerender(prevState => prevState + 1);
+                                                                setRerender(prevState => !prevState);
                                                             });
                                                         }
                                                     }}
@@ -243,7 +243,7 @@ export const Profile: React.FC<ProfileProps> = (props): JSX.Element => {
                                                                     'authorization': token
                                                                 }
                                                             }).then(() => {
-                                                                setRerender(prevState => prevState + 1);
+                                                                setRerender(prevState => !prevState);
                                                             });
                                                         }
                                                     }}
@@ -265,7 +265,7 @@ export const Profile: React.FC<ProfileProps> = (props): JSX.Element => {
                                                                     'authorization': token
                                                                 }
                                                             }).then(() => {
-                                                                setRerender(prevState => prevState + 1);
+                                                                setRerender(prevState => !prevState);
                                                             });
                                                         }
                                                     }}

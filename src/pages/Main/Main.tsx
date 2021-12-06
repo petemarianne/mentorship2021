@@ -5,7 +5,7 @@ import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 import { Link } from 'react-router-dom';
 import Filter from '../../components/Filter/Filter';
-import { FilterContext } from '../../contexts/filter-context';
+import { FilterContext, AuthContext, RerenderContext } from '../../contexts';
 import { useScreenSize } from '../../hooks';
 import { Ad } from '../../interfaces';
 
@@ -15,6 +15,9 @@ export const Main: React.FC = (): JSX.Element => {
     const [page, setPage] = useState<number>(1);
 
     const {filter, setFilterState} = useContext(FilterContext);
+
+    const {sellerID} = useContext(AuthContext);
+    const {rerender} = useContext(RerenderContext);
 
     const {desktop} = useScreenSize();
 
@@ -33,7 +36,10 @@ export const Main: React.FC = (): JSX.Element => {
                 >
                     <div className='pic-wrapper'><img src={item.picture} alt='dog'/></div>
                     <div className='info-wrapper'>
-                        <div className='breed'>{item.title}</div>
+                        <div className='breed-owner-wrapper'>
+                            <div className='breed'>{item.title}</div>
+                            {item.sellerID === sellerID ? <div className='owner'>owner</div> : null}
+                        </div>
                         <div className='description'>{item.description}</div>
                         <div className='price'>{item.price}$</div>
                         <div className='location-date-wrapper'>
@@ -75,17 +81,13 @@ export const Main: React.FC = (): JSX.Element => {
     }, [setFilterState]);
 
     useEffect(() => {
-        try {
-            setLoading(true);
-            setPage(1);
-            fetch(`api/ads?breed=${filter.breed}&country=${filter.country}&city=${filter.city}&priceFrom=${filter.priceFrom}&priceTo=${filter.priceTo}&sort=${filter.sort}`).then(response => response.json()).then((data) => {
-                    setAdsData(data);
-                    setLoading(false);
-                });
-        } catch (e) {
-            console.log('Something went wrong')
-        }
-    }, [filter]);
+        setLoading(true);
+        setPage(1);
+        fetch(`api/ads?breed=${filter.breed}&country=${filter.country}&city=${filter.city}&priceFrom=${filter.priceFrom}&priceTo=${filter.priceTo}&sort=${filter.sort}`).then(response => response.json()).then((data) => {
+            setAdsData(data);
+            setLoading(false);
+        });
+    }, [filter, rerender]);
 
     return (
         <>

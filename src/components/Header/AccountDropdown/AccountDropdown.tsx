@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { Menu, MenuItem } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import './AccountDropdown.scss';
-import { AuthContext } from '../../../contexts/auth-context';
+import { AuthContext } from '../../../contexts';
 
 interface AccountDropdownProps {
     isOpen: Element | null,

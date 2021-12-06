@@ -24,9 +24,24 @@
       width: 40%;
       padding-left: 30px;
 
-      .breed {
-        font-size: 28px;
-        margin-bottom: 10px;
+      .breed-status-wrapper {
+        display: flex;
+
+        .breed {
+          font-size: 28px;
+          margin-bottom: 10px;
+        }
+
+        .status {
+          color: #d27a3d;
+          border: 1px solid #d27a3d;
+          border-radius: 15px;
+          height: 25px;
+          padding: 0 7px;
+          text-align: center;
+          margin: 5px 0 0 10px;
+          font-size: 20px;
+        }
       }
 
       .location {
@@ -120,8 +135,23 @@
       .info-wrapper {
         padding-left: 20px;
 
-        .breed {
-          font-size: 26px;
+        .breed-status-wrapper {
+          display: flex;
+
+          .breed {
+            font-size: 26px;
+          }
+
+          .status {
+            color: #d27a3d;
+            border: 1px solid #d27a3d;
+            border-radius: 15px;
+            height: 25px;
+            padding: 0 7px;
+            text-align: center;
+            margin: 5px 0 0 10px;
+            font-size: 20px;
+          }
         }
 
         .location {
@@ -195,8 +225,24 @@
       }
 
       .info-wrapper {
-        .breed {
-          font-size: 25px;
+
+        .breed-status-wrapper {
+          display: flex;
+
+          .breed {
+            font-size: 25px;
+          }
+
+          .status {
+            color: #d27a3d;
+            border: 1px solid #d27a3d;
+            border-radius: 15px;
+            height: 25px;
+            padding: 0 7px;
+            text-align: center;
+            margin: 5px 0 0 10px;
+            font-size: 20px;
+          }
         }
 
         .location {
@@ -308,8 +354,23 @@
       margin-top: 10px;
 
       .breed-location-price-wrapper {
-        .breed {
-          font-size: 28px;
+        .breed-status-wrapper {
+          display: flex;
+
+          .breed {
+            font-size: 28px;
+          }
+
+          .status {
+            color: #d27a3d;
+            border: 1px solid #d27a3d;
+            border-radius: 15px;
+            height: 22px;
+            padding: 0 7px;
+            text-align: center;
+            margin: 5px 0 0 10px;
+            font-size: 18px;
+          }
         }
 
         .location {
@@ -425,9 +486,22 @@
       margin-top: 15px;
 
       .breed-location-wrapper {
-        .breed {
-          font-size: 24px;
-        }
+
+          .breed {
+            font-size: 22px;
+          }
+
+          .status {
+            color: #d27a3d;
+            border: 1px solid #d27a3d;
+            border-radius: 15px;
+            height: 18px;
+            width: 50px;
+            padding: 0 7px;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 15px;
+          }
 
         .location {
           margin-top: 5px;
